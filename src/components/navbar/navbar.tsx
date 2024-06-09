@@ -1,9 +1,9 @@
 import Link from 'next/link';
-import React, { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import Image from 'next/image';
+import React from 'react';
 import { ModeToggle } from '../ui/mode-toggle';
-import BuyMeACoffeeButton from './buy-me-a-coffee-button';
+import { signIn, signOut } from '@/auth';
+import { Button } from '@/components/ui/button';
+import AuthButton from '../auth-button';
 
 const Navbar = () => {
   return (
@@ -16,6 +16,7 @@ const Navbar = () => {
         <div className='flex gap-2 items-end'>
           {/* <BuyMeACoffeeButton className='max-sm:hidden' /> */}
           <ModeToggle />
+          <AuthButton />
         </div>
       </div>
     </nav>

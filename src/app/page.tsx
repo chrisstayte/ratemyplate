@@ -1,5 +1,6 @@
 import LicensePlateInputCard from '@/components/license-plate-input-card';
 import RecentEntriesSection from '@/components/recent-entries/recent-entries-section';
+
 import Image from 'next/image';
 
 export default function Home() {

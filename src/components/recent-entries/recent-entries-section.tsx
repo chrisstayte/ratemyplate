@@ -7,8 +7,15 @@ import {
   CarouselPrevious,
 } from '@/components/ui/carousel';
 import * as React from 'react';
+import { auth } from '@/auth';
 
-export default function RecentEntriesSection() {
+export default async function RecentEntriesSection() {
+  const session = await auth();
+
+  if (!session) {
+    return <div>Not authenticated</div>;
+  }
+
   return (
     <div className='min-h-72  flex flex-col gap-10 items-center justify-center'>
       <p className='text-2xl'>Recent reviews</p>

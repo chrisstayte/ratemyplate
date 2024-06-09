@@ -14,7 +14,15 @@ interface State {
   name: string;
 }
 
-const StatePicker: React.FC = () => {
+interface StatePickerProps {
+  onValueChange: (value: string) => void;
+  defaultValue: string;
+}
+
+const StatePicker: React.FC<StatePickerProps> = ({
+  onValueChange,
+  defaultValue,
+}) => {
   const [states, setStates] = useState<State[]>([]);
 
   useEffect(() => {
@@ -28,7 +36,7 @@ const StatePicker: React.FC = () => {
   }, []);
 
   return (
-    <Select>
+    <Select onValueChange={onValueChange} defaultValue={defaultValue}>
       <SelectTrigger className='w-full'>
         <SelectValue placeholder='Select a state' />
       </SelectTrigger>
