@@ -31,13 +31,7 @@ export default async function Plate({
   return (
     <div className='container flex flex-col gap-5 py-10 items-center'>
       <LicensePlate plateNumber={plateNumber} state={state} />
-      <div className='h-full w-full'>
-        <div className='flex flex-row justify-between items-center'>
-          <p className='text-2xl'>Comments</p>
-          <Button>New Comment</Button>
-        </div>
-        <CommentsSection state={state} plateNumber={plateNumber} />
-      </div>
+      <CommentsSection state={state} plateNumber={plateNumber} />
     </div>
   );
 }
