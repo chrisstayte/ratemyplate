@@ -2,7 +2,7 @@
 
 import { database } from '@/db/database';
 import { plates } from '@/db/schema';
-import { formSchema } from '@/components/license-plate-input-card';
+import { formSchema } from '@/components/search-card/search-card';
 import { z } from 'zod';
 import { revalidatePath } from 'next/cache';
 import { auth } from '@/auth';
