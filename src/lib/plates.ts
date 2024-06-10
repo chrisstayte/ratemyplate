@@ -1,3 +1,8 @@
+export interface Plate {
+  state: string;
+  plateNumber: string;
+}
+
 export function validateLicensePlate(
   plate: string | null,
   country: string
