@@ -9,10 +9,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
-interface State {
-  abbreviation: string;
-  name: string;
-}
+import { State, usStates } from '@/lib/us-states';
 
 interface StatePickerProps {
   onValueChange: (value: string) => void;
@@ -27,8 +24,7 @@ const StatePicker: React.FC<StatePickerProps> = ({
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch('/states.json');
-      const data: State[] = await response.json();
+      const data: State[] = await usStates();
 
       setStates(data);
     };
