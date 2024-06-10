@@ -15,8 +15,8 @@ export default function RecentEntriesSection() {
   const numberOfEntriesToDisplay = 10;
 
   return (
-    <div className='flex flex-col gap-5 justify-center w-full'>
-      <p className='text-2xl'>Recent reviews</p>
+    <div className='flex flex-col gap-5 justify-center w-full h-full'>
+      <p className='text-2xl'>Recent comments</p>
       <Suspense
         fallback={<RecentEntriesSkeleton limit={numberOfEntriesToDisplay} />}>
         <RecentEntries limit={numberOfEntriesToDisplay} />
@@ -31,13 +31,22 @@ async function RecentEntries({ limit = 10 }) {
     limit: limit,
   });
 
+  if (recentPlates.length === 0) {
+    return (
+      <div className='h-full text-center place-content-center'>
+        <p className='text-xl'>No recent comments</p>
+        <p className='text-xl'>Be the first!</p>
+      </div>
+    );
+  }
+
   return (
     <div className=' grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5'>
       {recentPlates.map(async (plate) => (
         <Link
           key={plate.id}
           href={`/plate?plate=${plate.plateNumber}&state=${plate.state}`}>
-          {/* <LicensePlate plateNumber={plate.plateNumber} state={plate.state} className=''/> */}
+          {/* <LicensePlate plateNumber={plate.plateNumber} state={plate.state} /> */}
           <Card className='aspect-video flex flex-col justify-center items-center'>
             <div className='flex flex-col h-full relative p-1'>
               <Badge className=' text-white'>{usStateName(plate.state)}</Badge>
