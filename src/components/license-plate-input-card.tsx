@@ -45,6 +45,8 @@ export default function LicensePlateInputCard() {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    console.log('Values: ', values);
+
     // Create the plate
     createPlate(values);
   }
@@ -89,7 +91,7 @@ export default function LicensePlateInputCard() {
               />
             </div>
             <div className='w-full flex justify-end'>
-              <Button type='submit'>Submit</Button>
+              <Button type='submit'>Search</Button>
             </div>
           </form>
         </Form>
