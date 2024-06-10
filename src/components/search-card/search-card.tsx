@@ -34,7 +34,7 @@ export const formSchema = z.object({
   state: z.string().length(2),
 });
 
-export default function LicensePlateInputCard() {
+export default function SearchCard() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
