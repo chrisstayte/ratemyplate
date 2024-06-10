@@ -8,6 +8,7 @@ import {
   varchar,
   integer,
 } from 'drizzle-orm/pg-core';
+import { relations } from 'drizzle-orm';
 import type { AdapterAccountType } from 'next-auth/adapters';
 
 export const plates = pgTable('rmp_plates', {
@@ -15,12 +16,19 @@ export const plates = pgTable('rmp_plates', {
   plateNumber: text('plateNumber').notNull(),
   state: varchar('state', { length: 2 }).notNull(),
   timestamp: timestamp('timestamp', { mode: 'date' }).defaultNow(),
+  userId: text('userId').references(() => users.id),
 });
+
+// export const platesRelations = relations(plates, ({ many }) => ({
+//   comments: many(comments),
+// }));
 
 export const comments = pgTable('rmp_comments', {
   id: serial('id').primaryKey(),
+  userId: text('userId').references(() => users.id),
   plateId: integer('plateId').references(() => plates.id),
   comment: text('comment'),
+  timestamp: timestamp('timestamp', { mode: 'date' }).defaultNow(),
 });
 
 // Next AUTH -> Postgres
