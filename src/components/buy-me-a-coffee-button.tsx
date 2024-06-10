@@ -1,6 +1,6 @@
 'use client';
 
-import { Button } from '../ui/button';
+import { Button } from '@/components/ui/button';
 import Image from 'next/image';
 import { FC, useEffect, useState } from 'react';
 import { useTheme } from 'next-themes';
@@ -10,14 +10,17 @@ interface BuyMeACoffeeButtonProps {
 }
 
 const BuyMeACoffeeButton: FC<BuyMeACoffeeButtonProps> = ({ className }) => {
-  const { theme } = useTheme();
+  const { theme, systemTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => setMounted(true), []);
   if (!mounted) return null;
 
+  const currentTheme = theme === 'system' ? systemTheme : theme;
   const imageUrl =
-    theme == 'dark' ? '/images/bmc-logo.svg' : '/images/bmc-logo-whitecup.svg';
+    currentTheme === 'dark'
+      ? '/images/bmc-logo.svg'
+      : '/images/bmc-logo-whitecup.svg';
 
   return (
     <Button asChild className={`${className}`}>

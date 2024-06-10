@@ -19,7 +19,7 @@ export async function createPlate(formData: z.infer<typeof formSchema>) {
     database
       .insert(plates)
       .values({
-        plateNumber: formData.plate,
+        plateNumber: formData.plate.toUpperCase(),
         state: formData.state,
         userId: session!.user!.id,
       })

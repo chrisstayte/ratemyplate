@@ -69,7 +69,7 @@ export default function LicensePlateInputCard() {
                   <FormItem className='basis-1/2'>
                     <FormLabel>License Plate</FormLabel>
                     <FormControl>
-                      <Input placeholder='' {...field} />
+                      <Input className='uppercase' placeholder='' {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

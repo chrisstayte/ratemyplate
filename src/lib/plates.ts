@@ -1,4 +1,9 @@
-export function validateLicensePlate(plate: string, country: string): boolean {
+export function validateLicensePlate(
+  plate: string | null,
+  country: string
+): boolean {
+  if (!plate) return false;
+
   let regex: RegExp;
   switch (country) {
     case 'US':
