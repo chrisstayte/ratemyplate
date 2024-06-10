@@ -21,7 +21,9 @@ async function AuthButton() {
           'use server';
           await signOut();
         }}>
-        <Button type='submit'>Signout</Button>
+        <Button variant='outline' type='submit'>
+          Signout
+        </Button>
       </form>
     );
   }
