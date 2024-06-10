@@ -1,20 +1,25 @@
-'use client';
-
-import { useSearchParams } from 'next/navigation';
 import { validateLicensePlate } from '@/lib/plates';
+import { Badge } from '@/components/ui/badge';
+import { Card } from '@/components/ui/card';
+import { usStateName, stateNameValidator } from '@/lib/us-states';
+import { Button } from '@/components/ui/button';
+import LicensePlate from '@/components/license-plate';
+import CommentsSection from '@/components/comments/comments-section';
 
-export default function Plate() {
-  const searchParams = useSearchParams();
-
-  const plateNumber = searchParams.get('plate');
-  const state = searchParams.get('state');
-
-  console.log(plateNumber, state);
+export default async function Plate({
+  searchParams,
+}: {
+  params: { slug: string };
+  searchParams?: { [key: string]: string | string[] | undefined };
+}) {
+  const plateNumber = (searchParams?.plate as string) ?? null;
+  const state = (searchParams?.state as string) ?? null;
 
   if (
     plateNumber === null ||
     state === null ||
-    !validateLicensePlate(plateNumber, 'US')
+    !(await validateLicensePlate(plateNumber, 'US')) ||
+    !(await stateNameValidator(state))
   ) {
     return (
       <div className='container flex flex-col gap-5 py-10 items-center'>
@@ -25,8 +30,13 @@ export default function Plate() {
 
   return (
     <div className='container flex flex-col gap-5 py-10 items-center'>
-      <div className=' flex flex-col justify-center items-center p-10 uppercase'>
-        <p>{plateNumber}</p>
+      <LicensePlate plateNumber={plateNumber} state={state} />
+      <div className='h-full w-full'>
+        <div className='flex flex-row justify-between items-center'>
+          <p className='text-2xl'>Comments</p>
+          <Button>New Comment</Button>
+        </div>
+        <CommentsSection state={state} plateNumber={plateNumber} />
       </div>
     </div>
   );
