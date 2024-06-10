@@ -1,6 +1,5 @@
 'use client';
 
-import { database } from '@/db/database';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
@@ -8,37 +7,46 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label';
+import { useRouter } from 'next/navigation';
+import { validateLicensePlate } from '@/lib/plates';
 
 import StatePicker from './state-picker';
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
 
-import { createPlate } from '@/app/actions';
-
-export const formSchema = z.object({
-  plate: z.string(),
-  state: z.string().length(2),
-});
+export const formSchema = z
+  .object({
+    plate: z.string(),
+    state: z.string().length(2),
+  })
+  .refine(
+    (data) => {
+      return validateLicensePlate(data.plate, 'US');
+    },
+    {
+      message: 'Invalid license plate',
+      path: ['plate'],
+    }
+  );
 
 export default function SearchCard() {
+  const router = useRouter();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      plate: '',
+      plate: undefined,
       state: '',
     },
   });
@@ -46,8 +54,9 @@ export default function SearchCard() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     console.log('Values: ', values);
 
-    // Create the plate
-    createPlate(values);
+    router.push(
+      `/plate?plate=${values.plate.toUpperCase()}&state=${values.state}`
+    );
   }
 
   return (
