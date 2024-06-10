@@ -10,6 +10,10 @@ import { auth } from '@/auth';
 export async function createPlate(formData: z.infer<typeof formSchema>) {
   const session = await auth();
 
+  if (!session) {
+    throw new Error('Unauthorized');
+  }
+
   console.log('formData', formData);
   try {
     database
