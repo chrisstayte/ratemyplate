@@ -2,12 +2,14 @@
 
 import { database } from '@/db/database';
 import { plates } from '@/db/schema';
-import { formSchema } from '@/components/search-card/search-card';
+import { searchCardFormSchema } from '@/components/search-card/search-card';
 import { z } from 'zod';
 import { revalidatePath } from 'next/cache';
 import { auth } from '@/auth';
 
-export async function createPlate(formData: z.infer<typeof formSchema>) {
+export async function createPlate(
+  formData: z.infer<typeof searchCardFormSchema>
+) {
   const session = await auth();
 
   if (!session) {
@@ -31,3 +33,5 @@ export async function createPlate(formData: z.infer<typeof formSchema>) {
 
   return { message: 'Added plate' };
 }
+
+// export async function postComment(formData: )

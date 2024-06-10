@@ -6,6 +6,10 @@ import { Button } from '@/components/ui/button';
 import LicensePlate from '@/components/license-plate';
 import CommentsSection from '@/components/comments/comments-section';
 
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { AlertCircle } from 'lucide-react';
+import SearchCard from '@/components/search-card/search-card';
+
 export default async function Plate({
   searchParams,
 }: {
@@ -23,7 +27,15 @@ export default async function Plate({
   ) {
     return (
       <div className='container flex flex-col gap-5 py-10 items-center'>
-        <p>Invalid plate number or state</p>
+        <Alert variant='destructive'>
+          <AlertCircle className='h-4 w-4' />
+          <AlertTitle>Error</AlertTitle>
+          <AlertDescription>
+            This is not a valid license plate. I&apos;ve provided a search form
+            below to help you find the right one.
+          </AlertDescription>
+        </Alert>
+        <SearchCard />
       </div>
     );
   }

@@ -25,14 +25,14 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 
-export const formSchema = z
+export const searchCardFormSchema = z
   .object({
     plate: z.string(),
     state: z.string().length(2),
   })
   .refine(
     (data) => {
-      return validateLicensePlate(data.plate, 'US');
+      return validateLicensePlate(data.plate.toUpperCase(), 'US');
     },
     {
       message: 'Invalid license plate',
@@ -43,15 +43,15 @@ export const formSchema = z
 export default function SearchCard() {
   const router = useRouter();
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof searchCardFormSchema>>({
+    resolver: zodResolver(searchCardFormSchema),
     defaultValues: {
       plate: undefined,
       state: '',
     },
   });
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof searchCardFormSchema>) {
     console.log('Values: ', values);
 
     router.push(
@@ -78,7 +78,11 @@ export default function SearchCard() {
                   <FormItem className='basis-1/2'>
                     <FormLabel>License Plate</FormLabel>
                     <FormControl>
-                      <Input className='uppercase' placeholder='' {...field} />
+                      <Input
+                        className='uppercase text-[16px]'
+                        placeholder=''
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

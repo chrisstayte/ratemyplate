@@ -34,11 +34,14 @@ const StatePicker: React.FC<StatePickerProps> = ({
   return (
     <Select onValueChange={onValueChange} defaultValue={defaultValue}>
       <SelectTrigger className='w-full'>
-        <SelectValue placeholder='Select a state' />
+        <SelectValue className='text-[16px]' placeholder='Select a state' />
       </SelectTrigger>
-      <SelectContent>
+      <SelectContent className='text-[16px]'>
         {states.map((state) => (
-          <SelectItem key={state.abbreviation} value={state.abbreviation}>
+          <SelectItem
+            className='text-[16px]'
+            key={state.abbreviation}
+            value={state.abbreviation}>
             {state.name}
           </SelectItem>
         ))}

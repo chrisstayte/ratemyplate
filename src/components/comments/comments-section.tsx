@@ -4,6 +4,8 @@ import { Button } from '@/components/ui/button';
 
 import { Card } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
+import AuthCommentButton from '@/components/comments/auth-comment-button';
+
 interface CommentsSectionProps {
   state: string;
   plateNumber: string;
@@ -15,9 +17,9 @@ const CommentsSection: React.FC<CommentsSectionProps> = ({
 }) => {
   return (
     <div className='h-full w-full flex flex-col gap-10'>
-      <div className='flex flex-row justify-between items-center'>
+      <div className='flex flex-col gap-5 sm:flex-row justify-between items-center'>
         <p className='text-2xl'>Comments</p>
-        <Button>New Comment</Button>
+        <AuthCommentButton plate={{ plateNumber, state }} />
       </div>
       <div className='container flex flex-col gap-5 py-10 items-center'>
         <Comments plate={{ state, plateNumber }} />

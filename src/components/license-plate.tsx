@@ -15,7 +15,7 @@ const LicensePlate: React.FC<LicensePlateProps> = ({
 }) => {
   return (
     <Card
-      className={`flex flex-col items-center h-full max-h-52 relative w-full max-w-96 p-3 aspect-video ${className}`}>
+      className={`select-none flex flex-col items-center h-full max-h-52 relative w-full max-w-96 p-3 aspect-video shadow-sm ${className}`}>
       {state && <Badge className='text-xl'>{usStateName(state)}</Badge>}
       <div className='absolute inset-0 flex items-center justify-center uppercase'>
         <p className='text-4xl'>{plateNumber}</p>
