@@ -1,10 +1,12 @@
 import { eq, and } from 'drizzle-orm';
 import { Plate } from '@/lib/plates';
 import { Button } from '@/components/ui/button';
-
+import { desc } from 'drizzle-orm';
 import { Card } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
+import { comments } from '@/db/schema';
 import AuthCommentButton from '@/components/comments/auth-comment-button';
+import { Badge } from '@/components/ui/badge';
 
 interface CommentsSectionProps {
   state: string;
@@ -16,14 +18,12 @@ const CommentsSection: React.FC<CommentsSectionProps> = ({
   plateNumber,
 }) => {
   return (
-    <div className='h-full w-full flex flex-col gap-10'>
+    <div className='h-full w-full flex flex-col gap-5'>
       <div className='flex flex-col gap-5 sm:flex-row justify-between items-center'>
         <p className='text-2xl'>Comments</p>
         <AuthCommentButton plate={{ plateNumber, state }} />
       </div>
-      <div className='container flex flex-col gap-5 py-10 items-center'>
-        <Comments plate={{ state, plateNumber }} />
-      </div>
+      <Comments plate={{ state, plateNumber }} />
     </div>
   );
 };
@@ -47,18 +47,35 @@ async function Comments({
     return <p>No comments yet</p>;
   }
 
-  const comments = await database?.query.comments.findMany({
+  const plateComments = await database?.query.comments.findMany({
     where: (comments, { eq }) => eq(comments.plateId, licensePlate?.id),
+    orderBy: [desc(comments.timestamp)],
   });
 
-  if (!comments || comments.length === 0) {
+  if (!plateComments || plateComments.length === 0) {
     return <p>No comments yet</p>;
   }
 
   return (
-    <div className='flex flex-col gap-5'>
-      {comments.map((comment) => (
-        <p key={comment.id}>{comment.comment}</p>
+    <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5'>
+      {plateComments.map((comment) => (
+        <Card
+          key={comment.id}
+          className=' flex flex-col justify-center items-center p-3 h-full '>
+          <div className='flex flex-col justify-between content-between h-full w-full gap-5'>
+            <p>{comment.comment}</p>
+            <Badge className='self-end'>
+              {new Date(comment.timestamp!).toLocaleString('en-US', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: true,
+              })}
+            </Badge>
+          </div>
+        </Card>
       ))}
     </div>
   );

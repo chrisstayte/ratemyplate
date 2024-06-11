@@ -41,7 +41,7 @@ async function RecentEntries({ limit = 10 }) {
   }
 
   return (
-    <div className=' grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5'>
+    <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5'>
       {recentPlates.map(async (plate) => (
         <Link
           key={plate.id}

@@ -41,7 +41,7 @@ export default async function Plate({
   }
 
   return (
-    <div className='container flex flex-col gap-5 py-10 items-center'>
+    <div className='container flex flex-col gap-20 py-10 items-center'>
       <LicensePlate plateNumber={plateNumber} state={state} />
       <CommentsSection state={state} plateNumber={plateNumber} />
     </div>

@@ -17,6 +17,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
+import { createPlate, postComment } from '@/app/actions';
 
 interface NewCommentFormProps {
   className?: string;
@@ -31,6 +32,8 @@ const NewCommentForm: React.FC<NewCommentFormProps> = ({
   className,
   plate,
 }) => {
+  const [error, setSetError] = useState<string | null>(null);
+
   const form = useForm<z.infer<typeof newCommentFormSchema>>({
     resolver: zodResolver(newCommentFormSchema),
     defaultValues: {
@@ -39,7 +42,21 @@ const NewCommentForm: React.FC<NewCommentFormProps> = ({
   });
 
   async function onSubmit(values: z.infer<typeof newCommentFormSchema>) {
-    console.log('Values: ', values);
+    const response = await createPlate(plate);
+
+    if (response.id) {
+      // Write message using plate id
+      const response2 = postComment(values.message, response.id);
+
+      if (response.status === 500) {
+        setSetError(response.message);
+      } else {
+        form.reset();
+        setSetError(null);
+      }
+    } else {
+      setSetError(response.message);
+    }
   }
 
   return (
@@ -62,6 +79,7 @@ const NewCommentForm: React.FC<NewCommentFormProps> = ({
             </FormItem>
           )}
         />
+        {error && <p className='text-red-500'>{error}</p>}
         <Button type='submit'>Post</Button>
       </form>
     </Form>

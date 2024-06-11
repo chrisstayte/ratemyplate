@@ -52,8 +52,6 @@ export default function SearchCard() {
   });
 
   async function onSubmit(values: z.infer<typeof searchCardFormSchema>) {
-    console.log('Values: ', values);
-
     router.push(
       `/plate?plate=${values.plate.toUpperCase()}&state=${values.state}`
     );
@@ -62,7 +60,7 @@ export default function SearchCard() {
   return (
     <Card className='w-full max-w-md'>
       <CardHeader>
-        <CardTitle>Let's find em.</CardTitle>
+        <CardTitle>Let&apos;s find em.</CardTitle>
         <CardDescription>Enter the plate number and state</CardDescription>
       </CardHeader>
       <CardContent>

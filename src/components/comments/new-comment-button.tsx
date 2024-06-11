@@ -54,7 +54,7 @@ const NewCommentButton: React.FC<NewCommentButtonProps> = ({
               Let them know what you think about them.
             </DialogDescription>
           </DialogHeader>
-          <NewCommentForm />
+          <NewCommentForm plate={plate} />
         </DialogContent>
       </Dialog>
     );
@@ -72,7 +72,7 @@ const NewCommentButton: React.FC<NewCommentButtonProps> = ({
             Let them know what you think about them.
           </DrawerDescription>
         </DrawerHeader>
-        <NewCommentForm className='px-4' />
+        <NewCommentForm plate={plate} className='px-4' />
         <DrawerFooter className='pt-2'>
           <DrawerClose asChild>
             <Button variant='outline'>Cancel</Button>
