@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "db:push": "drizzle-kit push --config=drizzle.config.ts",
-    "db:studio": "drizzle-kit studio --config=drizzle.config.ts"
+    "db:studio": "drizzle-kit studio --config=drizzle.config.ts",
+    "db:push:force": "drizzle-kit push --config=drizzle.config.ts --force"
   },
   "dependencies": {
     "@auth/drizzle-adapter": "^1.2.0",
