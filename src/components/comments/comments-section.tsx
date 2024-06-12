@@ -1,12 +1,12 @@
 import { eq, and } from 'drizzle-orm';
 import { Plate } from '@/lib/plates';
-import { Button } from '@/components/ui/button';
 import { desc } from 'drizzle-orm';
 import { Card } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { comments } from '@/db/schema';
 import AuthCommentButton from '@/components/comments/auth-comment-button';
 import { Badge } from '@/components/ui/badge';
+import { database } from '@/db/database';
 
 interface CommentsSectionProps {
   state: string;
@@ -35,7 +35,7 @@ async function Comments({
   limit?: number;
   plate: Plate;
 }) {
-  const licensePlate = await database?.query.plates.findFirst({
+  const licensePlate = await database.query.plates.findFirst({
     where: (plates, { eq }) =>
       and(
         eq(plates.plateNumber, plate.plateNumber),
@@ -47,7 +47,7 @@ async function Comments({
     return <p>No comments yet</p>;
   }
 
-  const plateComments = await database?.query.comments.findMany({
+  const plateComments = await database.query.comments.findMany({
     where: (comments, { eq }) => eq(comments.plateId, licensePlate?.id),
     orderBy: [desc(comments.timestamp)],
   });

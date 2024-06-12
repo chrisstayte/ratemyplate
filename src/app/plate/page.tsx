@@ -1,8 +1,5 @@
 import { validateLicensePlate } from '@/lib/plates';
-import { Badge } from '@/components/ui/badge';
-import { Card } from '@/components/ui/card';
-import { usStateName, stateNameValidator } from '@/lib/us-states';
-import { Button } from '@/components/ui/button';
+import { stateNameValidator } from '@/lib/us-states';
 import LicensePlate from '@/components/license-plate';
 import CommentsSection from '@/components/comments/comments-section';
 
