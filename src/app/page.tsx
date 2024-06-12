@@ -1,8 +1,6 @@
 import SearchCard from '@/components/search-card/search-card';
 import RecentEntriesSection from '@/components/recent-entries/recent-entries-section';
 
-import Image from 'next/image';
-
 export default function Home() {
   return (
     <div className='container flex flex-col gap-10 py-10 items-center'>
@@ -13,7 +11,9 @@ export default function Home() {
           anonymous.
         </p>
       </div>
+
       <SearchCard />
+
       <RecentEntriesSection />
     </div>
   );
