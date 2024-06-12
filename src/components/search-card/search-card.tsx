@@ -24,6 +24,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
+import { BorderBeam } from '@/components/magicui/border-beam';
 
 export const searchCardFormSchema = z
   .object({
