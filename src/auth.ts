@@ -7,7 +7,6 @@ import { users, accounts, sessions, verificationTokens } from '@/db/schema';
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [GitHub, Discord],
-  trustHost: true,
   adapter: DrizzleAdapter(database, {
     usersTable: users,
     accountsTable: accounts,
