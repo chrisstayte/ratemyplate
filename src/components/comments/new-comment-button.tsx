@@ -39,7 +39,6 @@ const NewCommentButton: React.FC<NewCommentButtonProps> = ({
 }) => {
   const [open, setOpen] = useState(false);
   const isDesktop = useMediaQuery('(min-width: 768px)');
-  const [comment, setComment] = useState('');
 
   if (isDesktop) {
     return (
@@ -54,7 +53,7 @@ const NewCommentButton: React.FC<NewCommentButtonProps> = ({
               Let them know what you think about them.
             </DialogDescription>
           </DialogHeader>
-          <NewCommentForm plate={plate} />
+          <NewCommentForm plate={plate} onClose={() => setOpen(false)} />
         </DialogContent>
       </Dialog>
     );
@@ -72,7 +71,11 @@ const NewCommentButton: React.FC<NewCommentButtonProps> = ({
             Let them know what you think about them.
           </DrawerDescription>
         </DrawerHeader>
-        <NewCommentForm plate={plate} className='px-4' />
+        <NewCommentForm
+          plate={plate}
+          onClose={() => setOpen(false)}
+          className='px-4'
+        />
         <DrawerFooter className='pt-2'>
           <DrawerClose asChild>
             <Button variant='outline'>Cancel</Button>
