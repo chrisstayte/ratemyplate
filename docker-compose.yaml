@@ -1,0 +1,12 @@
+services:
+  rate-my-plate-db:
+    image: postgres
+    restart: unless-stopped
+    container_name: rate-my-plate-db
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_PASSWORD: supersecurepassword
+      PGDATA: /data/postgres
+    volumes:
+      - ./postgres-data:/data/postgres
