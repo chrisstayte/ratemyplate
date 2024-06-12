@@ -47,7 +47,7 @@ async function RecentEntries({ limit = 10 }) {
           key={plate.id}
           href={`/plate?plate=${plate.plateNumber}&state=${plate.state}`}>
           {/* <LicensePlate plateNumber={plate.plateNumber} state={plate.state} /> */}
-          <Card className='aspect-video flex flex-col justify-center items-center'>
+          <Card className='aspect-video flex flex-col justify-center items-center '>
             <div className='flex flex-col h-full relative p-1'>
               <Badge className=''>{usStateName(plate.state)}</Badge>
               <div className='absolute inset-0 flex items-center justify-center uppercase'>
