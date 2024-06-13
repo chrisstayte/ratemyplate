@@ -24,21 +24,8 @@ export default function PopularEntriesSection() {
   );
 }
 
-// async function PopularEntries({ limit = 10 }) {
-//   const popularPlates = await database.query.plates.findMany({
-//     extras: (comments, { sql }) => ({
-//       contentLength: sql<number>`length(${comments.c})`.as('content_length'),
-//     }),
-//     with: {
-//       comments: {
-//         extras: {
-//           commentSize: sql<number>`length(${comments.content})`.as(
-//             'comment_size'
-//           ),
-//         },
-//       },
-//     },
-//   });
+async function PopularEntries({ limit = 10 }) {
+  const popularPlates = await database.query.plates.findMany({});
 
   if (popularPlates.length === 0) {
     return (
