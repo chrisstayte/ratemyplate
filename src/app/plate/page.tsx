@@ -7,6 +7,38 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { AlertCircle } from 'lucide-react';
 import SearchCard from '@/components/search-card/search-card';
 
+import type { Metadata, ResolvingMetadata } from 'next';
+
+type Props = {
+  params: { id: string };
+  searchParams: { [key: string]: string | string[] | undefined };
+};
+
+export async function generateMetadata(
+  { params, searchParams }: Props,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  const plateNumber = (searchParams?.plate as string) ?? null;
+  const state = (searchParams?.state as string) ?? null;
+
+  if (
+    plateNumber === null ||
+    state === null ||
+    !(await validateLicensePlate(plateNumber, 'US')) ||
+    !(await stateNameValidator(state))
+  ) {
+    return {
+      title: 'Rate My Plate',
+      description: 'Search Yours Today',
+    };
+  }
+
+  return {
+    title: `${plateNumber} in ${state}`,
+    description: `View comments for license plate ${plateNumber} in ${state}`,
+  };
+}
+
 export default async function Plate({
   searchParams,
 }: {
