@@ -25,34 +25,6 @@ export default function PopularEntriesSection() {
 }
 
 async function PopularEntries({ limit = 10 }) {
-  //   const popularPlates = await database
-  //     .select({
-  //       plateNumber: plates.plateNumber,
-  //       state: plates.state,
-  //       timestamp: plates.timestamp,
-  //       commentCount: sql``,
-  //     })
-  //     .from(plates)
-  //     .orderBy(asc(plates.timestamp))
-  //     .limit(limit);
-
-  const query = sql`
-        SELECT
-        plates.plateNumber,
-        plates.state,
-        COUNT(comments.id) AS commentCount
-        FROM
-        plates
-        JOIN
-        comments ON plates.id = comments.plateId
-        GROUP BY
-        plates.plateNumber,
-        plates.state
-        ORDER BY
-        commentCount DESC
-        LIMIT ${limit}
-    `;
-
   const popularPlates = await database
     .select({
       plateNumber: plates.plateNumber,
