@@ -2,11 +2,11 @@ import { Card } from '@/components/ui/card';
 import * as React from 'react';
 import { database } from '@/db/database';
 import { Badge } from '@/components/ui/badge';
-import { desc, asc, sql } from 'drizzle-orm';
-import { plates } from '@/db/schema';
 import { Suspense } from 'react';
+import { sql, asc, desc, gt, eq } from 'drizzle-orm';
 import Link from 'next/link';
 import { Skeleton } from '@/components/ui/skeleton';
+import { plates, comments } from '@/db/schema';
 
 import { usStateName } from '@/lib/us-states';
 
@@ -15,7 +15,7 @@ export default function PopularEntriesSection() {
 
   return (
     <div className='flex flex-col gap-5 justify-center w-full h-full'>
-      <p className='text-2xl'>Popular plates</p>
+      <p className='text-2xl'>Popular Drivers</p>
       <Suspense
         fallback={<PopularEntriesSkeleton limit={numberOfEntriesToDisplay} />}>
         <PopularEntries limit={numberOfEntriesToDisplay} />
@@ -25,7 +25,52 @@ export default function PopularEntriesSection() {
 }
 
 async function PopularEntries({ limit = 10 }) {
-  const popularPlates = await database.query.plates.findMany({});
+  //   const popularPlates = await database
+  //     .select({
+  //       plateNumber: plates.plateNumber,
+  //       state: plates.state,
+  //       timestamp: plates.timestamp,
+  //       commentCount: sql``,
+  //     })
+  //     .from(plates)
+  //     .orderBy(asc(plates.timestamp))
+  //     .limit(limit);
+
+  const query = sql`
+        SELECT
+        plates.plateNumber,
+        plates.state,
+        COUNT(comments.id) AS commentCount
+        FROM
+        plates
+        JOIN
+        comments ON plates.id = comments.plateId
+        GROUP BY
+        plates.plateNumber,
+        plates.state
+        ORDER BY
+        commentCount DESC
+        LIMIT ${limit}
+    `;
+
+  const popularPlates = await database
+    .select({
+      plateNumber: plates.plateNumber,
+      state: plates.state,
+      id: plates.id,
+      commentCount: sql<number>`cast(count(${comments.userId}) as int)`.as(
+        'commentCount'
+      ),
+    })
+    .from(plates)
+    .leftJoin(comments, eq(plates.id, comments.plateId))
+    .groupBy(plates.plateNumber, plates.state, plates.id)
+    .orderBy(({ commentCount }) => desc(commentCount))
+    .limit(limit);
+
+  popularPlates.forEach((plate) => {
+    console.log(plate);
+  });
 
   if (popularPlates.length === 0) {
     return (

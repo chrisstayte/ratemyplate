@@ -14,7 +14,7 @@ export default function Home() {
       </div>
 
       <SearchCard />
-      {/* <PopularEntriesSection /> */}
+      <PopularEntriesSection />
       <RecentEntriesSection />
     </div>
   );
