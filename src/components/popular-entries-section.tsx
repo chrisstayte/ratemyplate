@@ -40,10 +40,6 @@ async function PopularEntries({ limit = 10 }) {
     .orderBy(({ commentCount }) => desc(commentCount))
     .limit(limit);
 
-  popularPlates.forEach((plate) => {
-    console.log(plate);
-  });
-
   if (popularPlates.length === 0) {
     return (
       <div className='h-full text-center place-content-center'>
