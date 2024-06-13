@@ -16,7 +16,7 @@ export default function RecentEntriesSection() {
 
   return (
     <div className='flex flex-col gap-5 justify-center w-full h-full'>
-      <p className='text-2xl '>Recent comments</p>
+      <p className='text-2xl '>Recent Comments</p>
       <Suspense
         fallback={<RecentEntriesSkeleton limit={numberOfEntriesToDisplay} />}>
         <RecentEntries limit={numberOfEntriesToDisplay} />
