@@ -10,6 +10,10 @@ const Footer = () => {
             <p>Privacy</p>
           </Link>
           <div>&bull;</div>
+          <Link href='/terms'>
+            <p>Terms</p>
+          </Link>
+          <div>&bull;</div>
           <a href='https://x.com/chrisstayte' target='_blank'>
             <p>@ChrisStayte</p>
           </a>
