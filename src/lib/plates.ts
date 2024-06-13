@@ -12,7 +12,7 @@ export function validateLicensePlate(
   let regex: RegExp;
   switch (country) {
     case 'US':
-      regex = /^[A-Z0-9]{1,7}$/;
+      regex = /^(?!\s*$)[A-Z0-9]{1,7}(\s[A-Z0-9]{1,7})*$/;
       break;
     case 'UK':
       regex = /^[A-Z]{2}[0-9]{2}\s?[A-Z]{3}$/;

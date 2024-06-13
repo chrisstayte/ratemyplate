@@ -19,9 +19,10 @@ export const plates = pgTable('rmp_plates', {
   userId: text('userId').references(() => users.id),
 });
 
-// export const platesRelations = relations(plates, ({ many }) => ({
-//   comments: many(comments),
-// }));
+export const platesRelations = relations(plates, ({ one, many }) => ({
+  comments: many(comments),
+  user: one(users),
+}));
 
 export const comments = pgTable('rmp_comments', {
   id: serial('id').primaryKey(),
@@ -30,6 +31,11 @@ export const comments = pgTable('rmp_comments', {
   comment: text('comment'),
   timestamp: timestamp('timestamp', { mode: 'date' }).defaultNow(),
 });
+
+export const commentsRelations = relations(comments, ({ one }) => ({
+  user: one(users),
+  plate: one(plates),
+}));
 
 // Next AUTH -> Postgres
 

@@ -9,14 +9,14 @@ import Link from 'next/link';
 import { Skeleton } from '@/components/ui/skeleton';
 
 import { usStateName } from '@/lib/us-states';
-import LicensePlate from '../license-plate';
+import LicensePlate from './license-plate';
 
 export default function RecentEntriesSection() {
   const numberOfEntriesToDisplay = 10;
 
   return (
     <div className='flex flex-col gap-5 justify-center w-full h-full'>
-      <p className='text-2xl'>Recent comments</p>
+      <p className='text-2xl '>Recent comments</p>
       <Suspense
         fallback={<RecentEntriesSkeleton limit={numberOfEntriesToDisplay} />}>
         <RecentEntries limit={numberOfEntriesToDisplay} />
@@ -41,7 +41,7 @@ async function RecentEntries({ limit = 10 }) {
   }
 
   return (
-    <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5'>
+    <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5 '>
       {recentPlates.map(async (plate) => (
         <Link
           key={plate.id}

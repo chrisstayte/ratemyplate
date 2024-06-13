@@ -39,12 +39,7 @@ export async function generateMetadata(
   };
 }
 
-export default async function Plate({
-  searchParams,
-}: {
-  params: { slug: string };
-  searchParams?: { [key: string]: string | string[] | undefined };
-}) {
+export default async function Plate({ searchParams }: Props) {
   const plateNumber = (searchParams?.plate as string) ?? null;
   const state = (searchParams?.state as string) ?? null;
 
