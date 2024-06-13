@@ -1,36 +1,42 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Rate My Plate
 
-## Getting Started
+Review and rate people based upon their driving. It's all tied to the license plate and state for each vehicle.
 
-First, run the development server:
+# Tech Stack
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- Next.js 14
+- Postgres
+- Drizzle ORM
+- Tailwind, ShadcnUI
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+# Custom Commands
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- `npx run db:push` - drizzle push schema migration to database
+- `npm run db:studio` - runs drizzle studio
+- `npm run test-production` - creates a production build and runs it
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+# ENV Setup
 
-## Learn More
+- DATABASE_URL={postgres connection string}
+- AUTH_DRIZZLE_URL={postgres connection string}
+- NODE_ENV={development or production}
+- AUTH_SECRET={generated for auth js}
+- AUTH_GITHUB_ID={authjs github id}
+- AUTH_GITHUB_SECRET={authjs github secret}
+- AUTH_DISCORD_ID={authjs discord id}
+- AUTH_DISCORD_SECRET={authjs discord secret}
+- AUTH_GOOGLE_ID={authjs google id}
+- AUTH_GOOGLE_SECRET={authjs google secret}
 
-To learn more about Next.js, take a look at the following resources:
+// We diverge between dev and production
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Development </br>
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+- AUTH_TRUST_HOST=true
 
-## Deploy on Vercel
+Production </br>
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- AUTH_TRUST_HOST=false
+- AUTH_URL={https://hosteddomain.com for example}
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+The reason why I diverge and manually set this in production is because I don't host in vercel or cloudflare pages. These are made to auto detect said settings.
