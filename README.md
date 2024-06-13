@@ -2,6 +2,11 @@
 
 Review and rate people based upon their driving. It's all tied to the license plate and state for each vehicle.
 
+<p align="center">
+      <img src="./images/homescreen.png" align="left">
+      <img src="./images/plate.png" align="right">
+</p>
+
 # Tech Stack
 
 - Next.js 14
@@ -28,7 +33,7 @@ Review and rate people based upon their driving. It's all tied to the license pl
 - AUTH_GOOGLE_ID={authjs google id}
 - AUTH_GOOGLE_SECRET={authjs google secret}
 
-// We diverge between dev and production
+### We diverge between dev and production
 
 Development </br>
 
