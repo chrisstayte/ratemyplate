@@ -1,5 +1,6 @@
 import SearchCard from '@/components/search-card/search-card';
-import RecentEntriesSection from '@/components/recent-entries/recent-entries-section';
+import RecentEntriesSection from '@/components/recent-entries-section';
+import PopularEntriesSection from '@/components/popular-entries-section';
 
 export default function Home() {
   return (
@@ -13,7 +14,7 @@ export default function Home() {
       </div>
 
       <SearchCard />
-
+      {/* <PopularEntriesSection /> */}
       <RecentEntriesSection />
     </div>
   );
