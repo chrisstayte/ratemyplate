@@ -1,11 +1,11 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { Inconsolata } from 'next/font/google';
 import './globals.css';
 import Navbar from '@/components/navbar/navbar';
 import Footer from '@/components/footer/footer';
 import { ThemeProvider } from '@/components/theme-prodiver';
 
-const inter = Inter({ subsets: ['latin'] });
+const inconsolata = Inconsolata({ subsets: ['latin'], display: 'swap' });
 
 export const metadata: Metadata = {
   title: 'Rate My Plate',
@@ -19,7 +19,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en'>
-      <body className={` ${inter.className} flex flex-col min-h-screen`}>
+      <body className={` ${inconsolata.className} flex flex-col min-h-screen`}>
         <ThemeProvider
           attribute='class'
           defaultTheme='system'
