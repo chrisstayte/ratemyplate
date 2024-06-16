@@ -7,9 +7,10 @@ import { plates } from '@/db/schema';
 import { Suspense } from 'react';
 import Link from 'next/link';
 import { Skeleton } from '@/components/ui/skeleton';
-
+import { Plate } from '@/lib/plates';
 import { usStateName } from '@/lib/us-states';
 import LicensePlate from './license-plate';
+import LicensePlateTiny from './license-plate-tiny';
 
 export default function RecentEntriesSection() {
   const numberOfEntriesToDisplay = 10;
@@ -43,19 +44,12 @@ async function RecentEntries({ limit = 10 }) {
   return (
     <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5 '>
       {recentPlates.map(async (plate) => (
-        <Link
+        <LicensePlateTiny
           key={plate.id}
-          href={`/plate?plate=${plate.plateNumber}&state=${plate.state}`}>
-          {/* <LicensePlate plateNumber={plate.plateNumber} state={plate.state} /> */}
-          <Card className='aspect-video flex flex-col justify-center items-center '>
-            <div className='flex flex-col h-full relative p-1'>
-              <Badge className=''>{usStateName(plate.state)}</Badge>
-              <div className='absolute inset-0 flex items-center justify-center uppercase'>
-                <p className='text-xl'>{plate.plateNumber}</p>
-              </div>
-            </div>
-          </Card>
-        </Link>
+          plate={
+            { plateNumber: plate.plateNumber, state: plate.state } as Plate
+          }
+        />
       ))}
     </div>
   );
