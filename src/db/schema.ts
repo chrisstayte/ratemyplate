@@ -47,6 +47,7 @@ export const users = pgTable('rmp_user', {
   email: text('email').notNull(),
   emailVerified: timestamp('emailVerified', { mode: 'date' }),
   image: text('image'),
+  role: text('role').notNull().default('user'),
 });
 
 export const accounts = pgTable(

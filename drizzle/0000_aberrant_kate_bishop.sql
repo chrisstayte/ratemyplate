@@ -53,7 +53,8 @@ CREATE TABLE IF NOT EXISTS "rmp_user" (
 	"name" text,
 	"email" text NOT NULL,
 	"emailVerified" timestamp,
-	"image" text
+	"image" text,
+	"role" text DEFAULT 'user' NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "rmp_verificationToken" (
