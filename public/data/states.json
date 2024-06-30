@@ -1,11 +1,13 @@
 [
   {
     "name": "Alabama",
-    "abbreviation": "AL"
+    "abbreviation": "AL",
+    "fontColor": "#FFFFFF"
   },
   {
     "name": "Alaska",
-    "abbreviation": "AK"
+    "abbreviation": "AK",
+    "fontColor": "#971914"
   },
   {
     "name": "Arizona",

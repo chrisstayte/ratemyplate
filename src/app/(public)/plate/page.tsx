@@ -1,4 +1,4 @@
-import { validateLicensePlate } from '@/lib/plates';
+import { validateLicensePlate, Plate } from '@/lib/plates';
 import { stateNameValidator } from '@/lib/us-states';
 import LicensePlate from '@/components/license-plate';
 import CommentsSection from '@/components/comments/comments-section';
@@ -39,7 +39,7 @@ export async function generateMetadata(
   };
 }
 
-export default async function Plate({ searchParams }: Props) {
+export default async function PlatePage({ searchParams }: Props) {
   const plateNumber = (searchParams?.plate as string) ?? null;
   const state = (searchParams?.state as string) ?? null;
 
@@ -66,7 +66,9 @@ export default async function Plate({ searchParams }: Props) {
 
   return (
     <div className='container flex flex-col gap-20 py-10 items-center'>
-      <LicensePlate plateNumber={plateNumber} state={state} />
+      <LicensePlate
+        plate={{ state: state, plateNumber: plateNumber } as Plate}
+      />
       <CommentsSection state={state} plateNumber={plateNumber} />
     </div>
   );

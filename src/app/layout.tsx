@@ -1,8 +1,6 @@
 import type { Metadata } from 'next';
 import { Inconsolata } from 'next/font/google';
 import './globals.css';
-import Navbar from '@/components/navbar/navbar';
-import Footer from '@/components/footer/footer';
 import { ThemeProvider } from '@/components/theme-prodiver';
 
 const inconsolata = Inconsolata({ subsets: ['latin'], display: 'swap' });
@@ -19,16 +17,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en'>
-      <body className={` ${inconsolata.className} flex flex-col min-h-screen`}>
+      <body className={` ${inconsolata.className}`}>
         <ThemeProvider
           attribute='class'
           defaultTheme='system'
           enableSystem
           disableTransitionOnChange>
-          <Navbar />
-          <main className='flex flex-grow'>{children}</main>
-          <hr />
-          <Footer />
+          <main className=''>{children}</main>
         </ThemeProvider>
       </body>
     </html>
