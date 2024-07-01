@@ -21,7 +21,10 @@ export const plates = pgTable('rmp_plates', {
 
 export const platesRelations = relations(plates, ({ one, many }) => ({
   comments: many(comments),
-  user: one(users),
+  user: one(users, {
+    fields: [plates.userId],
+    references: [users.id],
+  }),
 }));
 
 export const comments = pgTable('rmp_comments', {
@@ -33,8 +36,14 @@ export const comments = pgTable('rmp_comments', {
 });
 
 export const commentsRelations = relations(comments, ({ one }) => ({
-  user: one(users),
-  plate: one(plates),
+  user: one(users, {
+    fields: [comments.userId],
+    references: [users.id],
+  }),
+  plate: one(plates, {
+    fields: [comments.plateId],
+    references: [plates.id],
+  }),
 }));
 
 // Next AUTH -> Postgres
