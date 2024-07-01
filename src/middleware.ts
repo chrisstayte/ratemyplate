@@ -1,12 +1,10 @@
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
+import { auth } from '@/auth';
 
-// This function can be marked `async` if using `await` inside
-export function middleware(request: NextRequest) {
-  return NextResponse.redirect(new URL('/', request.url));
-}
+export default auth((req) => {
+  console.log('ROUTE: ', req.nextUrl.pathname);
+});
 
-// See "Matching Paths" below to learn more
+// Optionally, don't invoke Middleware on some paths
 export const config = {
-  matcher: '/dashboard/:path*',
+  matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)'],
 };
