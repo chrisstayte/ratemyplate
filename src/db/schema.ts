@@ -19,7 +19,7 @@ export const plates = pgTable('rmp_plates', {
   userId: text('userId').references(() => users.id),
 });
 
-export const platesRelations = relations(plates, ({ one, many }) => ({
+export const plates_relations = relations(plates, ({ one, many }) => ({
   comments: many(comments),
   user: one(users, {
     fields: [plates.userId],
@@ -35,7 +35,7 @@ export const comments = pgTable('rmp_comments', {
   timestamp: timestamp('timestamp', { mode: 'date' }).defaultNow(),
 });
 
-export const commentsRelations = relations(comments, ({ one }) => ({
+export const comments_relations = relations(comments, ({ one }) => ({
   user: one(users, {
     fields: [comments.userId],
     references: [users.id],
@@ -56,8 +56,14 @@ export const users = pgTable('rmp_user', {
   email: text('email').notNull(),
   emailVerified: timestamp('emailVerified', { mode: 'date' }),
   image: text('image'),
-  role: text('role').notNull().default('user'),
+  createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
 });
+
+export const users_relations = relations(users, ({ many }) => ({
+  comments: many(comments),
+  plates: many(plates),
+  userRoles: many(user_roles),
+}));
 
 export const accounts = pgTable(
   'rmp_account',
@@ -125,3 +131,34 @@ export const authenticators = pgTable(
     }),
   })
 );
+
+export const roles = pgTable('rmp_roles', {
+  id: serial('id').primaryKey(),
+  name: text('name').notNull(),
+});
+
+export const roles_relations = relations(roles, ({ many }) => ({
+  userRoles: many(user_roles),
+}));
+
+export const user_roles = pgTable(
+  'rmp_user_roles',
+  {
+    userId: text('userId').references(() => users.id, { onDelete: 'cascade' }),
+    roleId: integer('roleId').references(() => roles.id, {
+      onDelete: 'cascade',
+    }),
+  },
+  (t) => ({ pk: primaryKey({ columns: [t.userId, t.roleId] }) })
+);
+
+export const user_role_relations = relations(user_roles, ({ one }) => ({
+  user: one(users, {
+    fields: [user_roles.userId],
+    references: [users.id],
+  }),
+  role: one(roles, {
+    fields: [user_roles.roleId],
+    references: [roles.id],
+  }),
+}));

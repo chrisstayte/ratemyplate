@@ -1,0 +1,1 @@
+ALTER TABLE "rmp_user_roles" ADD CONSTRAINT "rmp_user_roles_userId_roleId_pk" PRIMARY KEY("userId","roleId");
