@@ -11,7 +11,8 @@
     "db:generate": "drizzle-kit generate --config=drizzle.config.ts",
     "db:migrate": "drizzle-kit migrate --config=drizzle.config.ts",
     "db:push": "drizzle-kit push --config=drizzle.config.ts",
-    "db:studio": "drizzle-kit studio --config=drizzle.config.ts"
+    "db:studio": "drizzle-kit studio --config=drizzle.config.ts",
+    "db:seed": "tsc && node ./src/db/seed.ts"
   },
   "dependencies": {
     "@auth/drizzle-adapter": "^1.2.0",
@@ -32,7 +33,7 @@
     "next": "14.2.4",
     "next-auth": "^5.0.0-beta.19",
     "next-themes": "^0.3.0",
-    "postgres": "3.3",
+    "postgres": "^3.4.4",
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.51.5",
@@ -47,6 +48,7 @@
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "drizzle-kit": "^0.22.6",
+    "esbuild-register": "^3.5.0",
     "eslint": "^8",
     "eslint-config-next": "14.2.3",
     "postcss": "^8",

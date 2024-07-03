@@ -8,6 +8,27 @@
       "when": 1719782503112,
       "tag": "0000_aberrant_kate_bishop",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1719960993620,
+      "tag": "0001_amazing_valeria_richards",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1720020607002,
+      "tag": "0002_sticky_zaladane",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1720029984449,
+      "tag": "0003_tough_shen",
+      "breakpoints": true
     }
   ]
 }

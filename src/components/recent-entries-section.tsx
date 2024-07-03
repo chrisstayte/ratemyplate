@@ -1,15 +1,11 @@
 import { Card } from '@/components/ui/card';
 import * as React from 'react';
 import { database } from '@/db/database';
-import { Badge } from '@/components/ui/badge';
 import { desc } from 'drizzle-orm';
 import { plates } from '@/db/schema';
 import { Suspense } from 'react';
-import Link from 'next/link';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Plate } from '@/lib/plates';
-import { usStateName } from '@/lib/us-states';
-import LicensePlate from './license-plate';
 import LicensePlateTiny from './license-plate-tiny';
 
 export default function RecentEntriesSection() {
