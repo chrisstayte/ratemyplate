@@ -4,7 +4,7 @@ import { desc } from 'drizzle-orm';
 import { Card } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { comments } from '@/db/schema';
-import AuthCommentButton from '@/components/comments/auth-comment-button';
+import AuthCommentButton from '@/components/public/comments/auth-comment-button';
 import { Badge } from '@/components/ui/badge';
 import { database } from '@/db/database';
 
