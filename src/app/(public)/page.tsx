@@ -1,6 +1,6 @@
-import SearchCard from '@/components/search-card/search-card';
-import RecentEntriesSection from '@/components/recent-entries-section';
-import PopularEntriesSection from '@/components/popular-entries-section';
+import SearchCard from '@/components/public/search-card/search-card';
+import RecentEntriesSection from '@/components/public/recent-entries-section';
+import PopularEntriesSection from '@/components/public/popular-entries-section';
 
 export default function Home() {
   return (

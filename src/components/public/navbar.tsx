@@ -1,9 +1,9 @@
 import Link from 'next/link';
 import React from 'react';
-import { ModeToggle } from '../ui/mode-toggle';
+import { ModeToggle } from '@/components/ui/mode-toggle';
 import { signIn, signOut } from '@/auth';
 import { Button } from '@/components/ui/button';
-import AuthButton from '../auth-button';
+import AuthButton from '@/components/public/auth-button';
 
 const Navbar = () => {
   return (

@@ -1,11 +1,11 @@
 import { validateLicensePlate, Plate } from '@/lib/plates';
 import { stateNameValidator } from '@/lib/us-states';
-import LicensePlate from '@/components/license-plate';
-import CommentsSection from '@/components/comments/comments-section';
+import LicensePlate from '@/components/public/license-plate';
+import CommentsSection from '@/components/public/comments/comments-section';
 
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { AlertCircle } from 'lucide-react';
-import SearchCard from '@/components/search-card/search-card';
+import SearchCard from '@/components/public/search-card/search-card';
 
 import type { Metadata, ResolvingMetadata } from 'next';
 

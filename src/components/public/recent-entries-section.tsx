@@ -6,7 +6,7 @@ import { plates } from '@/db/schema';
 import { Suspense } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Plate } from '@/lib/plates';
-import LicensePlateTiny from './license-plate-tiny';
+import LicensePlateTiny from '@/components/public/license-plate-tiny';
 
 export default function RecentEntriesSection() {
   const numberOfEntriesToDisplay = 10;

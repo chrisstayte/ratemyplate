@@ -9,7 +9,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Plate } from '@/lib/plates';
 import { plates, comments } from '@/db/schema';
 
-import LicensePlateTiny from '@/components/license-plate-tiny';
+import LicensePlateTiny from '@/components/public/license-plate-tiny';
 
 export default function PopularEntriesSection() {
   const numberOfEntriesToDisplay = 10;
