@@ -32,19 +32,9 @@ const Navbar = async () => {
                       <LayoutDashboard className='h-6 w-6' />
                       <span className='sr-only'>Rate My Plate</span>
                     </Link>
-                    <Link href='/dashboard' className='hover:text-foreground'>
-                      Dashboard
-                    </Link>
-                    <Link
-                      href='/dashboard/plates'
-                      className='text-muted-foreground hover:text-foreground'>
-                      Plates
-                    </Link>
-                    <Link
-                      href='/dashboard/users'
-                      className='text-muted-foreground hover:text-foreground'>
-                      Users
-                    </Link>
+                    <NavLink href='/dashboard'>Dashboard</NavLink>
+                    <NavLink href='/dashboard/plates'>Plates</NavLink>
+                    <NavLink href='/dashboard/users'>Users</NavLink>
                   </nav>
                 </SheetContent>
               </Sheet>
