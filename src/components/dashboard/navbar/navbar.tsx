@@ -43,6 +43,9 @@ const Navbar = async () => {
                     <SheetTrigger asChild>
                       <NavLink href='/dashboard/users'>Users</NavLink>
                     </SheetTrigger>
+                    <SheetTrigger asChild>
+                      <NavLink href='/dashboard/comments'>Comments</NavLink>
+                    </SheetTrigger>
                   </nav>
                 </SheetContent>
               </Sheet>
@@ -57,6 +60,7 @@ const Navbar = async () => {
               <NavLink href='/dashboard'>Dashboard</NavLink>
               <NavLink href='/dashboard/plates'>Plates</NavLink>
               <NavLink href='/dashboard/users'>Users</NavLink>
+              <NavLink href='/dashboard/comments'>Comments</NavLink>
             </div>
             <div className='flex gap-2 items-end'>
               <AuthMenu />
