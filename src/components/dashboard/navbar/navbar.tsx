@@ -39,7 +39,7 @@ const Navbar = async () => {
                 </SheetContent>
               </Sheet>
             </div>
-            <div className='hidden md:flex flex-row gap-10'>
+            <div className='hidden md:flex flex-row gap-6'>
               <Link
                 href='/dashboard'
                 className='flex items-center gap-2 text-lg font-semibold'>
