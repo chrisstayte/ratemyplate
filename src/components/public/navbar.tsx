@@ -5,7 +5,7 @@ import AuthButton from '@/components/public/auth-button';
 
 const Navbar = () => {
   return (
-    <nav className='h-14 flex'>
+    <nav className='h-16 flex'>
       <div className='container mx-auto flex justify-between items-center'>
         <Link href='/'>
           <p className='text-xl font-bold'>RateMyPlate</p>
