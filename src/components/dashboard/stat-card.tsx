@@ -6,20 +6,22 @@ interface StatCardProps {
   title: string;
   value: string;
   subtitle: string;
-  icon: React.ReactNode;
+  Icon: React.ElementType<{
+    className?: string;
+  }>;
 }
 
 export default function StatCard({
   title,
   value,
   subtitle,
-  icon,
+  Icon,
 }: StatCardProps) {
   return (
     <Card className='w-full'>
       <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
         <CardTitle className='text-sm font-medium'>{title}</CardTitle>
-        {icon}
+        <Icon className='h-5 w-5' />
       </CardHeader>
       <CardContent>
         <div className='text-2xl font-bold'>{value}</div>

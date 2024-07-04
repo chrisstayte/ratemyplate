@@ -38,19 +38,19 @@ export default async function Dashboard() {
             title='User Count'
             value={`${userCount}`}
             subtitle=''
-            icon={<FaUsers />}
+            Icon={FaUsers}
           />
           <StatCard
             title='Plate Count'
             value={`${plateCount}`}
             subtitle=''
-            icon={<TbRectangleFilled />}
+            Icon={TbRectangleFilled}
           />
           <StatCard
             title='Comment Count'
             value={`${commentCount}`}
             subtitle=''
-            icon={<FaComment />}
+            Icon={FaComment}
           />
         </div>
       </div>
