@@ -19,7 +19,7 @@ const NavLink = ({ href, onClick, children }: NavLinkProps) => {
       href={href}
       onClick={onClick}
       className={`text-muted-foreground transition-colors hover:text-foreground  lg:inline-block ${
-        isCurrentPage && 'font-semibold'
+        isCurrentPage ? 'text-primary text-bold' : ''
       }`}>
       {children}
     </Link>

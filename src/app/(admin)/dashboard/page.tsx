@@ -3,6 +3,13 @@
 import { auth, isUserAdmin } from '@/auth';
 import { redirect } from 'next/navigation';
 import NotAuthenticated from '@/components/dashboard/not-authenticated';
+import StatCard from '@/components/dashboard/stat-card';
+import { database } from '@/db/database';
+
+import { FaUsers } from 'react-icons/fa';
+import { TbRectangleFilled } from 'react-icons/tb';
+
+import { FaComment } from 'react-icons/fa6';
 
 export default async function Dashboard() {
   const session = await auth();
@@ -18,10 +25,34 @@ export default async function Dashboard() {
     return <NotAuthenticated />;
   }
 
+  const userCount: number = (await database.query.users.findMany()).length;
+  const plateCount: number = (await database.query.plates.findMany()).length;
+  const commentCount: number = (await database.query.comments.findMany())
+    .length;
+
   return (
-    <div className='container flex flex-col gap-10 py-10 items-center'>
-      <div className='flex flex-col gap-5  min-h-36 justify-center items-center'>
-        <p>TEST</p>
+    <div className='container flex flex-col gap-10 py-10 '>
+      <div className='flex flex-col gap-5  '>
+        <div className='grid grid-cols-* sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-5 '>
+          <StatCard
+            title='User Count'
+            value={`${userCount}`}
+            subtitle=''
+            icon={<FaUsers />}
+          />
+          <StatCard
+            title='Plate Count'
+            value={`${plateCount}`}
+            subtitle=''
+            icon={<TbRectangleFilled />}
+          />
+          <StatCard
+            title='Comment Count'
+            value={`${commentCount}`}
+            subtitle=''
+            icon={<FaComment />}
+          />
+        </div>
       </div>
     </div>
   );
