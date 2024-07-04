@@ -1,10 +1,8 @@
 import { Card } from '@/components/ui/card';
 import * as React from 'react';
 import { database } from '@/db/database';
-import { Badge } from '@/components/ui/badge';
 import { Suspense } from 'react';
-import { sql, asc, desc, gt, eq } from 'drizzle-orm';
-import Link from 'next/link';
+import { sql, desc, eq } from 'drizzle-orm';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Plate } from '@/lib/plates';
 import { plates, comments } from '@/db/schema';
