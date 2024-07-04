@@ -1,8 +1,5 @@
 import type { Metadata } from 'next';
-import { Inconsolata } from 'next/font/google';
-import Navbar from '@/components/dashboard/navbar';
-import Footer from '@/components/public/footer/footer';
-import { ThemeProvider } from '@/components/theme-prodiver';
+import Navbar from '@/components/dashboard/navbar/navbar';
 import { isCurrentUserAdmin } from '@/auth';
 
 export const metadata: Metadata = {
