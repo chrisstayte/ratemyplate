@@ -23,7 +23,7 @@ import {
   DrawerTrigger,
 } from '@/components/ui/drawer';
 
-import NewCommentForm from '@/components/comments/new-comment-form';
+import NewCommentForm from '@/components/public/comments/new-comment-form';
 
 import { Plate } from '@/lib/plates';
 import { useState } from 'react';
