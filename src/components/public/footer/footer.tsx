@@ -1,4 +1,4 @@
-import BuyMeACoffeeButton from '@/components/buy-me-a-coffee-button';
+import BuyMeACoffeeButton from '@/components/public/buy-me-a-coffee-button';
 import Link from 'next/link';
 
 const Footer = () => {

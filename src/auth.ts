@@ -19,6 +19,19 @@ export const authConfig = {
 
 export const { handlers, signIn, signOut, auth } = NextAuth(authConfig);
 
+export const isCurrentUserAdmin: () => Promise<boolean> = async () => {
+  const session = await auth();
+  if (!session) {
+    return false;
+  }
+
+  const userId = session.user!.id!;
+
+  const useIsAdmin = await isUserAdmin(userId);
+
+  return useIsAdmin;
+};
+
 export const isUserAdmin: (userId: string) => Promise<boolean> = async (
   userId
 ) => {

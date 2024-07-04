@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { Inconsolata } from 'next/font/google';
-import Navbar from '@/components/navbar/navbar';
-import Footer from '@/components/footer/footer';
+import Navbar from '@/components/public/navbar';
+import Footer from '@/components/public/footer/footer';
 import { ThemeProvider } from '@/components/theme-prodiver';
 
 export const metadata: Metadata = {
