@@ -10,11 +10,12 @@ import { FaUsers } from 'react-icons/fa';
 import { TbRectangleFilled } from 'react-icons/tb';
 
 import { FaComment } from 'react-icons/fa6';
+import LoginPage from '@/components/dashboard/login-page';
 
 export default async function Dashboard() {
   const session = await auth();
   if (!session) {
-    redirect('/api/auth/signin?callbackUrl=/dashboard');
+    return <LoginPage />;
   }
 
   const user = session.user;

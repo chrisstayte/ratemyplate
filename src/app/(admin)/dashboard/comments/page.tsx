@@ -9,11 +9,12 @@ import { desc } from 'drizzle-orm';
 import { comments } from '@/db/schema';
 import { DataTable } from '@/components/dashboard/data-table';
 import { commentsColumn } from '@/components/dashboard/comments-column';
+import LoginPage from '@/components/dashboard/login-page';
 
 export default async function CommentsPage() {
   const session = await auth();
   if (!session) {
-    redirect('/api/auth/signin?callbackUrl=/dashboard/users');
+    return <LoginPage />;
   }
 
   const user = session.user;

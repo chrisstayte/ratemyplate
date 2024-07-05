@@ -3,6 +3,8 @@
 import { ColumnDef } from '@tanstack/react-table';
 import '@/lib/extensions';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { ArrowUpDown, MoreHorizontal } from 'lucide-react';
 
 // This is the type used to define the shape of our data.
 // I can use a zod schema if i want
@@ -16,10 +18,19 @@ export type Comment = {
 export const commentsColumn: ColumnDef<Comment>[] = [
   {
     accessorKey: 'timestamp',
-    header: () => <div className=''>Added</div>,
+    header: ({ column }) => {
+      return (
+        <Button
+          variant='ghost'
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+          Added
+          <ArrowUpDown className='ml-2 h-4 w-4' />
+        </Button>
+      );
+    },
     cell: ({ row }) => {
       return (
-        <Badge variant='outline'>
+        <Badge variant='outline' className='text-center'>
           {row.getValue<Date>('timestamp').prettyDateTime()}
         </Badge>
       );
@@ -27,6 +38,15 @@ export const commentsColumn: ColumnDef<Comment>[] = [
   },
   {
     accessorKey: 'comment',
-    header: 'Comment',
+    header: ({ column }) => {
+      return (
+        <Button
+          variant='ghost'
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+          Comment
+          <ArrowUpDown className='ml-2 h-4 w-4' />
+        </Button>
+      );
+    },
   },
 ];
