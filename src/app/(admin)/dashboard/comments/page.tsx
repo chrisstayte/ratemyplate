@@ -35,7 +35,7 @@ export default async function CommentsPage() {
 
   return (
     <div className='container flex flex-col gap-5 py-5'>
-      <p className='text-2xl'>Users</p>
+      <p className='text-2xl'>Comments</p>
       <DataTable
         columns={commentsColumn}
         data={siteComments}
