@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { Inconsolata } from 'next/font/google';
-import Navbar from '@/components/public/navbar';
+import Navbar from '@/components/public/navbar/navbar';
 import Footer from '@/components/public/footer/footer';
 import { ThemeProvider } from '@/components/theme-prodiver';
 

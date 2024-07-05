@@ -10,7 +10,7 @@ export default function PrivacyPage() {
     <div className='container flex-col py-10'>
       <div className='flex flex-col gap-2 justify-center items-center'>
         <p className='text-center text-3xl'>RateMyPlate Privacy</p>
-        <p className='text-center text-lg'>Last Updated: June 12, 2024</p>
+        <p className='text-center text-lg'>Last Updated: July 5, 2024</p>
         <hr />
         <div className='flex flex-col w-full max-w-lg gap-2'>
           <p>
@@ -53,9 +53,21 @@ export default function PrivacyPage() {
           </p>
           <p className='text-xl mt-7'>Source Code</p>
           <p>
-            I am working on setting a license that protects my IP but allows me
-            to publicly show the source code so it can all be above board. I
-            will update this page when I have that in place.
+            I have posted the source code for the project on github. You can
+            view all of the code there.{' '}
+            <a
+              className='text-purple-500'
+              target='_blank'
+              href='https://github.com/chrisstayte/ratemyplate'>
+              Source Code
+            </a>
+          </p>
+          <p className='text-xl mt-7'>Dashboard</p>
+          <p>
+            I built a dashboard that for now only I have access to. It allows me
+            to see the data without having to open a postgres viewer like
+            PGAdmin. I am working on a way to allow users to see all of their
+            data and comments.
           </p>
         </div>
       </div>

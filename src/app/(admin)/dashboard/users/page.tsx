@@ -1,13 +1,12 @@
 'use server';
 
 import { auth, isUserAdmin } from '@/auth';
-import { redirect } from 'next/navigation';
 import NotAuthenticated from '@/components/dashboard/not-authenticated';
 
 import { database } from '@/db/database';
 import { desc, eq } from 'drizzle-orm';
 import { users, accounts } from '@/db/schema';
-import { DataTable } from '@/components/dashboard/data-table';
+import { DataTable } from '@/components/data-table';
 import { usersColumn } from '@/components/dashboard/users-column';
 import LoginPage from '@/components/dashboard/login-page';
 
