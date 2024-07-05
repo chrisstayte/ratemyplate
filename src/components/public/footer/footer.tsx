@@ -5,7 +5,7 @@ const Footer = () => {
   return (
     <footer className='w-full min-h-28 flex py-10'>
       <div className='container flex flex-col items-center   gap-12 justify-between'>
-        <div className='flex flex-row gap-3 justify-center items-center sm:text-start'>
+        <div className='flex flex-wrap gap-5 justify-center items-center sm:text-start'>
           <Link href='/privacy'>
             <p>Privacy</p>
           </Link>
@@ -21,6 +21,10 @@ const Footer = () => {
           <Link href='/dashboard'>
             <p>Dashboard</p>
           </Link>
+          <div>&bull;</div>
+          <a href='https://github.com/chrisstayte/ratemyplate' target='_blank'>
+            <p>Source</p>
+          </a>
         </div>
 
         <BuyMeACoffeeButton className='' />
