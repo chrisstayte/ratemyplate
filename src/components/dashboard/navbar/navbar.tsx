@@ -1,7 +1,7 @@
 import React from 'react';
 import NavLink from './navlink';
 import '@/lib/extensions';
-import AuthMenu from '@/components/dashboard/navbar/auth-menu';
+import AuthMenu from '@/components/navbar/auth-menu';
 import { Button } from '@/components/ui/button';
 import { Menu, LayoutDashboard } from 'lucide-react';
 import Link from 'next/link';

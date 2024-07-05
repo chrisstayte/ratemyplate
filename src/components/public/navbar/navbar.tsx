@@ -3,7 +3,7 @@ import React from 'react';
 import { ModeToggle } from '@/components/ui/mode-toggle';
 import LoginDialog from '../login-dialog';
 import { LayoutDashboard } from 'lucide-react';
-import AuthMenu from '@/components/public/navbar/auth-menu';
+import AuthMenu from '@/components/navbar/auth-menu';
 
 const Navbar = () => {
   return (
