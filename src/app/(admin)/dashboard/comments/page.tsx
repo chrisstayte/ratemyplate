@@ -6,7 +6,7 @@ import NotAuthenticated from '@/components/dashboard/not-authenticated';
 
 import { database } from '@/db/database';
 import { desc, eq } from 'drizzle-orm';
-import { comments, users } from '@/db/schema';
+import { comments, users, plates } from '@/db/schema';
 import { DataTable } from '@/components/dashboard/data-table';
 import { commentsColumn } from '@/components/dashboard/comments-column';
 import LoginPage from '@/components/dashboard/login-page';
@@ -32,9 +32,12 @@ export default async function CommentsPage() {
       comment: comments.comment,
       timestamp: comments.timestamp,
       userEmail: users.email,
+      plateNumber: plates.plateNumber,
+      state: plates.state,
     })
     .from(comments)
     .leftJoin(users, eq(comments.userId, users.id))
+    .leftJoin(plates, eq(comments.plateId, plates.id))
     .orderBy(desc(comments.timestamp));
 
   return (

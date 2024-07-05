@@ -14,6 +14,8 @@ export type Comment = {
   comment: string;
   timestamp: Date;
   userEmail: string | null;
+  plateNumber: string | null;
+  state: string | null;
 };
 
 export const commentsColumn: ColumnDef<Comment>[] = [
@@ -45,6 +47,32 @@ export const commentsColumn: ColumnDef<Comment>[] = [
           variant='ghost'
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
           User
+          <ArrowUpDown className='ml-2 h-4 w-4' />
+        </Button>
+      );
+    },
+  },
+  {
+    accessorKey: 'plateNumber',
+    header: ({ column }) => {
+      return (
+        <Button
+          variant='ghost'
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+          Plate
+          <ArrowUpDown className='ml-2 h-4 w-4' />
+        </Button>
+      );
+    },
+  },
+  {
+    accessorKey: 'state',
+    header: ({ column }) => {
+      return (
+        <Button
+          variant='ghost'
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+          State
           <ArrowUpDown className='ml-2 h-4 w-4' />
         </Button>
       );
