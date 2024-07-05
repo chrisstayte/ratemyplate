@@ -5,11 +5,12 @@ import { redirect } from 'next/navigation';
 import NotAuthenticated from '@/components/dashboard/not-authenticated';
 
 import { database } from '@/db/database';
-import { desc } from 'drizzle-orm';
-import { comments } from '@/db/schema';
+import { desc, eq } from 'drizzle-orm';
+import { comments, users } from '@/db/schema';
 import { DataTable } from '@/components/dashboard/data-table';
 import { commentsColumn } from '@/components/dashboard/comments-column';
 import LoginPage from '@/components/dashboard/login-page';
+import { comment } from 'postcss';
 
 export default async function CommentsPage() {
   const session = await auth();
@@ -25,14 +26,16 @@ export default async function CommentsPage() {
     return <NotAuthenticated />;
   }
 
-  const siteComments = await database.query.comments.findMany({
-    columns: {
-      id: true,
-      comment: true,
-      timestamp: true,
-    },
-    orderBy: [desc(comments.timestamp)],
-  });
+  const siteComments = await database
+    .select({
+      id: comments.id,
+      comment: comments.comment,
+      timestamp: comments.timestamp,
+      userEmail: users.email,
+    })
+    .from(comments)
+    .leftJoin(users, eq(comments.userId, users.id))
+    .orderBy(desc(comments.timestamp));
 
   return (
     <div className='container flex flex-col gap-5 py-5'>

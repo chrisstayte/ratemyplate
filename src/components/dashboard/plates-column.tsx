@@ -22,9 +22,30 @@ export type Plate = {
   plateNumber: string;
   state: string;
   timestamp: Date;
+  commentCount: number;
 };
 
 export const plateColumns: ColumnDef<Plate>[] = [
+  {
+    accessorKey: 'timestamp',
+    header: ({ column }) => {
+      return (
+        <Button
+          variant='ghost'
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+          Timestamp
+          <ArrowUpDown className='ml-2 h-4 w-4' />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      return (
+        <Badge variant='outline' className='text-center'>
+          {row.getValue<Date>('timestamp').prettyDateTime()}
+        </Badge>
+      );
+    },
+  },
   {
     accessorKey: 'plateNumber',
     header: ({ column }) => {
@@ -52,25 +73,19 @@ export const plateColumns: ColumnDef<Plate>[] = [
     },
   },
   {
-    accessorKey: 'timestamp',
+    accessorKey: 'commentCount',
     header: ({ column }) => {
       return (
         <Button
           variant='ghost'
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
-          Timestamp
+          Comments
           <ArrowUpDown className='ml-2 h-4 w-4' />
         </Button>
       );
     },
-    cell: ({ row }) => {
-      return (
-        <Badge variant='outline' className='text-center'>
-          {row.getValue<Date>('timestamp').prettyDateTime()}
-        </Badge>
-      );
-    },
   },
+
   // {
   //   id: 'actions',
   //   cell: ({ row }) => {

@@ -29,7 +29,7 @@ async function PopularEntries({ limit = 10 }) {
       plateNumber: plates.plateNumber,
       state: plates.state,
       id: plates.id,
-      commentCount: sql<number>`cast(count(${comments.userId}) as int)`.as(
+      commentCount: sql<number>`cast(count(${comments.plateId}) as int)`.as(
         'commentCount'
       ),
     })

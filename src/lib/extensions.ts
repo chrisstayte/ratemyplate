@@ -3,6 +3,7 @@ export {};
 declare global {
   interface String {
     getInitials(): string;
+    capitalize(): string;
   }
 
   interface Date {
@@ -14,6 +15,10 @@ String.prototype.getInitials = function (): string {
   return this.split(' ')
     .map((word) => word[0].toUpperCase())
     .join('');
+};
+
+String.prototype.capitalize = function (): string {
+  return this.charAt(0).toUpperCase() + this.slice(1);
 };
 
 Date.prototype.prettyDateTime = function (): string {
