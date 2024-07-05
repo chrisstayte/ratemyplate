@@ -9,11 +9,12 @@ import { desc } from 'drizzle-orm';
 import { plates } from '@/db/schema';
 import { DataTable } from '@/components/dashboard/data-table';
 import { plateColumns } from '@/components/dashboard/plates-column';
+import LoginPage from '@/components/dashboard/login-page';
 
 export default async function PlatesPage() {
   const session = await auth();
   if (!session) {
-    redirect('/api/auth/signin?callbackUrl=/dashboard/plates');
+    return <LoginPage />;
   }
 
   const user = session.user;

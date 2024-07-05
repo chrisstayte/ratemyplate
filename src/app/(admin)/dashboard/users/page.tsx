@@ -9,11 +9,12 @@ import { desc } from 'drizzle-orm';
 import { users } from '@/db/schema';
 import { DataTable } from '@/components/dashboard/data-table';
 import { usersColumn } from '@/components/dashboard/users-column';
+import LoginPage from '@/components/dashboard/login-page';
 
 export default async function UsersPage() {
   const session = await auth();
   if (!session) {
-    redirect('/api/auth/signin?callbackUrl=/dashboard/users');
+    return <LoginPage />;
   }
 
   const user = session.user;

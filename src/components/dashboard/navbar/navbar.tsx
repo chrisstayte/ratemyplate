@@ -28,7 +28,7 @@ const Navbar = async () => {
                   <nav className='grid gap-6 text-lg font-medium'>
                     <SheetTrigger asChild>
                       <Link
-                        href='/dashboard'
+                        href='/'
                         className='flex items-center gap-2 text-lg font-semibold'>
                         <LayoutDashboard className='h-6 w-6' />
                         <span className='sr-only'>Rate My Plate</span>
@@ -52,7 +52,7 @@ const Navbar = async () => {
             </div>
             <div className='hidden md:flex flex-row gap-6'>
               <Link
-                href='/dashboard'
+                href='/'
                 className='flex items-center gap-2 text-lg font-semibold'>
                 <LayoutDashboard className='h-6 w-6' />
                 <span className='sr-only'>Rate My Plate</span>
