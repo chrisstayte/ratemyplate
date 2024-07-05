@@ -9,6 +9,7 @@ import { Badge } from '@/components/ui/badge';
 import { database } from '@/db/database';
 import LoginDialog from '../login-dialog';
 import { auth } from '@/auth';
+import NewCommentButton from './new-comment-button';
 
 interface CommentsSectionProps {
   state: string;
@@ -27,6 +28,7 @@ export default async function CommentsSection({
         <p className='text-2xl'>Comments</p>
 
         {!session && <LoginDialog buttonTitle='Signin to comment' />}
+        {session && <NewCommentButton plate={{ state, plateNumber }} />}
       </div>
       <Comments plate={{ state, plateNumber }} />
     </div>
