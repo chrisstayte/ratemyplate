@@ -8,27 +8,30 @@ import AuthCommentButton from '@/components/public/comments/auth-comment-button'
 import { Badge } from '@/components/ui/badge';
 import { database } from '@/db/database';
 import LoginDialog from '../login-dialog';
+import { auth } from '@/auth';
 
 interface CommentsSectionProps {
   state: string;
   plateNumber: string;
 }
 
-const CommentsSection: React.FC<CommentsSectionProps> = ({
+export default async function CommentsSection({
   state,
   plateNumber,
-}) => {
+}: CommentsSectionProps) {
+  const session = await auth();
+
   return (
     <div className='h-full w-full flex flex-col gap-5'>
       <div className='flex flex-col gap-5 sm:flex-row justify-between items-center'>
         <p className='text-2xl'>Comments</p>
-        <LoginDialog buttonTitle='Login to comment' />
-        {/* <AuthCommentButton plate={{ plateNumber, state }} /> */}
+
+        {!session && <LoginDialog buttonTitle='Signin to comment' />}
       </div>
       <Comments plate={{ state, plateNumber }} />
     </div>
   );
-};
+}
 
 async function Comments({
   limit = 10,
@@ -107,5 +110,3 @@ function CommentSkeleton() {
     </Card>
   );
 }
-
-export default CommentsSection;
