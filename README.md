@@ -3,8 +3,16 @@
 Review and rate people based upon their driving. It's all tied to the license plate and state for each vehicle.
 
 <p align="center">
-      <img src="./images/homescreen.png" align="left">
-      <img src="./images/plate.png" align="right">
+      <img src="./images/version1.1/homepage.png" align="left">
+      <img src="./images/version1.1/plate.png" align="right">
+</p>
+<p align="center">
+      <img src="./images/version1.1/login-dialog.png" align="left">
+      <img src="./images/version1.1/dashboard.png" align="right">
+</p>
+<p align="center">
+      <img src="./images/version1.1/plates-table.png" align="left">
+      <img src="./images/version1.1/login-screen.png" align="right">
 </p>
 
 # Tech Stack
