@@ -4,6 +4,12 @@ import { auth, isUserAdmin } from '@/auth';
 import { redirect } from 'next/navigation';
 import NotAuthenticated from '@/components/dashboard/not-authenticated';
 
+import { database } from '@/db/database';
+import { desc } from 'drizzle-orm';
+import { users } from '@/db/schema';
+import { DataTable } from '@/components/dashboard/data-table';
+import { usersColumn } from '@/components/dashboard/users-column';
+
 export default async function UsersPage() {
   const session = await auth();
   if (!session) {
@@ -18,11 +24,20 @@ export default async function UsersPage() {
     return <NotAuthenticated />;
   }
 
+  const siteUsers = await database.query.users.findMany({
+    columns: {
+      id: true,
+      name: true,
+      email: true,
+      createdAt: true,
+    },
+    orderBy: [desc(users.createdAt)],
+  });
+
   return (
-    <div className='container flex flex-col gap-10 py-10 items-center'>
-      <div className='flex flex-col gap-5  min-h-36 justify-center items-center'>
-        <p className='text-5xl text-center'>Users</p>
-      </div>
+    <div className='container flex flex-col gap-5 py-5'>
+      <p className='text-2xl'>Users</p>
+      <DataTable columns={usersColumn} data={siteUsers} className='w-full' />
     </div>
   );
 }

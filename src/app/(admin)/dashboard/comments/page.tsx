@@ -4,10 +4,16 @@ import { auth, isUserAdmin } from '@/auth';
 import { redirect } from 'next/navigation';
 import NotAuthenticated from '@/components/dashboard/not-authenticated';
 
+import { database } from '@/db/database';
+import { desc } from 'drizzle-orm';
+import { comments } from '@/db/schema';
+import { DataTable } from '@/components/dashboard/data-table';
+import { commentsColumn } from '@/components/dashboard/comments-column';
+
 export default async function CommentsPage() {
   const session = await auth();
   if (!session) {
-    redirect('/api/auth/signin?callbackUrl=/dashboard/comments');
+    redirect('/api/auth/signin?callbackUrl=/dashboard/users');
   }
 
   const user = session.user;
@@ -18,11 +24,23 @@ export default async function CommentsPage() {
     return <NotAuthenticated />;
   }
 
+  const siteComments = await database.query.comments.findMany({
+    columns: {
+      id: true,
+      comment: true,
+      timestamp: true,
+    },
+    orderBy: [desc(comments.timestamp)],
+  });
+
   return (
-    <div className='container flex flex-col gap-10 py-10 items-center'>
-      <div className='flex flex-col gap-5  min-h-36 justify-center items-center'>
-        <p className='text-5xl text-center'>Comments</p>
-      </div>
+    <div className='container flex flex-col gap-5 py-5'>
+      <p className='text-2xl'>Comments</p>
+      <DataTable
+        columns={commentsColumn}
+        data={siteComments}
+        className='w-full'
+      />
     </div>
   );
 }
