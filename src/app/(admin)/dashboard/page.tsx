@@ -1,16 +1,19 @@
 'use server';
 
 import { auth, isUserAdmin } from '@/auth';
-import { redirect } from 'next/navigation';
 import NotAuthenticated from '@/components/dashboard/not-authenticated';
 import StatCard from '@/components/dashboard/stat-card';
 import { database } from '@/db/database';
-
 import { FaUsers } from 'react-icons/fa';
 import { TbRectangleFilled } from 'react-icons/tb';
-
 import { FaComment } from 'react-icons/fa6';
 import LoginPage from '@/components/dashboard/login-page';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: `Dashboard`,
+  description: `RateMyPlate admin dashboard`,
+};
 
 export default async function Dashboard() {
   const session = await auth();
