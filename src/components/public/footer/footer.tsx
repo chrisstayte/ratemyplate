@@ -26,7 +26,6 @@ const Footer = () => {
             <p>Source</p>
           </a>
         </div>
-
         <BuyMeACoffeeButton className='' />
       </div>
     </footer>
