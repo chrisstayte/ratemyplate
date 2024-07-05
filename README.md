@@ -18,6 +18,8 @@ Review and rate people based upon their driving. It's all tied to the license pl
 
 - `npx run db:push` - drizzle push schema migration to database
 - `npm run db:studio` - runs drizzle studio
+- `npm run db:generate` - creates migration sql statement in `./drizzle`
+- `npm run db:migrate` - applies migration sql statements
 - `npm run test-production` - creates a production build and runs it
 
 # ENV Setup
