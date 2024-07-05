@@ -24,17 +24,28 @@ const Navbar = async () => {
                     <span className='sr-only'>Toggle navigation menu</span>
                   </Button>
                 </SheetTrigger>
-                <SheetContent side='left'>
+                <SheetContent className='w-[220px]' side='left'>
                   <nav className='grid gap-6 text-lg font-medium'>
-                    <Link
-                      href='/dashboard'
-                      className='flex items-center gap-2 text-lg font-semibold'>
-                      <LayoutDashboard className='h-6 w-6' />
-                      <span className='sr-only'>Rate My Plate</span>
-                    </Link>
-                    <NavLink href='/dashboard'>Dashboard</NavLink>
-                    <NavLink href='/dashboard/plates'>Plates</NavLink>
-                    <NavLink href='/dashboard/users'>Users</NavLink>
+                    <SheetTrigger asChild>
+                      <Link
+                        href='/dashboard'
+                        className='flex items-center gap-2 text-lg font-semibold'>
+                        <LayoutDashboard className='h-6 w-6' />
+                        <span className='sr-only'>Rate My Plate</span>
+                      </Link>
+                    </SheetTrigger>
+                    <SheetTrigger asChild>
+                      <NavLink href='/dashboard'>Dashboard</NavLink>
+                    </SheetTrigger>
+                    <SheetTrigger asChild>
+                      <NavLink href='/dashboard/plates'>Plates</NavLink>
+                    </SheetTrigger>
+                    <SheetTrigger asChild>
+                      <NavLink href='/dashboard/users'>Users</NavLink>
+                    </SheetTrigger>
+                    <SheetTrigger asChild>
+                      <NavLink href='/dashboard/comments'>Comments</NavLink>
+                    </SheetTrigger>
                   </nav>
                 </SheetContent>
               </Sheet>
@@ -49,6 +60,7 @@ const Navbar = async () => {
               <NavLink href='/dashboard'>Dashboard</NavLink>
               <NavLink href='/dashboard/plates'>Plates</NavLink>
               <NavLink href='/dashboard/users'>Users</NavLink>
+              <NavLink href='/dashboard/comments'>Comments</NavLink>
             </div>
             <div className='flex gap-2 items-end'>
               <AuthMenu />
