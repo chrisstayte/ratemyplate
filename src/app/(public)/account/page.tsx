@@ -28,6 +28,7 @@ export default async function Account() {
       state: plates.state,
     })
     .from(comments)
+    .where(eq(comments.userId, user?.id!))
     .leftJoin(plates, eq(comments.plateId, plates.id))
     .orderBy(desc(comments.timestamp));
 
