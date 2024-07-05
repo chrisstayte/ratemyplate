@@ -17,6 +17,10 @@ const Footer = () => {
           <a href='https://x.com/chrisstayte' target='_blank'>
             <p>@ChrisStayte</p>
           </a>
+          <div>&bull;</div>
+          <Link href='/dashboard'>
+            <p>Dashboard</p>
+          </Link>
         </div>
 
         <BuyMeACoffeeButton className='' />
