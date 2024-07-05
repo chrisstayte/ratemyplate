@@ -13,6 +13,7 @@ export type Comment = {
   id: number;
   comment: string;
   timestamp: Date;
+  userEmail: string | null;
 };
 
 export const commentsColumn: ColumnDef<Comment>[] = [
@@ -33,6 +34,19 @@ export const commentsColumn: ColumnDef<Comment>[] = [
         <Badge variant='outline' className='text-center'>
           {row.getValue<Date>('timestamp').prettyDateTime()}
         </Badge>
+      );
+    },
+  },
+  {
+    accessorKey: 'userEmail',
+    header: ({ column }) => {
+      return (
+        <Button
+          variant='ghost'
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+          User
+          <ArrowUpDown className='ml-2 h-4 w-4' />
+        </Button>
       );
     },
   },

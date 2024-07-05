@@ -5,8 +5,8 @@ import { redirect } from 'next/navigation';
 import NotAuthenticated from '@/components/dashboard/not-authenticated';
 
 import { database } from '@/db/database';
-import { desc } from 'drizzle-orm';
-import { users } from '@/db/schema';
+import { desc, eq } from 'drizzle-orm';
+import { users, accounts } from '@/db/schema';
 import { DataTable } from '@/components/dashboard/data-table';
 import { usersColumn } from '@/components/dashboard/users-column';
 import LoginPage from '@/components/dashboard/login-page';
@@ -25,15 +25,17 @@ export default async function UsersPage() {
     return <NotAuthenticated />;
   }
 
-  const siteUsers = await database.query.users.findMany({
-    columns: {
-      id: true,
-      name: true,
-      email: true,
-      createdAt: true,
-    },
-    orderBy: [desc(users.createdAt)],
-  });
+  const siteUsers = await database
+    .select({
+      id: users.id,
+      name: users.name,
+      email: users.email,
+      createdAt: users.createdAt,
+      provider: accounts.provider,
+    })
+    .from(users)
+    .leftJoin(accounts, eq(users.id, accounts.userId))
+    .orderBy(desc(users.createdAt));
 
   return (
     <div className='container flex flex-col gap-5 py-5'>
