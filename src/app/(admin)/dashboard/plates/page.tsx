@@ -32,15 +32,16 @@ export default async function PlatesPage() {
       timestamp: true,
     },
     orderBy: [desc(plates.timestamp)],
-    limit: 10,
   });
 
   return (
-    <div className='container flex flex-col gap-10 py-10 items-center'>
-      <div className='flex flex-col gap-5  min-h-36 justify-center items-center'>
-        <p className='text-5xl text-center'>Plates</p>
-        <DataTable columns={plateColumns} data={licensePlates} />
-      </div>
+    <div className='container flex flex-col gap-5 py-5'>
+      <p className='text-2xl'>Plates</p>
+      <DataTable
+        columns={plateColumns}
+        data={licensePlates}
+        className='w-full'
+      />
     </div>
   );
 }

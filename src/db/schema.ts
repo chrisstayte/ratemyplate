@@ -15,7 +15,7 @@ export const plates = pgTable('rmp_plates', {
   id: serial('id').primaryKey(),
   plateNumber: text('plateNumber').notNull(),
   state: varchar('state', { length: 2 }).notNull(),
-  timestamp: timestamp('timestamp', { mode: 'date' }).defaultNow(),
+  timestamp: timestamp('timestamp', { mode: 'date' }).notNull().defaultNow(),
   userId: text('userId').references(() => users.id),
 });
 
@@ -31,8 +31,8 @@ export const comments = pgTable('rmp_comments', {
   id: serial('id').primaryKey(),
   userId: text('userId').references(() => users.id),
   plateId: integer('plateId').references(() => plates.id),
-  comment: text('comment'),
-  timestamp: timestamp('timestamp', { mode: 'date' }).defaultNow(),
+  comment: text('comment').notNull(),
+  timestamp: timestamp('timestamp', { mode: 'date' }).notNull().defaultNow(),
 });
 
 export const comments_relations = relations(comments, ({ one }) => ({
@@ -56,7 +56,9 @@ export const users = pgTable('rmp_user', {
   email: text('email').notNull(),
   emailVerified: timestamp('emailVerified', { mode: 'date' }),
   image: text('image'),
-  createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
+  createdAt: timestamp('created_at', { withTimezone: true })
+    .notNull()
+    .defaultNow(),
 });
 
 export const users_relations = relations(users, ({ many }) => ({
