@@ -7,7 +7,7 @@ import NotAuthenticated from '@/components/dashboard/not-authenticated';
 import { database } from '@/db/database';
 import { desc, eq } from 'drizzle-orm';
 import { comments, users, plates } from '@/db/schema';
-import { DataTable } from '@/components/dashboard/data-table';
+import { DataTable } from '@/components/data-table';
 import { commentsColumn } from '@/components/dashboard/comments-column';
 import LoginPage from '@/components/dashboard/login-page';
 import { comment } from 'postcss';

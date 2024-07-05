@@ -12,6 +12,7 @@ import Link from 'next/link';
 import { signOut, auth } from '@/auth';
 import { ThemeMenuRadioOptions } from '@/components/navbar/theme-menu-radio-options';
 import LoginDialog from '@/components/public/login-dialog';
+import '@/lib/extensions';
 
 export default async function AuthMenu() {
   const session = await auth();
