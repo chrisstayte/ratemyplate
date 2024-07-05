@@ -1,6 +1,7 @@
 import SearchCard from '@/components/public/search-card/search-card';
 import RecentEntriesSection from '@/components/public/recent-entries-section';
 import PopularEntriesSection from '@/components/public/popular-entries-section';
+import LoginDialog from '@/components/public/login-dialog';
 
 export default function Home() {
   return (
@@ -12,7 +13,6 @@ export default function Home() {
           anonymous.
         </p>
       </div>
-
       <SearchCard />
       <PopularEntriesSection />
       <RecentEntriesSection />

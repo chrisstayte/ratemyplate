@@ -20,14 +20,17 @@ export default function LoginPage() {
     <div className='w-full lg:grid  lg:grid-cols-2 '>
       <div className='hidden bg-gray-950 lg:block'>
         <div className='flex flex-col justify-between h-full p-10'>
-          <div className='flex items-center gap-2 text-lg font-semibold text-white'>
-            <LayoutDashboard className='h-6 w-6' />
-            <p>Rate My Plate</p>
-          </div>
+          <Link href='/'>
+            <div className='flex items-center gap-2 text-lg font-semibold text-white'>
+              <LayoutDashboard className='h-6 w-6' />
+              <p>Rate My Plate</p>
+            </div>
+          </Link>
           <div className='text-white'>
             <p>Rate drivers anonymously</p>
           </div>
         </div>
+
         {/* <Image
           src='/placeholder.svg'
           alt='Image'

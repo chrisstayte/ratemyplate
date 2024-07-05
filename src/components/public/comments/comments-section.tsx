@@ -7,6 +7,7 @@ import { comments } from '@/db/schema';
 import AuthCommentButton from '@/components/public/comments/auth-comment-button';
 import { Badge } from '@/components/ui/badge';
 import { database } from '@/db/database';
+import LoginDialog from '../login-dialog';
 
 interface CommentsSectionProps {
   state: string;
@@ -21,7 +22,8 @@ const CommentsSection: React.FC<CommentsSectionProps> = ({
     <div className='h-full w-full flex flex-col gap-5'>
       <div className='flex flex-col gap-5 sm:flex-row justify-between items-center'>
         <p className='text-2xl'>Comments</p>
-        <AuthCommentButton plate={{ plateNumber, state }} />
+        <LoginDialog buttonTitle='Login to comment' />
+        {/* <AuthCommentButton plate={{ plateNumber, state }} /> */}
       </div>
       <Comments plate={{ state, plateNumber }} />
     </div>
