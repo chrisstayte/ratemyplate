@@ -1,8 +1,9 @@
 import Link from 'next/link';
 import React from 'react';
 import { ModeToggle } from '@/components/ui/mode-toggle';
-import LoginDialog from './login-dialog';
+import LoginDialog from '../login-dialog';
 import { LayoutDashboard } from 'lucide-react';
+import AuthMenu from '@/components/public/navbar/auth-menu';
 
 const Navbar = () => {
   return (
@@ -16,10 +17,7 @@ const Navbar = () => {
         </Link>
 
         <div className='flex gap-2 items-end'>
-          {/* <BuyMeACoffeeButton className='max-sm:hidden' /> */}
-          <ModeToggle />
-          {/* <AuthButton /> */}
-          <LoginDialog />
+          <AuthMenu />
         </div>
       </div>
     </nav>
