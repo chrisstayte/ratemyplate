@@ -21,10 +21,6 @@ interface LoginDialogProps {
 export default async function LoginDialog({ buttonTitle }: LoginDialogProps) {
   const session = await auth();
 
-  const heads = headers();
-
-  const pathName = heads.get('x-fullPath') || '/';
-
   if (!session?.user) {
     return (
       <Dialog>
@@ -40,7 +36,12 @@ export default async function LoginDialog({ buttonTitle }: LoginDialogProps) {
             <div className='grid gap-4 pt-5'>
               <form
                 action={async () => {
-                  ('use server');
+                  'use server';
+
+                  const heads = headers();
+
+                  const pathName = heads.get('x-fullPath') || '/';
+
                   await signIn('github', { redirectTo: `${pathName}` });
                 }}>
                 <Button
@@ -54,6 +55,9 @@ export default async function LoginDialog({ buttonTitle }: LoginDialogProps) {
               <form
                 action={async () => {
                   'use server';
+                  const heads = headers();
+
+                  const pathName = heads.get('x-fullPath') || '/';
                   await signIn('google', { redirectTo: `${pathName}` });
                 }}>
                 <Button
@@ -67,6 +71,9 @@ export default async function LoginDialog({ buttonTitle }: LoginDialogProps) {
               <form
                 action={async () => {
                   'use server';
+                  const heads = headers();
+
+                  const pathName = heads.get('x-fullPath') || '/';
                   await signIn('discord', { redirectTo: `${pathName}` });
                 }}>
                 <Button

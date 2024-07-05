@@ -15,7 +15,7 @@ export function middleware(request: Request) {
   const paths = ['/', '/plate'];
 
   if (paths.some((path) => path === pathname)) {
-    console.log('x-fullPath: ', fullPath);
+    // console.log('x-fullPath: ', fullPath);
   }
 
   return NextResponse.next({
