@@ -53,7 +53,7 @@ export default async function CommentsSection({
 
         {!session && <LoginDialog buttonTitle='Signin to comment' />}
         {session && (
-          <div className='w-full flex flex-row gap-2 justify-between sm:justify-end'>
+          <div className='w-full flex flex-row gap-5 justify-between items-center sm:justify-end'>
             <FavoritePlateButton
               isFavorite={isFavorite}
               plate={{ state, plateNumber }}
