@@ -38,7 +38,7 @@ export default async function PlatesPage() {
     .from(plates)
     .leftJoin(comments, eq(plates.id, comments.plateId))
     .groupBy(plates.plateNumber, plates.state, plates.id)
-    .orderBy(({ commentCount }) => desc(commentCount));
+    .orderBy(({ timestamp }) => desc(timestamp));
 
   return (
     <div className='container flex flex-col gap-5 py-5'>

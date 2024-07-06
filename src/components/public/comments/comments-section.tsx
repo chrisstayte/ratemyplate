@@ -4,12 +4,13 @@ import { desc } from 'drizzle-orm';
 import { Card } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { comments } from '@/db/schema';
-import AuthCommentButton from '@/components/public/comments/auth-comment-button';
 import { Badge } from '@/components/ui/badge';
 import { database } from '@/db/database';
 import LoginDialog from '../login-dialog';
 import { auth } from '@/auth';
 import NewCommentButton from './new-comment-button';
+import { user_favorite_plates } from '@/db/schema';
+import FavoritePlateButton from '@/components/public/favorite-plate-button';
 
 interface CommentsSectionProps {
   state: string;
@@ -22,13 +23,44 @@ export default async function CommentsSection({
 }: CommentsSectionProps) {
   const session = await auth();
 
+  const databasePlate = await database.query.plates.findFirst({
+    where: (plates, { eq }) =>
+      and(eq(plates.plateNumber, plateNumber), eq(plates.state, state)),
+  });
+
+  var isFavorite: boolean = false;
+
+  if (session && databasePlate) {
+    isFavorite = await database
+      .select()
+      .from(user_favorite_plates)
+      .where(
+        and(
+          eq(user_favorite_plates.userId, session!.user!.id!),
+          eq(user_favorite_plates.plateId, databasePlate!.id)
+        )
+      )
+      .execute()
+      .then((result) => {
+        return result.length > 0;
+      });
+  }
+
   return (
     <div className='h-full w-full flex flex-col gap-5'>
       <div className='flex flex-col gap-5 sm:flex-row justify-between items-center'>
         <p className='text-2xl'>Comments</p>
 
         {!session && <LoginDialog buttonTitle='Signin to comment' />}
-        {session && <NewCommentButton plate={{ state, plateNumber }} />}
+        {session && (
+          <div className='flex flex-row gap-5'>
+            <FavoritePlateButton
+              isFavorite={isFavorite}
+              plate={{ state, plateNumber }}
+            />
+            <NewCommentButton plate={{ state, plateNumber }} />
+          </div>
+        )}
       </div>
       <Comments plate={{ state, plateNumber }} />
     </div>

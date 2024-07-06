@@ -41,6 +41,9 @@ export default async function AuthMenu() {
         <Link href='/account'>
           <DropdownMenuItem>Manage</DropdownMenuItem>
         </Link>
+        <Link href='/favorites'>
+          <DropdownMenuItem>Favorites</DropdownMenuItem>
+        </Link>
         <DropdownMenuSeparator />
         <ThemeMenuRadioOptions />
         <DropdownMenuSeparator />

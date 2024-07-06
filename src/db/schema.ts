@@ -164,3 +164,28 @@ export const user_role_relations = relations(user_roles, ({ one }) => ({
     references: [roles.id],
   }),
 }));
+
+export const user_favorite_plates = pgTable(
+  'rmp_user_favorite_plates',
+  {
+    userId: text('userId').references(() => users.id, { onDelete: 'cascade' }),
+    plateId: integer('plateId').references(() => plates.id, {
+      onDelete: 'cascade',
+    }),
+  },
+  (t) => ({ pk: primaryKey({ columns: [t.userId, t.plateId] }) })
+);
+
+export const user_favorite_plate_relations = relations(
+  user_favorite_plates,
+  ({ one }) => ({
+    user: one(users, {
+      fields: [user_favorite_plates.userId],
+      references: [users.id],
+    }),
+    plate: one(plates, {
+      fields: [user_favorite_plates.plateId],
+      references: [plates.id],
+    }),
+  })
+);
