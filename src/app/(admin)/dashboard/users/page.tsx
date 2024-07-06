@@ -4,8 +4,8 @@ import { auth, isUserAdmin } from '@/auth';
 import NotAuthenticated from '@/components/dashboard/not-authenticated';
 
 import { database } from '@/db/database';
-import { desc, eq } from 'drizzle-orm';
-import { users, accounts } from '@/db/schema';
+import { desc, eq, sql } from 'drizzle-orm';
+import { users, accounts, user_favorite_plates } from '@/db/schema';
 import { DataTable } from '@/components/data-table';
 import { usersColumn } from '@/components/dashboard/users-column';
 import LoginPage from '@/components/dashboard/login-page';
@@ -31,9 +31,15 @@ export default async function UsersPage() {
       email: users.email,
       createdAt: users.createdAt,
       provider: accounts.provider,
+      favoriteCount:
+        sql<number>`cast(count(${user_favorite_plates.userId}) as int)`.as(
+          'favoriteCount'
+        ),
     })
     .from(users)
     .leftJoin(accounts, eq(users.id, accounts.userId))
+    .leftJoin(user_favorite_plates, eq(users.id, user_favorite_plates.userId))
+    .groupBy(user_favorite_plates.userId, users.id, accounts.provider)
     .orderBy(desc(users.createdAt));
 
   return (

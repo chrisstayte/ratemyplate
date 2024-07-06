@@ -15,6 +15,7 @@ export type User = {
   email: string;
   createdAt: Date;
   provider: string | null;
+  favoriteCount: number;
 };
 
 export const usersColumn: ColumnDef<User>[] = [
@@ -79,6 +80,19 @@ export const usersColumn: ColumnDef<User>[] = [
     cell: ({ row }) => {
       return (
         <Badge>{row.getValue<string>('provider').capitalize() ?? 'None'}</Badge>
+      );
+    },
+  },
+  {
+    accessorKey: 'favoriteCount',
+    header: ({ column }) => {
+      return (
+        <Button
+          variant='ghost'
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+          Favorites
+          <ArrowUpDown className='ml-2 h-4 w-4' />
+        </Button>
       );
     },
   },
