@@ -10,10 +10,10 @@ import { FaComment } from 'react-icons/fa6';
 import LoginPage from '@/components/dashboard/login-page';
 import type { Metadata } from 'next';
 
-export const metadata: Metadata = {
-  title: `Dashboard`,
-  description: `RateMyPlate admin dashboard`,
-};
+// export const metadata: Metadata = {
+//   title: `Dashboard`,
+//   description: `RateMyPlate admin dashboard`,
+// };
 
 export default async function Dashboard() {
   const session = await auth();

@@ -36,6 +36,13 @@
       "when": 1720141266763,
       "tag": "0004_crazy_beast",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1720218098924,
+      "tag": "0005_true_living_mummy",
+      "breakpoints": true
     }
   ]
 }

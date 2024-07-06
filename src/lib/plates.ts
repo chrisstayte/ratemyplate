@@ -1,3 +1,7 @@
+import { auth } from '@/auth';
+import { database } from '@/db/database';
+import { eq, and } from 'drizzle-orm';
+
 export interface Plate {
   state: string;
   plateNumber: string;

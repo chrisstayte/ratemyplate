@@ -1,7 +1,7 @@
 'use server';
 
 import { database } from '@/db/database';
-import { plates, comments } from '@/db/schema';
+import { plates, comments, user_favorite_plates } from '@/db/schema';
 import { revalidatePath } from 'next/cache';
 import { auth } from '@/auth';
 import { eq, and } from 'drizzle-orm';
@@ -63,4 +63,56 @@ export async function postComment(
     return { message: 'Failed to add comment', status: 500 };
   }
   return { message: 'Added comment', status: 200 };
+}
+
+export async function addPlateToFavorites(plate: Plate) {
+  const session = await auth();
+
+  if (!session) {
+    throw new Error('Unauthorized');
+  }
+
+  const plateId = (await createPlate(plate)).id;
+
+  if (!plateId) {
+    throw new Error('Failed to add plate to favorites');
+  }
+
+  database
+    .insert(user_favorite_plates)
+    .values({
+      userId: session!.user!.id,
+      plateId: plateId,
+    })
+    .execute();
+}
+
+export async function removePlateFromFavorites(plate: Plate) {
+  const session = await auth();
+
+  if (!session) {
+    throw new Error('Unauthorized');
+  }
+
+  const databasePlate = await database.query.plates.findFirst({
+    where: (plates, { eq }) =>
+      and(
+        eq(plates.plateNumber, plate.plateNumber),
+        eq(plates.state, plate.state)
+      ),
+  });
+
+  if (!databasePlate) {
+    throw new Error('Plate not found');
+  }
+
+  database
+    .delete(user_favorite_plates)
+    .where(
+      and(
+        eq(user_favorite_plates.plateId, databasePlate.id),
+        eq(user_favorite_plates.userId, session!.user!.id!)
+      )
+    )
+    .execute();
 }
