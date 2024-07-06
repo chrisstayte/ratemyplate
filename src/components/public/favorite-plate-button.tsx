@@ -21,15 +21,14 @@ export default function FavoritePlateButton({
 
   return (
     <div>
-      <Button
-        variant='ghost'
+      <div
         onClick={async () => {
           if (isFavoriteState) {
-            setIsFavoriteState(!isFavoriteState);
-            await addPlateToFavorites(plate);
-          } else {
-            setIsFavoriteState(!isFavoriteState);
             await removePlateFromFavorites(plate);
+            setIsFavoriteState(false);
+          } else {
+            await addPlateToFavorites(plate);
+            setIsFavoriteState(true);
           }
         }}>
         {isFavoriteState ? (
@@ -37,7 +36,7 @@ export default function FavoritePlateButton({
         ) : (
           <MdFavoriteBorder className='size-8' />
         )}
-      </Button>
+      </div>
     </div>
   );
 }
