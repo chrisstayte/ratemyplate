@@ -8,7 +8,7 @@ import { comments, plates } from '@/db/schema';
 import { DataTable } from '@/components/data-table';
 import { commentsColumn } from '@/components/public/comments-columns';
 
-export default async function Account() {
+export default async function AccountPage() {
   const session = await auth();
 
   if (!session) {

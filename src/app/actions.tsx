@@ -85,6 +85,8 @@ export async function addPlateToFavorites(plate: Plate) {
       plateId: plateId,
     })
     .execute();
+
+  revalidatePath('/favorites');
 }
 
 export async function removePlateFromFavorites(plate: Plate) {
@@ -115,4 +117,6 @@ export async function removePlateFromFavorites(plate: Plate) {
       )
     )
     .execute();
+
+  revalidatePath('/favorites');
 }

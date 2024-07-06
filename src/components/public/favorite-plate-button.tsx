@@ -5,6 +5,7 @@ import { Toggle } from '@/components/ui/toggle';
 import { Plate } from '@/lib/plates';
 
 import { addPlateToFavorites, removePlateFromFavorites } from '@/app/actions';
+import { revalidatePath } from 'next/cache';
 
 interface FavoritePlateButtonProps {
   plate: Plate;
