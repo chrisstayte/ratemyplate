@@ -5,7 +5,8 @@ import { Toggle } from '@/components/ui/toggle';
 import { Plate } from '@/lib/plates';
 
 import { addPlateToFavorites, removePlateFromFavorites } from '@/app/actions';
-import { revalidatePath } from 'next/cache';
+import { MdFavorite, MdFavoriteBorder } from 'react-icons/md';
+import { Button } from '@/components/ui/button';
 
 interface FavoritePlateButtonProps {
   plate: Plate;
@@ -20,20 +21,23 @@ export default function FavoritePlateButton({
 
   return (
     <div>
-      <Toggle
-        variant='outline'
-        pressed={isFavoriteState}
-        onPressedChange={async (value) => {
-          if (value) {
+      <Button
+        variant='ghost'
+        onClick={async () => {
+          if (isFavoriteState) {
+            setIsFavoriteState(!isFavoriteState);
             await addPlateToFavorites(plate);
-            setIsFavoriteState(value);
           } else {
+            setIsFavoriteState(!isFavoriteState);
             await removePlateFromFavorites(plate);
-            setIsFavoriteState(value);
           }
         }}>
-        {isFavoriteState ? 'Favorited' : 'Favorite'}
-      </Toggle>
+        {isFavoriteState ? (
+          <MdFavorite className='size-8 ' color='red' />
+        ) : (
+          <MdFavoriteBorder className='size-8' />
+        )}
+      </Button>
     </div>
   );
 }
