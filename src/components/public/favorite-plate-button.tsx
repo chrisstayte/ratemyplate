@@ -21,6 +21,7 @@ export default function FavoritePlateButton({
   return (
     <motion.div whileTap={{ scale: 1.3 }}>
       <div
+        className='size-10'
         onClick={async () => {
           if (isFavoriteState) {
             await removePlateFromFavorites(plate);
@@ -31,9 +32,9 @@ export default function FavoritePlateButton({
           }
         }}>
         {isFavoriteState ? (
-          <MdFavorite className='size-8 ' color='red' />
+          <MdFavorite className='size-full' color='red' />
         ) : (
-          <MdFavoriteBorder className='size-8' />
+          <MdFavoriteBorder className='size-full' />
         )}
       </div>
     </motion.div>
