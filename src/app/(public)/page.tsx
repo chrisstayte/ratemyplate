@@ -1,6 +1,7 @@
 import SearchCard from '@/components/public/search-card/search-card';
-import RecentEntriesSection from '@/components/public/recent-entries-section';
-import PopularEntriesSection from '@/components/public/popular-entries-section';
+import RecentEntriesSection from '@/components/public/plate-sections/recent-commented-plates-section';
+import PopularEntriesSection from '@/components/public/plate-sections/popular-plates-section';
+import MostFavoritedPlatesSection from '@/components/public/plate-sections/most-favorites-plates-section';
 
 export default function Home() {
   return (
@@ -15,6 +16,7 @@ export default function Home() {
       <SearchCard />
       <PopularEntriesSection />
       <RecentEntriesSection />
+      <MostFavoritedPlatesSection />
     </div>
   );
 }

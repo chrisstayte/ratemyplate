@@ -6,7 +6,9 @@ import { comments, plates } from '@/db/schema';
 import { Suspense } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Plate } from '@/lib/plates';
-import LicensePlateTiny from '@/components/public/license-plate-tiny';
+import LicensePlateTiny, {
+  LicensePlateTinySkeleton,
+} from '@/components/public/license-plate-tiny';
 
 export default function RecentEntriesSection() {
   const numberOfEntriesToDisplay = 10;
@@ -69,21 +71,8 @@ function RecentEntriesSkeleton({ limit = 10 }) {
   return (
     <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5'>
       {skeletons.map((_, index) => (
-        <EntrySkeleton key={index} />
+        <LicensePlateTinySkeleton key={index} />
       ))}
     </div>
-  );
-}
-
-function EntrySkeleton() {
-  return (
-    <Card className='aspect-video flex flex-col justify-center items-center'>
-      <div className='flex flex-col h-full relative p-1 w-full items-center'>
-        <Skeleton className='w-full max-w-[50px] h-[20px] ' />
-        <div className='absolute inset-0 flex items-center justify-center uppercase'>
-          <Skeleton className='w-full max-w-[100px] h-[20px] ' />
-        </div>
-      </div>
-    </Card>
   );
 }

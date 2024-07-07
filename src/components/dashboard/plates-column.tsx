@@ -23,6 +23,7 @@ export type Plate = {
   state: string;
   timestamp: Date;
   commentCount: number;
+  favoriteCount: number;
 };
 
 export const plateColumns: ColumnDef<Plate>[] = [
@@ -80,6 +81,19 @@ export const plateColumns: ColumnDef<Plate>[] = [
           variant='ghost'
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
           Comments
+          <ArrowUpDown className='ml-2 h-4 w-4' />
+        </Button>
+      );
+    },
+  },
+  {
+    accessorKey: 'favoriteCount',
+    header: ({ column }) => {
+      return (
+        <Button
+          variant='ghost'
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+          Favorited
           <ArrowUpDown className='ml-2 h-4 w-4' />
         </Button>
       );

@@ -19,7 +19,7 @@ export default function FavoritePlateButton({
   const [isFavoriteState, setIsFavoriteState] = useState<boolean>(isFavorite);
 
   return (
-    <motion.div whileTap={{ scale: 1.3 }}>
+    <motion.div whileHover={{ scale: 1.3 }} whileTap={{ scale: 0.9 }}>
       <div
         className='size-10'
         onClick={async () => {
