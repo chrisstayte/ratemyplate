@@ -6,6 +6,7 @@ import path from 'path';
 export interface State {
   abbreviation: string;
   name: string;
+  color: string;
 }
 
 export async function usStates(): Promise<State[]> {

@@ -2,215 +2,268 @@
   {
     "name": "Alabama",
     "abbreviation": "AL",
-    "fontColor": "#FFFFFF"
+    "fontColor": "#FFFFFF",
+    "color": "#FF0000"
   },
   {
     "name": "Alaska",
     "abbreviation": "AK",
-    "fontColor": "#971914"
+    "fontColor": "#971914",
+    "color": "#0000FF"
   },
   {
     "name": "Arizona",
-    "abbreviation": "AZ"
+    "abbreviation": "AZ",
+    "color": "#FFA500"
   },
   {
     "name": "Arkansas",
-    "abbreviation": "AR"
+    "abbreviation": "AR",
+    "color": "#8A2BE2"
   },
   {
     "name": "California",
-    "abbreviation": "CA"
+    "abbreviation": "CA",
+    "color": "#FFD700"
   },
   {
     "name": "Colorado",
-    "abbreviation": "CO"
+    "abbreviation": "CO",
+    "color": "#00FF00"
   },
   {
     "name": "Connecticut",
-    "abbreviation": "CT"
+    "abbreviation": "CT",
+    "color": "#FF69B4"
   },
   {
     "name": "Delaware",
-    "abbreviation": "DE"
+    "abbreviation": "DE",
+    "color": "#6495ED"
   },
   {
     "name": "District Of Columbia",
-    "abbreviation": "DC"
+    "abbreviation": "DC",
+    "color": "#4B0082"
   },
   {
     "name": "Florida",
-    "abbreviation": "FL"
+    "abbreviation": "FL",
+    "color": "#FF4500"
   },
   {
     "name": "Georgia",
-    "abbreviation": "GA"
+    "abbreviation": "GA",
+    "color": "#FF6347"
   },
   {
     "name": "Hawaii",
-    "abbreviation": "HI"
+    "abbreviation": "HI",
+    "color": "#00CED1"
   },
   {
     "name": "Idaho",
-    "abbreviation": "ID"
+    "abbreviation": "ID",
+    "color": "#ADFF2F"
   },
   {
     "name": "Illinois",
-    "abbreviation": "IL"
+    "abbreviation": "IL",
+    "color": "#800080"
   },
   {
     "name": "Indiana",
-    "abbreviation": "IN"
+    "abbreviation": "IN",
+    "color": "#8B0000"
   },
   {
     "name": "Iowa",
-    "abbreviation": "IA"
+    "abbreviation": "IA",
+    "color": "#20B2AA"
   },
   {
     "name": "Kansas",
-    "abbreviation": "KS"
+    "abbreviation": "KS",
+    "color": "#F0E68C"
   },
   {
     "name": "Kentucky",
-    "abbreviation": "KY"
+    "abbreviation": "KY",
+    "color": "#BA55D3"
   },
   {
     "name": "Louisiana",
-    "abbreviation": "LA"
+    "abbreviation": "LA",
+    "color": "#FF1493"
   },
   {
     "name": "Maine",
-    "abbreviation": "ME"
+    "abbreviation": "ME",
+    "color": "#1E90FF"
   },
   {
     "name": "Maryland",
-    "abbreviation": "MD"
+    "abbreviation": "MD",
+    "color": "#FFA07A"
   },
   {
     "name": "Massachusetts",
-    "abbreviation": "MA"
+    "abbreviation": "MA",
+    "color": "#87CEEB"
   },
   {
     "name": "Michigan",
-    "abbreviation": "MI"
+    "abbreviation": "MI",
+    "color": "#32CD32"
   },
   {
     "name": "Minnesota",
-    "abbreviation": "MN"
+    "abbreviation": "MN",
+    "color": "#FFD700"
   },
   {
     "name": "Mississippi",
-    "abbreviation": "MS"
+    "abbreviation": "MS",
+    "color": "#00FA9A"
   },
   {
     "name": "Missouri",
-    "abbreviation": "MO"
+    "abbreviation": "MO",
+    "color": "#D2691E"
   },
   {
     "name": "Montana",
-    "abbreviation": "MT"
+    "abbreviation": "MT",
+    "color": "#FF00FF"
   },
   {
     "name": "Nebraska",
-    "abbreviation": "NE"
+    "abbreviation": "NE",
+    "color": "#00008B"
   },
   {
     "name": "Nevada",
-    "abbreviation": "NV"
+    "abbreviation": "NV",
+    "color": "#B22222"
   },
   {
     "name": "New Hampshire",
-    "abbreviation": "NH"
+    "abbreviation": "NH",
+    "color": "#00BFFF"
   },
   {
     "name": "New Jersey",
-    "abbreviation": "NJ"
+    "abbreviation": "NJ",
+    "color": "#8A2BE2"
   },
   {
     "name": "New Mexico",
-    "abbreviation": "NM"
+    "abbreviation": "NM",
+    "color": "#FF4500"
   },
   {
     "name": "New York",
-    "abbreviation": "NY"
+    "abbreviation": "NY",
+    "color": "#7FFF00"
   },
   {
     "name": "North Carolina",
-    "abbreviation": "NC"
+    "abbreviation": "NC",
+    "color": "#DC143C"
   },
   {
     "name": "North Dakota",
-    "abbreviation": "ND"
+    "abbreviation": "ND",
+    "color": "#00FF7F"
   },
   {
     "name": "Ohio",
-    "abbreviation": "OH"
+    "abbreviation": "OH",
+    "color": "#00FFFF"
   },
   {
     "name": "Oklahoma",
-    "abbreviation": "OK"
+    "abbreviation": "OK",
+    "color": "#DA70D6"
   },
   {
     "name": "Oregon",
-    "abbreviation": "OR"
+    "abbreviation": "OR",
+    "color": "#F0E68C"
   },
   {
     "name": "Pennsylvania",
-    "abbreviation": "PA"
+    "abbreviation": "PA",
+    "color": "#98FB98"
   },
   {
     "name": "Puerto Rico",
-    "abbreviation": "PR"
+    "abbreviation": "PR",
+    "color": "#FA8072"
   },
   {
     "name": "Rhode Island",
-    "abbreviation": "RI"
+    "abbreviation": "RI",
+    "color": "#A52A2A"
   },
   {
     "name": "South Carolina",
-    "abbreviation": "SC"
+    "abbreviation": "SC",
+    "color": "#FF69B4"
   },
   {
     "name": "South Dakota",
-    "abbreviation": "SD"
+    "abbreviation": "SD",
+    "color": "#5F9EA0"
   },
   {
     "name": "Tennessee",
-    "abbreviation": "TN"
+    "abbreviation": "TN",
+    "color": "#FFB6C1"
   },
   {
     "name": "Texas",
-    "abbreviation": "TX"
+    "abbreviation": "TX",
+    "color": "#D8BFD8"
   },
   {
     "name": "Utah",
-    "abbreviation": "UT"
+    "abbreviation": "UT",
+    "color": "#556B2F"
   },
   {
     "name": "Vermont",
-    "abbreviation": "VT"
+    "abbreviation": "VT",
+    "color": "#8B008B"
   },
   {
     "name": "Virgin Islands",
-    "abbreviation": "VI"
+    "abbreviation": "VI",
+    "color": "#FF00FF"
   },
   {
     "name": "Virginia",
-    "abbreviation": "VA"
+    "abbreviation": "VA",
+    "color": "#8B0000"
   },
   {
     "name": "Washington",
-    "abbreviation": "WA"
+    "abbreviation": "WA",
+    "color": "#00FF00"
   },
   {
     "name": "West Virginia",
-    "abbreviation": "WV"
+    "abbreviation": "WV",
+    "color": "#00CED1"
   },
   {
     "name": "Wisconsin",
-    "abbreviation": "WI"
+    "abbreviation": "WI",
+    "color": "#4682B4"
   },
   {
     "name": "Wyoming",
-    "abbreviation": "WY"
+    "abbreviation": "WY",
+    "color": "#FF6347"
   }
 ]
