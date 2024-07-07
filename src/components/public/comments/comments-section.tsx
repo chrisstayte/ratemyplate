@@ -102,13 +102,11 @@ async function Comments({
           className=' flex flex-col justify-center items-center p-3 h-full '>
           <div className='flex flex-col justify-between content-between h-full w-full gap-5'>
             <p>{comment.comment}</p>
-            <Badge className='self-end'>
+            <Badge className='self-end text-sm'>
               {new Date(comment.timestamp!).toLocaleString('en-US', {
                 year: 'numeric',
                 month: '2-digit',
                 day: '2-digit',
-                hour: '2-digit',
-                minute: '2-digit',
                 hour12: true,
               })}
             </Badge>
