@@ -1,12 +1,11 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Toggle } from '@/components/ui/toggle';
 import { Plate } from '@/lib/plates';
 
 import { addPlateToFavorites, removePlateFromFavorites } from '@/app/actions';
 import { MdFavorite, MdFavoriteBorder } from 'react-icons/md';
-import { Button } from '@/components/ui/button';
+import { motion } from 'framer-motion';
 
 interface FavoritePlateButtonProps {
   plate: Plate;
@@ -20,7 +19,7 @@ export default function FavoritePlateButton({
   const [isFavoriteState, setIsFavoriteState] = useState<boolean>(isFavorite);
 
   return (
-    <div>
+    <motion.div whileTap={{ scale: 1.3 }}>
       <div
         onClick={async () => {
           if (isFavoriteState) {
@@ -37,6 +36,6 @@ export default function FavoritePlateButton({
           <MdFavoriteBorder className='size-8' />
         )}
       </div>
-    </div>
+    </motion.div>
   );
 }
