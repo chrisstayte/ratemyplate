@@ -1,8 +1,8 @@
 import { Card } from '@/components/ui/card';
 import * as React from 'react';
 import { database } from '@/db/database';
-import { desc } from 'drizzle-orm';
-import { plates } from '@/db/schema';
+import { desc, eq, sql, gt } from 'drizzle-orm';
+import { comments, plates } from '@/db/schema';
 import { Suspense } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Plate } from '@/lib/plates';
@@ -23,10 +23,22 @@ export default function RecentEntriesSection() {
 }
 
 async function RecentEntries({ limit = 10 }) {
-  const recentPlates = await database.query.plates.findMany({
-    orderBy: [desc(plates.timestamp)],
-    limit: limit,
-  });
+  const recentPlates = await database
+    .select({
+      id: plates.id,
+      plateNumber: plates.plateNumber,
+      state: plates.state,
+      timestamp: plates.timestamp,
+      commentCount: sql<number>`cast(count(${comments.plateId}) as int)`.as(
+        'commentCount'
+      ),
+    })
+    .from(plates)
+    .groupBy(plates.plateNumber, plates.state, plates.id)
+    .leftJoin(comments, eq(plates.id, comments.plateId))
+    .having(sql`count(${comments.plateId}) > 0`)
+    .orderBy(({ timestamp }) => desc(timestamp))
+    .limit(limit);
 
   if (recentPlates.length === 0) {
     return (
