@@ -4,6 +4,7 @@ import { usStateName } from '@/lib/us-states';
 import fs from 'fs';
 import path from 'path';
 import Image from 'next/image';
+import { Skeleton } from '@/components/ui/skeleton';
 import { Plate } from '@/lib/plates';
 import Link from 'next/link';
 
@@ -69,5 +70,18 @@ const LicensePlateTiny: React.FC<LicensePlateTinyProps> = async ({
     );
   }
 };
+
+export function LicensePlateTinySkeleton() {
+  return (
+    <Card className='aspect-video flex flex-col justify-center items-center'>
+      <div className='flex flex-col h-full relative p-1 w-full items-center'>
+        <Skeleton className='w-full max-w-[50px] h-[20px] ' />
+        <div className='absolute inset-0 flex items-center justify-center uppercase'>
+          <Skeleton className='w-full max-w-[100px] h-[20px] ' />
+        </div>
+      </div>
+    </Card>
+  );
+}
 
 export default LicensePlateTiny;

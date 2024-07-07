@@ -5,25 +5,27 @@ import { Suspense } from 'react';
 import { sql, desc, eq } from 'drizzle-orm';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Plate } from '@/lib/plates';
-import { plates, comments } from '@/db/schema';
+import { plates, user_favorite_plates } from '@/db/schema';
 
-import LicensePlateTiny from '@/components/public/license-plate-tiny';
+import LicensePlateTiny, {
+  LicensePlateTinySkeleton,
+} from '@/components/public/license-plate-tiny';
 
-export default function PopularEntriesSection() {
+export default function MostFavoritedPlatesSection() {
   const numberOfEntriesToDisplay = 10;
 
   return (
     <div className='flex flex-col gap-5 justify-center w-full h-full'>
-      <p className='text-2xl'>Popular Drivers</p>
+      <p className='text-2xl'>Favorited Drivers</p>
       <Suspense
-        fallback={<PopularEntriesSkeleton limit={numberOfEntriesToDisplay} />}>
-        <PopularEntries limit={numberOfEntriesToDisplay} />
+        fallback={<FavoritedPlatesSkeleton limit={numberOfEntriesToDisplay} />}>
+        <FavoritedPlates limit={numberOfEntriesToDisplay} />
       </Suspense>
     </div>
   );
 }
 
-async function PopularEntries({ limit = 10 }) {
+async function FavoritedPlates({ limit = 10 }) {
   // give me the plateNumber, state, id, and count of comments for each plate
   // sort by the count of comments in descending order
   // limit the result to the number of entries to display
@@ -33,21 +35,22 @@ async function PopularEntries({ limit = 10 }) {
       plateNumber: plates.plateNumber,
       state: plates.state,
       id: plates.id,
-      commentCount: sql<number>`cast(count(${comments.plateId}) as int)`.as(
-        'commentCount'
-      ),
+      favoriteCount:
+        sql<number>`cast(count(${user_favorite_plates.plateId}) as int)`.as(
+          'favoriteCount'
+        ),
     })
     .from(plates)
-    .leftJoin(comments, eq(plates.id, comments.plateId))
+    .leftJoin(user_favorite_plates, eq(plates.id, user_favorite_plates.plateId))
     .groupBy(plates.plateNumber, plates.state, plates.id)
-    .having(sql`count(${comments.plateId}) > 0`)
-    .orderBy(({ commentCount }) => desc(commentCount))
+    .having(sql`count(${user_favorite_plates.plateId}) > 0`)
+    .orderBy(({ favoriteCount }) => desc(favoriteCount))
     .limit(limit);
 
   if (popularPlates.length === 0) {
     return (
       <div className='h-full text-center place-content-center'>
-        <p className='text-xl'>No recent comments</p>
+        <p className='text-xl'>No favorited plates</p>
         <p className='text-xl'>Be the first!</p>
       </div>
     );
@@ -67,27 +70,14 @@ async function PopularEntries({ limit = 10 }) {
   );
 }
 
-function PopularEntriesSkeleton({ limit = 10 }) {
+function FavoritedPlatesSkeleton({ limit = 10 }) {
   const skeletons = Array.from({ length: limit });
 
   return (
     <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5'>
       {skeletons.map((_, index) => (
-        <EntrySkeleton key={index} />
+        <LicensePlateTinySkeleton key={index} />
       ))}
     </div>
-  );
-}
-
-function EntrySkeleton() {
-  return (
-    <Card className='aspect-video flex flex-col justify-center items-center'>
-      <div className='flex flex-col h-full relative p-1 w-full items-center'>
-        <Skeleton className='w-full max-w-[50px] h-[20px] ' />
-        <div className='absolute inset-0 flex items-center justify-center uppercase'>
-          <Skeleton className='w-full max-w-[100px] h-[20px] ' />
-        </div>
-      </div>
-    </Card>
   );
 }

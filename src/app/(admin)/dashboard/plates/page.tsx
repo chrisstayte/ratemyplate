@@ -6,7 +6,7 @@ import NotAuthenticated from '@/components/dashboard/not-authenticated';
 
 import { database } from '@/db/database';
 import { desc, eq, sql } from 'drizzle-orm';
-import { plates, comments } from '@/db/schema';
+import { plates, comments, user_favorite_plates } from '@/db/schema';
 import { DataTable } from '@/components/data-table';
 import { plateColumns } from '@/components/dashboard/plates-column';
 import LoginPage from '@/components/dashboard/login-page';
@@ -31,12 +31,17 @@ export default async function PlatesPage() {
       plateNumber: plates.plateNumber,
       state: plates.state,
       timestamp: plates.timestamp,
-      commentCount: sql<number>`cast(count(${comments.plateId}) as int)`.as(
+      commentCount: sql<number>`cast(count( ${comments.plateId}) as int)`.as(
         'commentCount'
       ),
+      favoriteCount:
+        sql<number>`cast(count( ${user_favorite_plates.plateId}) as int)`.as(
+          'favoriteCount'
+        ),
     })
     .from(plates)
     .leftJoin(comments, eq(plates.id, comments.plateId))
+    .leftJoin(user_favorite_plates, eq(plates.id, user_favorite_plates.plateId))
     .groupBy(plates.plateNumber, plates.state, plates.id)
     .orderBy(({ timestamp }) => desc(timestamp));
 
