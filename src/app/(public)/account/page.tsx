@@ -33,8 +33,8 @@ export default async function AccountPage() {
     .orderBy(desc(comments.timestamp));
 
   return (
-    <div className='w-full flex flex-col gap-10'>
-      <div className='w-full bg-gray-950  py-10'>
+    <div className='container w-full flex flex-col gap-10'>
+      <div className='w-full rounded-md bg-gray-950 dark:bg-transparent  py-10'>
         <div className='text-white flex flex-col justify-center items-center gap-3'>
           <Avatar className='size-28 pointer-events-none'>
             <AvatarImage src={userImageUrl} alt='user image' />
@@ -46,7 +46,7 @@ export default async function AccountPage() {
           </div>
         </div>
       </div>
-      <div className='container w-full flex flex-col gap-5'>
+      <div className=' w-full flex flex-col gap-5'>
         <p className='text-2xl'>Comments</p>
         <DataTable
           columns={commentsColumn}

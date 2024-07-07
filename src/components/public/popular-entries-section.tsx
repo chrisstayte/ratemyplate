@@ -24,6 +24,10 @@ export default function PopularEntriesSection() {
 }
 
 async function PopularEntries({ limit = 10 }) {
+  // give me the plateNumber, state, id, and count of comments for each plate
+  // sort by the count of comments in descending order
+  // limit the result to the number of entries to display
+  // only give me plates that have at least one comment
   const popularPlates = await database
     .select({
       plateNumber: plates.plateNumber,
@@ -36,6 +40,7 @@ async function PopularEntries({ limit = 10 }) {
     .from(plates)
     .leftJoin(comments, eq(plates.id, comments.plateId))
     .groupBy(plates.plateNumber, plates.state, plates.id)
+    .having(sql`count(${comments.plateId}) > 0`)
     .orderBy(({ commentCount }) => desc(commentCount))
     .limit(limit);
 
