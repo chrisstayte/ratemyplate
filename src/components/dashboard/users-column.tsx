@@ -16,6 +16,7 @@ export type User = {
   createdAt: Date;
   provider: string | null;
   favoriteCount: number;
+  commentCount: number;
 };
 
 export const usersColumn: ColumnDef<User>[] = [
@@ -93,6 +94,19 @@ export const usersColumn: ColumnDef<User>[] = [
           variant='ghost'
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
           Favorites
+          <ArrowUpDown className='ml-2 h-4 w-4' />
+        </Button>
+      );
+    },
+  },
+  {
+    accessorKey: 'commentCount',
+    header: ({ column }) => {
+      return (
+        <Button
+          variant='ghost'
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+          Comments
           <ArrowUpDown className='ml-2 h-4 w-4' />
         </Button>
       );
