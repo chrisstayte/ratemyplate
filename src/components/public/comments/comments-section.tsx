@@ -101,7 +101,9 @@ async function Comments({
           key={comment.id}
           className=' flex flex-col justify-center items-center p-3 h-full '>
           <div className='flex flex-col justify-between content-between h-full w-full gap-5'>
-            <p>{comment.comment}</p>
+            <p className='text-wrap overflow-wrap break-words'>
+              {comment.comment}
+            </p>
             <Badge className='self-end text-sm'>
               {new Date(comment.timestamp!).toLocaleString('en-US', {
                 year: 'numeric',
