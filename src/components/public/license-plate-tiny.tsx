@@ -59,10 +59,10 @@ const LicensePlateTiny: React.FC<LicensePlateTinyProps> = async ({
     return (
       <Link href={`/plate?plate=${plate.plateNumber}&state=${plate.state}`}>
         <Card className='aspect-video flex flex-col justify-center items-center '>
-          <div className='flex flex-col h-full relative p-1'>
-            <Badge className=''>{stateName}</Badge>
+          <div className='flex flex-col h-full relative p-1 md:p-2'>
+            <Badge className='md:text-sm'>{stateName}</Badge>
             <div className='absolute inset-0 flex items-center justify-center uppercase'>
-              <p className='text-xl'>{plate.plateNumber}</p>
+              <p className='text-xl md:text-2xl'>{plate.plateNumber}</p>
             </div>
           </div>
         </Card>

@@ -7,6 +7,7 @@ import { desc, eq } from 'drizzle-orm';
 import { comments, plates } from '@/db/schema';
 import { DataTable } from '@/components/data-table';
 import { commentsColumn } from '@/components/public/comments-columns';
+import { Badge } from '@/components/ui/badge';
 
 export default async function AccountPage() {
   const session = await auth();
@@ -18,6 +19,10 @@ export default async function AccountPage() {
   const user = session?.user;
   const userImageUrl = user?.image ?? undefined;
   const initials = user?.name?.getInitials();
+
+  const userData = await database.query.users.findFirst({
+    where: (users, { eq }) => eq(users.id, user?.id!),
+  });
 
   const userComments = await database
     .select({
@@ -43,6 +48,9 @@ export default async function AccountPage() {
           <div className='flex flex-col justify-center items-center'>
             <p className='text-2xl font-bold'>{user?.name}</p>
             <p className='text-xl text-muted-foreground'>{user?.email ?? ''}</p>
+            <Badge variant='secondary' className='mt-2 text-sm'>
+              Joined {userData?.createdAt.toLocaleDateString()}
+            </Badge>
           </div>
         </div>
       </div>

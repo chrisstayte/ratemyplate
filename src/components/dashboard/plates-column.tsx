@@ -41,7 +41,7 @@ export const plateColumns: ColumnDef<Plate>[] = [
     },
     cell: ({ row }) => {
       return (
-        <Badge variant='outline' className='text-center'>
+        <Badge variant='outline' className='text-center truncate text-sm'>
           {row.getValue<Date>('timestamp').prettyDateTime()}
         </Badge>
       );
