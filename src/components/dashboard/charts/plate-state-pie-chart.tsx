@@ -30,8 +30,6 @@ export default async function PlateStatePieChart() {
     .from(plates)
     .groupBy(plates.state);
 
-  console.log(plateCountByState);
-
   const states: State[] = await usStates();
 
   const addColorToState = plateCountByState.map((state) => {

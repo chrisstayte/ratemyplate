@@ -8,6 +8,8 @@ import LoginPage from '@/components/dashboard/login-page';
 import type { Metadata } from 'next';
 import StatCardsSection from '@/components/dashboard/stat-cards-section';
 import PlateStatePieChart from '@/components/dashboard/charts/plate-state-pie-chart';
+import OAuthPlatformPieChart from '@/components/dashboard/charts/oauth-platform-pie-chart';
+import CommentLengthRadarChart from '@/components/dashboard/charts/comment-length-radar-chart';
 
 // export const metadata: Metadata = {
 //   title: `Dashboard`,
@@ -34,6 +36,8 @@ export default async function Dashboard() {
         <StatCardsSection />
         <div className='grid grid-cols-1 sm:grid-cols-2 gap-5'>
           <PlateStatePieChart />
+          <OAuthPlatformPieChart />
+          <CommentLengthRadarChart />
         </div>
       </div>
     </div>
