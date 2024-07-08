@@ -33,7 +33,7 @@ export const usersColumn: ColumnDef<User>[] = [
     },
     cell: ({ row }) => {
       return (
-        <Badge variant='outline' className='text-center'>
+        <Badge variant='outline' className='text-center truncate text-sm'>
           {row.getValue<Date>('createdAt').prettyDateTime()}
         </Badge>
       );
@@ -79,7 +79,9 @@ export const usersColumn: ColumnDef<User>[] = [
     },
     cell: ({ row }) => {
       return (
-        <Badge>{row.getValue<string>('provider').capitalize() ?? 'None'}</Badge>
+        <Badge className='text-center truncate text-sm'>
+          {row.getValue<string>('provider').capitalize() ?? 'None'}
+        </Badge>
       );
     },
   },

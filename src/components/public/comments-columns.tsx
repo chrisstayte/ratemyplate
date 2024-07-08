@@ -4,7 +4,8 @@ import { ColumnDef } from '@tanstack/react-table';
 import '@/lib/extensions';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { ArrowUpDown, MoreHorizontal } from 'lucide-react';
+import { ArrowUpDown, ExternalLink } from 'lucide-react';
+import Link from 'next/link';
 
 // This is the type used to define the shape of our data.
 // I can use a zod schema if i want
@@ -31,7 +32,7 @@ export const commentsColumn: ColumnDef<Comment>[] = [
     },
     cell: ({ row }) => {
       return (
-        <Badge variant='outline' className='text-center'>
+        <Badge variant='outline' className='text-center truncate text-sm'>
           {row.getValue<Date>('timestamp').prettyDateTime()}
         </Badge>
       );
@@ -74,6 +75,21 @@ export const commentsColumn: ColumnDef<Comment>[] = [
           Comment
           <ArrowUpDown className='ml-2 h-4 w-4' />
         </Button>
+      );
+    },
+  },
+  {
+    accessorKey: '',
+    header: 'Open',
+    cell: ({ row }) => {
+      return (
+        <Link
+          className='cursor-pointer'
+          href={`/plate?plate=${row.getValue<String>(
+            'plateNumber'
+          )}&state=${row.getValue<String>('state')}`}>
+          <ExternalLink className='h-4 w-4' />
+        </Link>
       );
     },
   },
