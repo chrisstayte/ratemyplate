@@ -1,7 +1,6 @@
 'use server';
 
 import { auth, isUserAdmin } from '@/auth';
-import { redirect } from 'next/navigation';
 import NotAuthenticated from '@/components/dashboard/not-authenticated';
 
 import { database } from '@/db/database';
@@ -10,7 +9,6 @@ import { plates, comments, user_favorite_plates } from '@/db/schema';
 import { DataTable } from '@/components/data-table';
 import { plateColumns } from '@/components/dashboard/plates-column';
 import LoginPage from '@/components/dashboard/login-page';
-import { timestamp } from 'drizzle-orm/pg-core';
 
 export default async function PlatesPage() {
   const session = await auth();

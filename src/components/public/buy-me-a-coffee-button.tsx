@@ -14,7 +14,7 @@ const BuyMeACoffeeButton: FC<BuyMeACoffeeButtonProps> = ({ className }) => {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => setMounted(true), []);
-  if (!mounted) return null;
+  if (!mounted) return <div className='h-12' />;
 
   const currentTheme = theme === 'system' ? systemTheme : theme;
   const imageUrl =
@@ -23,7 +23,7 @@ const BuyMeACoffeeButton: FC<BuyMeACoffeeButtonProps> = ({ className }) => {
       : '/images/bmc-logo-whitecup.svg';
 
   return (
-    <Button asChild className={`${className}`}>
+    <Button asChild className={`${className} h-12`}>
       <a
         className='flex items-center '
         href='https://www.buymeacoffee.com/chrisstayte'
