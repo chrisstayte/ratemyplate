@@ -8,5 +8,12 @@
   "editor.quickSuggestions": {
     "strings": true
   },
-  "cSpell.words": ["Favorited"]
+  "cSpell.words": [
+    "Favorited",
+    "hookform",
+    "lucide",
+    "Subquery",
+    "tanstack",
+    "ZÄÖÜ"
+  ]
 }

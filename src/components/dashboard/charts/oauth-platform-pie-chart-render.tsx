@@ -18,6 +18,8 @@ import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
+  ChartLegend,
+  ChartLegendContent,
 } from '@/components/ui/chart';
 
 interface OAuthPlatformPieChartProps {
@@ -31,7 +33,7 @@ export function OAuthPlatformPieChartRender({
   data,
 }: OAuthPlatformPieChartProps) {
   const totalProviders = React.useMemo(() => {
-    return data.reduce((acc, curr) => acc + curr.providerCount, 0);
+    return data.length;
   }, [data]);
 
   const topProvider = React.useMemo(() => {
@@ -109,20 +111,15 @@ export function OAuthPlatformPieChartRender({
                 }}
               />
             </Pie>
+            <ChartLegend content={<ChartLegendContent />} />
           </PieChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter className='flex-col gap-2 text-sm'>
+      <CardFooter className='flex-col gap-2 text-sm mt-3'>
         <div className='flex items-center gap-2 font-medium leading-none'>
           {topProvider.capitalize()} is the most popular{' '}
           <TrendingUp className='h-4 w-4' />
         </div>
-        {/* <div className='flex items-center gap-2 font-medium leading-none'>
-          Trending up by 5.2% this month <TrendingUp className='h-4 w-4' />
-        </div> */}
-        {/* <div className='leading-none text-muted-foreground'>
-          Showing total visitors for the last 6 months
-        </div> */}
       </CardFooter>
     </Card>
   );
