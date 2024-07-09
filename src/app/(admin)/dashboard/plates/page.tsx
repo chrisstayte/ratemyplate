@@ -10,6 +10,7 @@ import { plates, comments, user_favorite_plates } from '@/db/schema';
 import { DataTable } from '@/components/data-table';
 import { plateColumns } from '@/components/dashboard/plates-column';
 import LoginPage from '@/components/dashboard/login-page';
+import { timestamp } from 'drizzle-orm/pg-core';
 
 export default async function PlatesPage() {
   const session = await auth();
@@ -25,25 +26,45 @@ export default async function PlatesPage() {
     return <NotAuthenticated />;
   }
 
+  const favoriteCountSubquery = database
+    .select({
+      plateId: user_favorite_plates.plateId,
+      count: sql<number>`count(*)`.as('favoriteCount'),
+    })
+    .from(user_favorite_plates)
+    .groupBy(user_favorite_plates.plateId)
+    .as('favoriteCountSubquery');
+
+  const commentCountSubquery = database
+    .select({
+      plateId: comments.plateId,
+      count: sql<number>`count(*)`.as('commentCount'),
+    })
+    .from(comments)
+    .groupBy(comments.plateId)
+    .as('commentCountSubquery');
+
   const licensePlates = await database
     .select({
       id: plates.id,
-      plateNumber: plates.plateNumber,
       state: plates.state,
+      plateNumber: plates.plateNumber,
       timestamp: plates.timestamp,
-      commentCount: sql<number>`cast(count( ${comments.plateId}) as int)`.as(
-        'commentCount'
-      ),
       favoriteCount:
-        sql<number>`cast(count( ${user_favorite_plates.plateId}) as int)`.as(
+        sql<number>`COALESCE(${favoriteCountSubquery.count}, 0)`.as(
           'favoriteCount'
         ),
+      commentCount: sql<number>`COALESCE(${commentCountSubquery.count}, 0)`.as(
+        'commentCount'
+      ),
     })
     .from(plates)
-    .leftJoin(comments, eq(plates.id, comments.plateId))
-    .leftJoin(user_favorite_plates, eq(plates.id, user_favorite_plates.plateId))
-    .groupBy(plates.plateNumber, plates.state, plates.id)
-    .orderBy(({ timestamp }) => desc(timestamp));
+    .leftJoin(
+      favoriteCountSubquery,
+      eq(plates.id, favoriteCountSubquery.plateId)
+    )
+    .leftJoin(commentCountSubquery, eq(plates.id, commentCountSubquery.plateId))
+    .orderBy(desc(plates.timestamp));
 
   return (
     <div className='container flex flex-col gap-5 py-5'>
