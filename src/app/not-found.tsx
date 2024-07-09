@@ -5,9 +5,10 @@ import Link from 'next/link';
 
 function NotFound() {
   return (
-    <div>
+    <div className='flex flex-col min-h-screen'>
       <Navbar />
-      <div className='h-screen w-full flex flex-col items-center justify-center px-5 gap-10'>
+
+      <div className='w-full flex-grow flex flex-col items-center justify-center p-5 gap-10'>
         <div className='flex flex-col items-center gap-5'>
           <p className='text-3xl'>Whoops!</p>
           <p className='text-lgs'>You might have gotten lost</p>
