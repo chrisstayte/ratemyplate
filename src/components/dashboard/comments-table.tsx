@@ -1,13 +1,21 @@
 'use client';
 
+import React, { useState } from 'react';
+import { DataTable } from '@/components/data-table';
 import { ColumnDef } from '@tanstack/react-table';
 import '@/lib/extensions';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { ArrowUpDown, MoreHorizontal } from 'lucide-react';
-
-// This is the type used to define the shape of our data.
-// I can use a zod schema if i want
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { Trash } from 'lucide-react';
+import { Row } from '@tanstack/react-table';
+import { deleteComment } from '@/lib/server-actions';
 
 export type Comment = {
   id: number;
@@ -18,7 +26,31 @@ export type Comment = {
   state: string | null;
 };
 
-export const commentsColumn: ColumnDef<Comment>[] = [
+interface CommentsTableProps {
+  tableData: Comment[];
+}
+
+export default function CommentsTable({ tableData }: CommentsTableProps) {
+  const [siteComments, setSiteComments] = useState<Comment[]>(tableData);
+
+  function handleDelete(id: number) {
+    setSiteComments((prevComments) =>
+      prevComments.filter((comment) => comment.id !== id)
+    );
+  }
+
+  return (
+    <DataTable
+      columns={commentsColumn(handleDelete)}
+      data={siteComments}
+      className='w-full'
+    />
+  );
+}
+
+export const commentsColumn = (
+  onDelete: (id: number) => void
+): ColumnDef<Comment>[] => [
   {
     accessorKey: 'timestamp',
     header: ({ column }) => {
@@ -91,4 +123,40 @@ export const commentsColumn: ColumnDef<Comment>[] = [
       );
     },
   },
+  {
+    accessorKey: '',
+    header: 'Action',
+    cell: ({ row }) => {
+      return <ActionCell row={row} onDelete={onDelete} />;
+    },
+  },
 ];
+
+type ActionCellProps = {
+  row: Row<Comment>;
+  onDelete: (id: number) => void;
+};
+
+const ActionCell: React.FC<ActionCellProps> = ({ row, onDelete }) => {
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant='ghost' size='icon'>
+          <MoreHorizontal className='h-4 w-4' />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent>
+        <DropdownMenuItem
+          onClick={async () => {
+            await deleteComment(row.original.id);
+            onDelete(row.original.id);
+          }}
+          // className={`bg-[linear-gradient(90deg,rgba(255,0,0,1)0%,rgba(255,0,0,0)${progress}%,rgba(0,0,0,0)100%)]`}
+        >
+          <Trash className='mr-2 h-4 w-4' />
+          <span>Delete</span>
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+};

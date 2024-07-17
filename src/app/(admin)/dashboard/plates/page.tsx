@@ -8,7 +8,7 @@ import { desc, eq, sql } from 'drizzle-orm';
 import { plates, comments, user_favorite_plates } from '@/db/schema';
 import { DataTable } from '@/components/data-table';
 import { plateColumns } from '@/components/dashboard/plates-column';
-import LoginPage from '@/components/dashboard/login-page';
+import LoginPage from '@/components/login-page';
 
 export default async function PlatesPage() {
   const session = await auth();

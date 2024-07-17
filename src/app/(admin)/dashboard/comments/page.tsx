@@ -1,16 +1,12 @@
 'use server';
 
 import { auth, isUserAdmin } from '@/auth';
-import { redirect } from 'next/navigation';
 import NotAuthenticated from '@/components/dashboard/not-authenticated';
-
 import { database } from '@/db/database';
 import { desc, eq } from 'drizzle-orm';
 import { comments, users, plates } from '@/db/schema';
-import { DataTable } from '@/components/data-table';
-import { commentsColumn } from '@/components/dashboard/comments-column';
-import LoginPage from '@/components/dashboard/login-page';
-import { comment } from 'postcss';
+import LoginPage from '@/components/login-page';
+import CommentsTable from '@/components/dashboard/comments-table';
 
 export default async function CommentsPage() {
   const session = await auth();
@@ -43,11 +39,7 @@ export default async function CommentsPage() {
   return (
     <div className='container flex flex-col gap-5 py-5'>
       <p className='text-2xl'>Comments</p>
-      <DataTable
-        columns={commentsColumn}
-        data={siteComments}
-        className='w-full'
-      />
+      <CommentsTable tableData={siteComments} />
     </div>
   );
 }
