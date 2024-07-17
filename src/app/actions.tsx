@@ -120,3 +120,9 @@ export async function removePlateFromFavorites(plate: Plate) {
 
   revalidatePath('/favorites');
 }
+
+export async function deleteComment(id: number): Promise<boolean> {
+  const response = await database.delete(comments).where(eq(comments.id, id));
+  revalidatePath('/plate');
+  return response.length > 0;
+}

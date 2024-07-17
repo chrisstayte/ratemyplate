@@ -15,7 +15,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Trash } from 'lucide-react';
 import { Row } from '@tanstack/react-table';
-import { deleteComment } from '@/lib/server-actions';
+import { deleteComment } from '@/app/actions';
 
 export type Comment = {
   id: number;
