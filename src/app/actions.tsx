@@ -3,7 +3,7 @@
 import { database } from '@/db/database';
 import { plates, comments, user_favorite_plates } from '@/db/schema';
 import { revalidatePath } from 'next/cache';
-import { auth } from '@/auth';
+import { auth, isCurrentUserAdmin } from '@/auth';
 import { eq, and } from 'drizzle-orm';
 import { Plate } from '@/lib/plates';
 
@@ -122,6 +122,16 @@ export async function removePlateFromFavorites(plate: Plate) {
 }
 
 export async function deleteComment(id: number): Promise<boolean> {
+  const session = await auth();
+
+  if (!session) {
+    throw new Error('Unauthorized');
+  }
+
+  if (!(await isCurrentUserAdmin())) {
+    throw new Error('Unauthorized');
+  }
+
   const response = await database.delete(comments).where(eq(comments.id, id));
   revalidatePath('/plate');
   return response.length > 0;
