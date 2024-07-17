@@ -8,7 +8,7 @@ import { desc, eq, sql } from 'drizzle-orm';
 import { users, accounts, user_favorite_plates, comments } from '@/db/schema';
 import { DataTable } from '@/components/data-table';
 import { usersColumn } from '@/components/dashboard/users-column';
-import LoginPage from '@/components/dashboard/login-page';
+import LoginPage from '@/components/login-page';
 
 export default async function UsersPage() {
   const session = await auth();

@@ -4,7 +4,7 @@ import { auth, isUserAdmin } from '@/auth';
 import NotAuthenticated from '@/components/dashboard/not-authenticated';
 import StatCard from '@/components/dashboard/stat-card';
 
-import LoginPage from '@/components/dashboard/login-page';
+import LoginPage from '@/components/login-page';
 import type { Metadata } from 'next';
 import StatCardsSection from '@/components/dashboard/stat-cards-section';
 import PlateStatePieChart from '@/components/dashboard/charts/plate-state-pie-chart';
