@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Inconsolata } from 'next/font/google';
 import './globals.css';
 import { ThemeProvider } from '@/components/theme-prodiver';
+import PlausibleProvider from 'next-plausible';
 
 const inconsolata = Inconsolata({ subsets: ['latin'], display: 'swap' });
 
@@ -17,6 +18,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en'>
+      <head>
+        <PlausibleProvider
+          domain='ratemyplate.wtf'
+          customDomain='https://plausible.chrisstayte.com'
+        />
+      </head>
       <body className={` ${inconsolata.className}`}>
         <ThemeProvider
           attribute='class'
