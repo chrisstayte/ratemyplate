@@ -69,6 +69,20 @@ export default function PrivacyPage() {
             PGAdmin. I am working on a way to allow users to see all of their
             data and comments.
           </p>
+          <p className='text-xl mt-7'>Analytics</p>
+          <p>
+            As of July 21, 2024 I have added plausible analytics to the site.
+            Plausible is an open source analytics tool that does not track any
+            personal information. This was added as I wanted to see if the site
+            was getting traffic. You can view the{' '}
+            <a
+              className='text-purple-500'
+              target='_blank'
+              href='https://plausible.chrisstayte.com/ratemyplate.wtf'>
+              Dashboard
+            </a>{' '}
+            as well!
+          </p>
         </div>
       </div>
     </div>
