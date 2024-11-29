@@ -10,14 +10,12 @@ import SearchCard from '@/components/public/search-card/search-card';
 import type { Metadata, ResolvingMetadata } from 'next';
 
 type Props = {
-  params: { id: string };
-  searchParams: { [key: string]: string | string[] | undefined };
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 };
 
-export async function generateMetadata(
-  { params, searchParams }: Props,
-  parent: ResolvingMetadata
-): Promise<Metadata> {
+export async function generateMetadata(props: Props, parent: ResolvingMetadata): Promise<Metadata> {
+  const searchParams = await props.searchParams;
   const plateNumber = (searchParams?.plate as string) ?? null;
   const state = (searchParams?.state as string) ?? null;
 
@@ -39,7 +37,8 @@ export async function generateMetadata(
   };
 }
 
-export default async function PlatePage({ searchParams }: Props) {
+export default async function PlatePage(props: Props) {
+  const searchParams = await props.searchParams;
   const plateNumber = (searchParams?.plate as string) ?? null;
   const state = (searchParams?.state as string) ?? null;
 
