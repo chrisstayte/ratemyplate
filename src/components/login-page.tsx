@@ -5,14 +5,14 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { signIn } from '@/auth';
-import { headers, type UnsafeUnwrappedHeaders } from 'next/headers';
+import { headers } from 'next/headers';
 
 import { LayoutDashboard } from 'lucide-react';
 
 import { FaGithub, FaGoogle, FaDiscord } from 'react-icons/fa';
 
 export default function LoginPage() {
-  const heads = (headers() as unknown as UnsafeUnwrappedHeaders);
+  const heads = headers();
 
   const pathName = heads.get('x-pathname') || '/';
 

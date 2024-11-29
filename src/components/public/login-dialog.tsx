@@ -23,7 +23,7 @@ export default async function LoginDialog({ buttonTitle }: LoginDialogProps) {
 
   if (!session?.user) {
     return (
-      (<Dialog>
+      <Dialog>
         <DialogTrigger>
           <Button>{buttonTitle ?? 'Signin'}</Button>
         </DialogTrigger>
@@ -38,7 +38,7 @@ export default async function LoginDialog({ buttonTitle }: LoginDialogProps) {
                 action={async () => {
                   'use server';
 
-                  const heads = await headers();
+                  const heads = headers();
 
                   const pathName = heads.get('x-fullPath') || '/';
 
@@ -55,7 +55,7 @@ export default async function LoginDialog({ buttonTitle }: LoginDialogProps) {
               <form
                 action={async () => {
                   'use server';
-                  const heads = await headers();
+                  const heads = headers();
 
                   const pathName = heads.get('x-fullPath') || '/';
                   await signIn('google', { redirectTo: `${pathName}` });
@@ -71,7 +71,7 @@ export default async function LoginDialog({ buttonTitle }: LoginDialogProps) {
               <form
                 action={async () => {
                   'use server';
-                  const heads = await headers();
+                  const heads = headers();
 
                   const pathName = heads.get('x-fullPath') || '/';
                   await signIn('discord', { redirectTo: `${pathName}` });
@@ -87,7 +87,7 @@ export default async function LoginDialog({ buttonTitle }: LoginDialogProps) {
             </div>
           </DialogHeader>
         </DialogContent>
-      </Dialog>)
+      </Dialog>
     );
   } else {
     return (
