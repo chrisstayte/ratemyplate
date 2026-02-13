@@ -7,12 +7,17 @@ import { getCurrentUser, isCurrentUserAdmin } from '@/lib/auth';
 import { eq, and } from 'drizzle-orm';
 import { Plate } from '@/lib/plates';
 
-export async function createPlate(plate: Plate): Promise<any> {
+// Helper function to validate session
+async function validateSession() {
   const session = await getCurrentUser();
-
   if (!session || !session.user) {
     throw new Error('Unauthorized');
   }
+  return session;
+}
+
+export async function createPlate(plate: Plate): Promise<any> {
+  const session = await validateSession();
 
   const existingPlate = await database?.query.plates.findFirst({
     where: (plates, { eq }) =>
@@ -42,10 +47,7 @@ export async function postComment(
   comment: string,
   plateId: number
 ): Promise<any> {
-  const session = await getCurrentUser();
-  if (!session || !session.user) {
-    throw new Error('Unauthorized');
-  }
+  const session = await validateSession();
 
   try {
     database
@@ -66,11 +68,7 @@ export async function postComment(
 }
 
 export async function addPlateToFavorites(plate: Plate) {
-  const session = await getCurrentUser();
-
-  if (!session || !session.user) {
-    throw new Error('Unauthorized');
-  }
+  const session = await validateSession();
 
   const plateId = (await createPlate(plate)).id;
 
@@ -90,11 +88,7 @@ export async function addPlateToFavorites(plate: Plate) {
 }
 
 export async function removePlateFromFavorites(plate: Plate) {
-  const session = await getCurrentUser();
-
-  if (!session || !session.user) {
-    throw new Error('Unauthorized');
-  }
+  const session = await validateSession();
 
   const databasePlate = await database.query.plates.findFirst({
     where: (plates, { eq }) =>
@@ -122,11 +116,7 @@ export async function removePlateFromFavorites(plate: Plate) {
 }
 
 export async function deleteComment(id: number): Promise<boolean> {
-  const session = await getCurrentUser();
-
-  if (!session || !session.user) {
-    throw new Error('Unauthorized');
-  }
+  const session = await validateSession();
 
   if (!(await isCurrentUserAdmin())) {
     throw new Error('Unauthorized');

@@ -5,7 +5,7 @@ export const env = createEnv({
   server: {
     DATABASE_URL: z.string().url(),
     NODE_ENV: z.string().min(1).default('development'),
-    AUTH_SECRET: z.string().min(1),
+    AUTH_SECRET: z.string().min(1), // Legacy - kept for backward compatibility during migration
     BETTER_AUTH_SECRET: z.string().min(1),
     BETTER_AUTH_URL: z.string().url().optional(),
     GITHUB_CLIENT_ID: z.string().min(1),

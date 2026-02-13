@@ -9,7 +9,6 @@ import {
   integer,
 } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
-import type { AdapterAccountType } from 'next-auth/adapters';
 
 export const plates = pgTable('rmp_plates', {
   id: serial('id').primaryKey(),
@@ -73,7 +72,7 @@ export const accounts = pgTable(
     userId: text('userId')
       .notNull()
       .references(() => users.id, { onDelete: 'cascade' }),
-    type: text('type').$type<AdapterAccountType>().notNull(),
+    type: text('type').notNull(),
     provider: text('provider').notNull(),
     providerAccountId: text('providerAccountId').notNull(),
     refresh_token: text('refresh_token'),

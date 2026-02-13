@@ -19,18 +19,32 @@ async function migrateAuthData() {
     console.log('Adding new columns to rmp_user table...');
     await database.execute(sql`
       ALTER TABLE rmp_user 
-      ADD COLUMN IF NOT EXISTS "emailVerified" boolean DEFAULT false,
+      ADD COLUMN IF NOT EXISTS "emailVerifiedBoolean" boolean DEFAULT false,
       ADD COLUMN IF NOT EXISTS "updated_at" timestamp with time zone DEFAULT NOW();
     `);
 
-    // Step 2: Convert emailVerified from timestamp to boolean
+    // Step 2: Convert emailVerified from timestamp to boolean in new column
     console.log('Converting emailVerified from timestamp to boolean...');
     await database.execute(sql`
       UPDATE rmp_user 
-      SET "emailVerified" = CASE 
+      SET "emailVerifiedBoolean" = CASE 
         WHEN "emailVerified" IS NOT NULL THEN true 
         ELSE false 
-      END;
+      END
+      WHERE "emailVerifiedBoolean" = false;
+    `);
+
+    // Step 3: Drop old emailVerified column and rename new one
+    console.log('Finalizing emailVerified column...');
+    await database.execute(sql`
+      ALTER TABLE rmp_user 
+      DROP COLUMN IF EXISTS "emailVerified",
+      ALTER COLUMN "emailVerifiedBoolean" SET NOT NULL;
+    `);
+    
+    await database.execute(sql`
+      ALTER TABLE rmp_user 
+      RENAME COLUMN "emailVerifiedBoolean" TO "emailVerified";
     `);
 
     // Step 3: Update session table structure

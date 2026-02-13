@@ -15,7 +15,7 @@ export const user = pgTable('rmp_user', {
     .$defaultFn(() => crypto.randomUUID()),
   name: text('name').notNull(),
   email: text('email').notNull().unique(),
-  emailVerified: boolean('emailVerified').notNull().default(false),
+  emailVerified: boolean('emailVerified').default(false), // Nullable during migration
   image: text('image'),
   createdAt: timestamp('created_at', { mode: 'date', withTimezone: true })
     .notNull()

@@ -7,8 +7,8 @@ import { LayoutDashboard } from 'lucide-react';
 
 import { SocialSignInButtons } from '@/components/auth/social-signin-buttons';
 
-export default async function LoginPage() {
-  const heads = await headers();
+export default function LoginPage() {
+  const heads = headers();
 
   const pathName = heads.get('x-pathname') || '/';
 
