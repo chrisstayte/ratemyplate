@@ -4,10 +4,10 @@ import { FaUsers } from 'react-icons/fa';
 import { TbRectangleFilled } from 'react-icons/tb';
 import { FaComment } from 'react-icons/fa6';
 import { database } from '@/db/database';
-import { auth, isUserAdmin } from '@/auth';
+import { getCurrentUser, isUserAdmin } from '@/lib/auth';
 
 export default async function StatCardsSection() {
-  const session = await auth();
+  const session = await getCurrentUser();
   if (!session) {
     return <p>NOT AUTHENTICATED</p>;
   }

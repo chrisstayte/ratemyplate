@@ -7,7 +7,7 @@ import { Suspense } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Plate } from '@/lib/plates';
 import LicensePlateTiny from '@/components/public/license-plate-tiny';
-import { auth } from '@/auth';
+import { getCurrentUser } from '@/lib/auth';
 
 export default function FavoritesSection() {
   const numberOfEntriesToDisplay = 10;
@@ -24,7 +24,7 @@ export default function FavoritesSection() {
 }
 
 async function FavoritePlates({ limit = 10 }) {
-  const session = await auth();
+  const session = await getCurrentUser();
 
   const userId = session!.user!.id!;
 

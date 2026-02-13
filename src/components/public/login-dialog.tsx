@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 
 import {
@@ -8,9 +10,9 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { auth, signIn, signOut } from '@/auth';
+import { authClient, useSession } from '@/lib/auth-client';
 import { Button } from '@/components/ui/button';
-import { headers } from 'next/headers';
+import { useRouter, usePathname } from 'next/navigation';
 
 import { FaGithub, FaGoogle, FaDiscord } from 'react-icons/fa';
 
@@ -18,8 +20,27 @@ interface LoginDialogProps {
   buttonTitle?: string;
 }
 
-export default async function LoginDialog({ buttonTitle }: LoginDialogProps) {
-  const session = await auth();
+export default function LoginDialog({ buttonTitle }: LoginDialogProps) {
+  const { data: session } = useSession();
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const handleSignIn = async (provider: 'github' | 'google' | 'discord') => {
+    try {
+      await authClient.signIn.social({
+        provider,
+        callbackURL: pathname || '/',
+      });
+      router.refresh();
+    } catch (error) {
+      console.error('Sign in error:', error);
+    }
+  };
+
+  const handleSignOut = async () => {
+    await authClient.signOut();
+    router.refresh();
+  };
 
   if (!session?.user) {
     return (
@@ -34,56 +55,27 @@ export default async function LoginDialog({ buttonTitle }: LoginDialogProps) {
               Signin to RateMyPlate to rate plates and share your own.
             </DialogDescription>
             <div className='grid gap-4 pt-5'>
-              <form
-                action={async () => {
-                  'use server';
-
-                  const heads = headers();
-
-                  const pathName = heads.get('x-fullPath') || '/';
-
-                  await signIn('github', { redirectTo: `${pathName}` });
-                }}>
-                <Button
-                  type='submit'
-                  variant='outline'
-                  className='w-full gap-5'>
-                  <FaGithub className='size-6' />
-                  <p>GitHub</p>
-                </Button>
-              </form>
-              <form
-                action={async () => {
-                  'use server';
-                  const heads = headers();
-
-                  const pathName = heads.get('x-fullPath') || '/';
-                  await signIn('google', { redirectTo: `${pathName}` });
-                }}>
-                <Button
-                  type='submit'
-                  variant='outline'
-                  className='w-full gap-5'>
-                  <FaGoogle className='size-6' />
-                  <p>Google</p>
-                </Button>
-              </form>
-              <form
-                action={async () => {
-                  'use server';
-                  const heads = headers();
-
-                  const pathName = heads.get('x-fullPath') || '/';
-                  await signIn('discord', { redirectTo: `${pathName}` });
-                }}>
-                <Button
-                  type='submit'
-                  variant='outline'
-                  className='w-full gap-5'>
-                  <FaDiscord className='size-6' />
-                  <p>Discord</p>
-                </Button>
-              </form>
+              <Button
+                onClick={() => handleSignIn('github')}
+                variant='outline'
+                className='w-full gap-5'>
+                <FaGithub className='size-6' />
+                <p>GitHub</p>
+              </Button>
+              <Button
+                onClick={() => handleSignIn('google')}
+                variant='outline'
+                className='w-full gap-5'>
+                <FaGoogle className='size-6' />
+                <p>Google</p>
+              </Button>
+              <Button
+                onClick={() => handleSignIn('discord')}
+                variant='outline'
+                className='w-full gap-5'>
+                <FaDiscord className='size-6' />
+                <p>Discord</p>
+              </Button>
             </div>
           </DialogHeader>
         </DialogContent>
@@ -91,15 +83,9 @@ export default async function LoginDialog({ buttonTitle }: LoginDialogProps) {
     );
   } else {
     return (
-      <form
-        action={async () => {
-          'use server';
-          await signOut();
-        }}>
-        <Button variant='outline' type='submit'>
-          Signout
-        </Button>
-      </form>
+      <Button variant='outline' onClick={handleSignOut}>
+        Signout
+      </Button>
     );
   }
 }

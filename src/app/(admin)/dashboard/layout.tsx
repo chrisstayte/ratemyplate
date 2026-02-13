@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Navbar from '@/components/dashboard/navbar/navbar';
-import { isCurrentUserAdmin } from '@/auth';
+import { isCurrentUserAdmin } from '@/lib/auth';
 
 export const metadata: Metadata = {
   title: 'Rate My Plate',

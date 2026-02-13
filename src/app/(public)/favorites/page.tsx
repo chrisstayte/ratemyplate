@@ -1,11 +1,11 @@
-import { auth } from '@/auth';
+import { getCurrentUser } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 import '@/lib/extensions';
 
 import FavoritesSection from '@/components/public/favorites-section';
 
 export default async function FavoritesPage() {
-  const session = await auth();
+  const session = await getCurrentUser();
 
   if (!session) {
     redirect('/');

@@ -1,29 +1,29 @@
+'use client';
+
 import { Plate } from '@/lib/plates';
-import { signIn, auth } from '@/auth';
+import { authClient, useSession } from '@/lib/auth-client';
 import { Button } from '@/components/ui/button';
 import NewCommentButton from '@/components/public/comments/new-comment-button';
+import { useRouter } from 'next/navigation';
 
 interface AuthCommentButtonProps {
   className?: string;
   plate: Plate;
 }
 
-const AuthCommentButton: React.FC<AuthCommentButtonProps> = async ({
+const AuthCommentButton: React.FC<AuthCommentButtonProps> = ({
   plate,
   className,
 }) => {
-  const session = await auth();
+  const { data: session } = useSession();
+  const router = useRouter();
+
+  const handleSignIn = () => {
+    router.push('/login');
+  };
 
   if (!session?.user) {
-    return (
-      <form
-        action={async () => {
-          'use server';
-          await signIn();
-        }}>
-        <Button type='submit'>Signin to add comment</Button>
-      </form>
-    );
+    return <Button onClick={handleSignIn}>Signin to add comment</Button>;
   }
 
   return <NewCommentButton plate={plate} />;

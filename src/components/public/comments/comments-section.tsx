@@ -7,7 +7,7 @@ import { comments } from '@/db/schema';
 import { Badge } from '@/components/ui/badge';
 import { database } from '@/db/database';
 import LoginDialog from '../login-dialog';
-import { auth } from '@/auth';
+import { getCurrentUser } from '@/lib/auth';
 import NewCommentButton from './new-comment-button';
 import { user_favorite_plates } from '@/db/schema';
 import FavoritePlateButton from '@/components/public/favorite-plate-button';
@@ -21,7 +21,7 @@ export default async function CommentsSection({
   state,
   plateNumber,
 }: CommentsSectionProps) {
-  const session = await auth();
+  const session = await getCurrentUser();
 
   const databasePlate = await database.query.plates.findFirst({
     where: (plates, { eq }) =>

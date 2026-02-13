@@ -3,14 +3,14 @@
 import { database } from '@/db/database';
 import { plates, comments, user_favorite_plates } from '@/db/schema';
 import { revalidatePath } from 'next/cache';
-import { auth, isCurrentUserAdmin } from '@/auth';
+import { getCurrentUser, isCurrentUserAdmin } from '@/lib/auth';
 import { eq, and } from 'drizzle-orm';
 import { Plate } from '@/lib/plates';
 
 export async function createPlate(plate: Plate): Promise<any> {
-  const session = await auth();
+  const session = await getCurrentUser();
 
-  if (!session) {
+  if (!session || !session.user) {
     throw new Error('Unauthorized');
   }
 
@@ -31,7 +31,7 @@ export async function createPlate(plate: Plate): Promise<any> {
     .values({
       plateNumber: plate.plateNumber.toUpperCase(),
       state: plate.state,
-      userId: session!.user!.id,
+      userId: session.user.id,
     })
     .returning();
 
@@ -42,8 +42,8 @@ export async function postComment(
   comment: string,
   plateId: number
 ): Promise<any> {
-  const session = await auth();
-  if (!session) {
+  const session = await getCurrentUser();
+  if (!session || !session.user) {
     throw new Error('Unauthorized');
   }
 
@@ -53,7 +53,7 @@ export async function postComment(
       .values({
         comment: comment,
         plateId: plateId,
-        userId: session!.user!.id,
+        userId: session.user.id,
       })
       .execute();
 
@@ -66,9 +66,9 @@ export async function postComment(
 }
 
 export async function addPlateToFavorites(plate: Plate) {
-  const session = await auth();
+  const session = await getCurrentUser();
 
-  if (!session) {
+  if (!session || !session.user) {
     throw new Error('Unauthorized');
   }
 
@@ -81,7 +81,7 @@ export async function addPlateToFavorites(plate: Plate) {
   database
     .insert(user_favorite_plates)
     .values({
-      userId: session!.user!.id,
+      userId: session.user.id,
       plateId: plateId,
     })
     .execute();
@@ -90,9 +90,9 @@ export async function addPlateToFavorites(plate: Plate) {
 }
 
 export async function removePlateFromFavorites(plate: Plate) {
-  const session = await auth();
+  const session = await getCurrentUser();
 
-  if (!session) {
+  if (!session || !session.user) {
     throw new Error('Unauthorized');
   }
 
@@ -113,7 +113,7 @@ export async function removePlateFromFavorites(plate: Plate) {
     .where(
       and(
         eq(user_favorite_plates.plateId, databasePlate.id),
-        eq(user_favorite_plates.userId, session!.user!.id!)
+        eq(user_favorite_plates.userId, session.user.id)
       )
     )
     .execute();
@@ -122,9 +122,9 @@ export async function removePlateFromFavorites(plate: Plate) {
 }
 
 export async function deleteComment(id: number): Promise<boolean> {
-  const session = await auth();
+  const session = await getCurrentUser();
 
-  if (!session) {
+  if (!session || !session.user) {
     throw new Error('Unauthorized');
   }
 

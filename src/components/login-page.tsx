@@ -1,18 +1,14 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { signIn } from '@/auth';
 import { headers } from 'next/headers';
 
 import { LayoutDashboard } from 'lucide-react';
 
-import { FaGithub, FaGoogle, FaDiscord } from 'react-icons/fa';
+import { SocialSignInButtons } from '@/components/auth/social-signin-buttons';
 
-export default function LoginPage() {
-  const heads = headers();
+export default async function LoginPage() {
+  const heads = await headers();
 
   const pathName = heads.get('x-pathname') || '/';
 
@@ -44,38 +40,7 @@ export default function LoginPage() {
           <div className='grid gap-2 text-center'>
             <h1 className='text-3xl font-bold'>Login</h1>
           </div>
-          <div className='grid gap-4'>
-            <form
-              action={async () => {
-                'use server';
-                await signIn('github', { redirectTo: `/${pathName}` });
-              }}>
-              <Button type='submit' variant='outline' className='w-full gap-5'>
-                <FaGithub className='size-6' />
-                <p>GitHub</p>
-              </Button>
-            </form>
-            <form
-              action={async () => {
-                'use server';
-                await signIn('google', { redirectTo: `/${pathName}` });
-              }}>
-              <Button type='submit' variant='outline' className='w-full gap-5'>
-                <FaGoogle className='size-6' />
-                <p>Google</p>
-              </Button>
-            </form>
-            <form
-              action={async () => {
-                'use server';
-                await signIn('discord', { redirectTo: `/${pathName}` });
-              }}>
-              <Button type='submit' variant='outline' className='w-full gap-5'>
-                <FaDiscord className='size-6' />
-                <p>Discord</p>
-              </Button>
-            </form>
-          </div>
+          <SocialSignInButtons redirectTo={pathName} />
           {/* <div className='mt-4 text-center text-sm'>
             By logging in you agree to our{' '}
             <Link href='#' className='underline'>

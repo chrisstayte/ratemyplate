@@ -1,12 +1,12 @@
 import React from 'react';
 import CommentLengthRadarChartRender from './comment-length-radar-chart-render';
-import { auth, isUserAdmin } from '@/auth';
+import { getCurrentUser, isUserAdmin } from '@/lib/auth';
 import { database } from '@/db/database';
 import { comments } from '@/db/schema';
 import { sql } from 'drizzle-orm';
 
 export default async function CommentLengthRadarChart() {
-  const session = await auth();
+  const session = await getCurrentUser();
   if (!session) {
     return <p>NOT AUTHENTICATED</p>;
   }

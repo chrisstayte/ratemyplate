@@ -1,6 +1,6 @@
 'use server';
 
-import { auth, isUserAdmin } from '@/auth';
+import { getCurrentUser, isUserAdmin } from '@/lib/auth';
 import NotAuthenticated from '@/components/dashboard/not-authenticated';
 import { database } from '@/db/database';
 import { desc, eq } from 'drizzle-orm';
@@ -9,7 +9,7 @@ import LoginPage from '@/components/login-page';
 import CommentsTable from '@/components/dashboard/comments-table';
 
 export default async function CommentsPage() {
-  const session = await auth();
+  const session = await getCurrentUser();
   if (!session) {
     return <LoginPage />;
   }

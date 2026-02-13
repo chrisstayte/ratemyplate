@@ -1,6 +1,6 @@
 'use server';
 
-import { auth, isUserAdmin } from '@/auth';
+import { getCurrentUser, isUserAdmin } from '@/lib/auth';
 import NotAuthenticated from '@/components/dashboard/not-authenticated';
 import StatCard from '@/components/dashboard/stat-card';
 
@@ -17,7 +17,7 @@ import CommentLengthRadarChart from '@/components/dashboard/charts/comment-lengt
 // };
 
 export default async function Dashboard() {
-  const session = await auth();
+  const session = await getCurrentUser();
   if (!session) {
     return <LoginPage />;
   }

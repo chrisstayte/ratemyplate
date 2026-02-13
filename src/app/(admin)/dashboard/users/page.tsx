@@ -1,6 +1,6 @@
 'use server';
 
-import { auth, isUserAdmin } from '@/auth';
+import { getCurrentUser, isUserAdmin } from '@/lib/auth';
 import NotAuthenticated from '@/components/dashboard/not-authenticated';
 
 import { database } from '@/db/database';
@@ -11,7 +11,7 @@ import { usersColumn } from '@/components/dashboard/users-column';
 import LoginPage from '@/components/login-page';
 
 export default async function UsersPage() {
-  const session = await auth();
+  const session = await getCurrentUser();
   if (!session) {
     return <LoginPage />;
   }

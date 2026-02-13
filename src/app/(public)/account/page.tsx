@@ -1,4 +1,4 @@
-import { auth } from '@/auth';
+import { getCurrentUser } from '@/lib/auth';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { redirect } from 'next/navigation';
 import '@/lib/extensions';
@@ -10,7 +10,7 @@ import { commentsColumn } from '@/components/public/comments-columns';
 import { Badge } from '@/components/ui/badge';
 
 export default async function AccountPage() {
-  const session = await auth();
+  const session = await getCurrentUser();
 
   if (!session) {
     redirect('/');

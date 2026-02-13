@@ -1,30 +1,29 @@
-import { signIn, signOut, auth } from '@/auth';
-import { Button } from '@/components/ui/button';
+'use client';
 
-async function AuthButton() {
-  const session = await auth();
+import { authClient, useSession } from '@/lib/auth-client';
+import { Button } from '@/components/ui/button';
+import { useRouter } from 'next/navigation';
+
+function AuthButton() {
+  const { data: session } = useSession();
+  const router = useRouter();
+
+  const handleSignIn = async () => {
+    router.push('/login');
+  };
+
+  const handleSignOut = async () => {
+    await authClient.signOut();
+    router.refresh();
+  };
 
   if (!session?.user) {
-    return (
-      <form
-        action={async () => {
-          'use server';
-          await signIn();
-        }}>
-        <Button type='submit'>Signin</Button>
-      </form>
-    );
+    return <Button onClick={handleSignIn}>Signin</Button>;
   } else {
     return (
-      <form
-        action={async () => {
-          'use server';
-          await signOut();
-        }}>
-        <Button variant='outline' type='submit'>
-          Signout
-        </Button>
-      </form>
+      <Button variant='outline' onClick={handleSignOut}>
+        Signout
+      </Button>
     );
   }
 }
