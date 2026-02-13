@@ -20,38 +20,55 @@ Review and rate people based upon their driving. It's all tied to the license pl
 - Next.js 14
 - Postgres
 - Drizzle ORM
+- Better Auth (OAuth authentication)
 - Tailwind, ShadcnUI
 
 # Custom Commands
 
-- `npx run db:push` - drizzle push schema migration to database
+- `npm run db:push` - drizzle push schema migration to database
 - `npm run db:studio` - runs drizzle studio
 - `npm run db:generate` - creates migration sql statement in `./drizzle`
 - `npm run db:migrate` - applies migration sql statements
+- `npm run db:migrate-auth` - runs auth migration script (NextAuth to Better Auth)
 - `npm run test-production` - creates a production build and runs it
 
 # ENV Setup
 
-- DATABASE_URL={postgres connection string}
-- AUTH_DRIZZLE_URL={postgres connection string}
-- NODE_ENV={development or production}
-- AUTH_SECRET={generated for auth js}
-- AUTH_GITHUB_ID={authjs github id}
-- AUTH_GITHUB_SECRET={authjs github secret}
-- AUTH_DISCORD_ID={authjs discord id}
-- AUTH_DISCORD_SECRET={authjs discord secret}
-- AUTH_GOOGLE_ID={authjs google id}
-- AUTH_GOOGLE_SECRET={authjs google secret}
+See `.env.example` for a complete list of required environment variables.
 
-### We diverge between dev and production
+## Required Variables
 
-Development </br>
+```bash
+DATABASE_URL=postgresql://user:password@localhost:5432/ratemyplate
+NODE_ENV=development
 
-- AUTH_TRUST_HOST=true
+# Better Auth
+BETTER_AUTH_SECRET=<generate with: npx @better-auth/cli secret>
+BETTER_AUTH_URL=http://localhost:3000  # or your production URL
 
-Production </br>
+# OAuth Providers
+GITHUB_CLIENT_ID=<your-github-client-id>
+GITHUB_CLIENT_SECRET=<your-github-client-secret>
+GOOGLE_CLIENT_ID=<your-google-client-id>
+GOOGLE_CLIENT_SECRET=<your-google-client-secret>
+DISCORD_CLIENT_ID=<your-discord-client-id>
+DISCORD_CLIENT_SECRET=<your-discord-client-secret>
+```
 
-- AUTH_TRUST_HOST=false
-- AUTH_URL={https://hosteddomain.com for example}
+## OAuth Provider Setup
 
-The reason why I diverge and manually set this in production is because I don't host in vercel or cloudflare pages. These are made to auto detect said settings.
+You need to configure OAuth applications for each provider:
+
+1. **GitHub**: Create an OAuth App at [GitHub Settings](https://github.com/settings/developers)
+2. **Google**: Create credentials at [Google Cloud Console](https://console.cloud.google.com/apis/credentials)
+3. **Discord**: Create an application at [Discord Developer Portal](https://discord.com/developers/applications)
+
+For each provider, set the callback URL to:
+- Development: `http://localhost:3000/api/auth/callback/{provider}`
+- Production: `https://yourdomain.com/api/auth/callback/{provider}`
+
+Where `{provider}` is `github`, `google`, or `discord`.
+
+## Migration Note
+
+If migrating from NextAuth v5, see [MIGRATION.md](./MIGRATION.md) for detailed instructions.
