@@ -12,13 +12,17 @@ import {
 import { State, usStates } from '@/lib/us-states';
 
 interface StatePickerProps {
+  id?: string;
+  value: string;
   onValueChange: (value: string) => void;
-  defaultValue: string;
+  ariaInvalid?: boolean;
 }
 
 const StatePicker: React.FC<StatePickerProps> = ({
+  id,
+  value,
   onValueChange,
-  defaultValue,
+  ariaInvalid,
 }) => {
   const [states, setStates] = useState<State[]>([]);
 
@@ -32,8 +36,8 @@ const StatePicker: React.FC<StatePickerProps> = ({
   }, []);
 
   return (
-    <Select onValueChange={onValueChange} defaultValue={defaultValue}>
-      <SelectTrigger className='w-full'>
+    <Select onValueChange={onValueChange} value={value}>
+      <SelectTrigger id={id} className='w-full' aria-invalid={ariaInvalid}>
         <SelectValue className='text-[16px]' placeholder='Select a state' />
       </SelectTrigger>
       <SelectContent className='text-[16px]'>
