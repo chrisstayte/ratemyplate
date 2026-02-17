@@ -4,15 +4,18 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { signIn } from '@/auth';
+import { enabledSocialProviders, signIn } from '@/auth';
 import { headers } from 'next/headers';
 
 import { LayoutDashboard } from 'lucide-react';
 
 import { FaGithub, FaGoogle, FaDiscord } from 'react-icons/fa';
 
-export default function LoginPage() {
-  const heads = headers();
+export default async function LoginPage() {
+  const heads = await headers();
+  const showGithub = enabledSocialProviders.has('github');
+  const showGoogle = enabledSocialProviders.has('google');
+  const showDiscord = enabledSocialProviders.has('discord');
 
   const pathName = heads.get('x-pathname') || '/';
 
@@ -45,36 +48,56 @@ export default function LoginPage() {
             <h1 className='text-3xl font-bold'>Login</h1>
           </div>
           <div className='grid gap-4'>
-            <form
-              action={async () => {
-                'use server';
-                await signIn('github', { redirectTo: `/${pathName}` });
-              }}>
-              <Button type='submit' variant='outline' className='w-full gap-5'>
-                <FaGithub className='size-6' />
-                <p>GitHub</p>
-              </Button>
-            </form>
-            <form
-              action={async () => {
-                'use server';
-                await signIn('google', { redirectTo: `/${pathName}` });
-              }}>
-              <Button type='submit' variant='outline' className='w-full gap-5'>
-                <FaGoogle className='size-6' />
-                <p>Google</p>
-              </Button>
-            </form>
-            <form
-              action={async () => {
-                'use server';
-                await signIn('discord', { redirectTo: `/${pathName}` });
-              }}>
-              <Button type='submit' variant='outline' className='w-full gap-5'>
-                <FaDiscord className='size-6' />
-                <p>Discord</p>
-              </Button>
-            </form>
+            {showGithub && (
+              <form
+                action={async () => {
+                  'use server';
+                  await signIn('github', { redirectTo: `/${pathName}` });
+                }}>
+                <Button
+                  type='submit'
+                  variant='outline'
+                  className='w-full gap-5'>
+                  <FaGithub className='size-6' />
+                  <p>GitHub</p>
+                </Button>
+              </form>
+            )}
+            {showGoogle && (
+              <form
+                action={async () => {
+                  'use server';
+                  await signIn('google', { redirectTo: `/${pathName}` });
+                }}>
+                <Button
+                  type='submit'
+                  variant='outline'
+                  className='w-full gap-5'>
+                  <FaGoogle className='size-6' />
+                  <p>Google</p>
+                </Button>
+              </form>
+            )}
+            {showDiscord && (
+              <form
+                action={async () => {
+                  'use server';
+                  await signIn('discord', { redirectTo: `/${pathName}` });
+                }}>
+                <Button
+                  type='submit'
+                  variant='outline'
+                  className='w-full gap-5'>
+                  <FaDiscord className='size-6' />
+                  <p>Discord</p>
+                </Button>
+              </form>
+            )}
+            {!showGithub && !showGoogle && !showDiscord && (
+              <p className='text-sm text-muted-foreground'>
+                No OAuth providers are configured.
+              </p>
+            )}
           </div>
           {/* <div className='mt-4 text-center text-sm'>
             By logging in you agree to our{' '}
