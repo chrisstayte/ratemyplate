@@ -52,7 +52,7 @@ export default async function LoginPage() {
               <form
                 action={async () => {
                   'use server';
-                  await signIn('github', { redirectTo: `/${pathName}` });
+                  await signIn('github', { redirectTo: pathName });
                 }}>
                 <Button
                   type='submit'
@@ -67,7 +67,7 @@ export default async function LoginPage() {
               <form
                 action={async () => {
                   'use server';
-                  await signIn('google', { redirectTo: `/${pathName}` });
+                  await signIn('google', { redirectTo: pathName });
                 }}>
                 <Button
                   type='submit'
@@ -82,7 +82,7 @@ export default async function LoginPage() {
               <form
                 action={async () => {
                   'use server';
-                  await signIn('discord', { redirectTo: `/${pathName}` });
+                  await signIn('discord', { redirectTo: pathName });
                 }}>
                 <Button
                   type='submit'
