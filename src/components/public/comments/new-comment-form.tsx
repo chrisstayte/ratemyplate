@@ -2,7 +2,6 @@
 
 import React, { useState } from 'react';
 import { Plate } from '@/lib/plates';
-import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -10,12 +9,10 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from '@/components/ui/form';
+  Field,
+  FieldError,
+  FieldLabel,
+} from '@/components/ui/field';
 import { createPlate, postComment } from '@/app/actions';
 import confetti from 'canvas-confetti';
 
@@ -93,30 +90,25 @@ const NewCommentForm: React.FC<NewCommentFormProps> = ({
     frame();
   };
 
+  const messageError = form.formState.errors.message;
+
   return (
-    <Form {...form}>
-      <form
-        className={cn('grid items-start gap-4', className)}
-        onSubmit={form.handleSubmit(onSubmit)}>
-        <FormField
-          control={form.control}
-          name='message'
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <div className='grid gap-2'>
-                  <Label htmlFor='message'>Comment</Label>
-                  <Textarea id='message' className='text-[16px]' {...field} />
-                </div>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
+    <form
+      className={cn('grid items-start gap-4', className)}
+      onSubmit={form.handleSubmit(onSubmit)}>
+      <Field data-invalid={!!messageError}>
+        <FieldLabel htmlFor='new-comment-message'>Comment</FieldLabel>
+        <Textarea
+          id='new-comment-message'
+          className='text-[16px]'
+          aria-invalid={!!messageError}
+          {...form.register('message')}
         />
-        {error && <p className='text-red-500'>{error}</p>}
-        <Button type='submit'>Post</Button>
-      </form>
-    </Form>
+        {messageError && <FieldError errors={[messageError]} />}
+      </Field>
+      {error && <p className='text-red-500'>{error}</p>}
+      <Button type='submit'>Post</Button>
+    </form>
   );
 };
 

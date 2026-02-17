@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
@@ -17,13 +18,11 @@ import { validateLicensePlate } from '@/lib/plates';
 
 import StatePicker from './state-picker';
 import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
+  Field,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+} from '@/components/ui/field';
 
 export const searchCardFormSchema = z
   .object({
@@ -42,11 +41,12 @@ export const searchCardFormSchema = z
 
 export default function SearchCard() {
   const router = useRouter();
+  const [stateValue, setStateValue] = useState('');
 
   const form = useForm<z.infer<typeof searchCardFormSchema>>({
     resolver: zodResolver(searchCardFormSchema),
     defaultValues: {
-      plate: undefined,
+      plate: '',
       state: '',
     },
   });
@@ -57,54 +57,55 @@ export default function SearchCard() {
     );
   }
 
+  const plateError = form.formState.errors.plate;
+  const stateError = form.formState.errors.state;
+
   return (
-    <Card className='w-full max-w-md'>
+    <Card className="w-full max-w-md h-full">
       <CardHeader>
         <CardTitle>Let&apos;s find em.</CardTitle>
         <CardDescription>Enter the plate number and state</CardDescription>
       </CardHeader>
       <CardContent>
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className='flex flex-col gap-5'>
-            <div className='flex flex-col sm:flex-row gap-5'>
-              <FormField
-                control={form.control}
-                name='plate'
-                render={({ field }) => (
-                  <FormItem className='basis-1/2'>
-                    <FormLabel>License Plate</FormLabel>
-                    <FormControl>
-                      <Input
-                        className='uppercase text-[16px]'
-                        placeholder=''
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="flex flex-col gap-5"
+        >
+          <FieldGroup className="flex flex-col sm:flex-row gap-5">
+            <Field className="basis-1/2" data-invalid={!!plateError}>
+              <FieldLabel htmlFor="search-card-plate">License Plate</FieldLabel>
+              <Input
+                id="search-card-plate"
+                className="uppercase text-[16px]"
+                placeholder=""
+                aria-invalid={!!plateError}
+                {...form.register('plate')}
               />
-              <FormField
-                control={form.control}
-                name='state'
-                render={({ field }) => (
-                  <FormItem className='basis-1/2'>
-                    <FormLabel>State</FormLabel>
-                    <StatePicker
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    />
-                  </FormItem>
-                )}
+              {plateError && <FieldError errors={[plateError]} />}
+            </Field>
+            <Field className="basis-1/2" data-invalid={!!stateError}>
+              <FieldLabel htmlFor="search-card-state">State</FieldLabel>
+              <input type="hidden" {...form.register('state')} />
+              <StatePicker
+                id="search-card-state"
+                onValueChange={(value) => {
+                  setStateValue(value);
+                  form.setValue('state', value, {
+                    shouldDirty: true,
+                    shouldTouch: true,
+                    shouldValidate: true,
+                  });
+                }}
+                value={stateValue}
+                ariaInvalid={!!stateError}
               />
-            </div>
-            <div className='w-full flex justify-end'>
-              <Button type='submit'>Search</Button>
-            </div>
-          </form>
-        </Form>
+              {stateError && <FieldError errors={[stateError]} />}
+            </Field>
+          </FieldGroup>
+          <div className="w-full flex justify-end">
+            <Button type="submit">Search</Button>
+          </div>
+        </form>
       </CardContent>
     </Card>
   );
