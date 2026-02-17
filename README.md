@@ -17,14 +17,15 @@ Review and rate people based upon their driving. It's all tied to the license pl
 
 # Tech Stack
 
-- Next.js 14
+- Next.js 16
 - Postgres
 - Drizzle ORM
+- Better Auth
 - Tailwind, ShadcnUI
 
 # Custom Commands
 
-- `npx run db:push` - drizzle push schema migration to database
+- `npm run db:push` - drizzle push schema migration to database
 - `npm run db:studio` - runs drizzle studio
 - `npm run db:generate` - creates migration sql statement in `./drizzle`
 - `npm run db:migrate` - applies migration sql statements
@@ -33,25 +34,12 @@ Review and rate people based upon their driving. It's all tied to the license pl
 # ENV Setup
 
 - DATABASE_URL={postgres connection string}
-- AUTH_DRIZZLE_URL={postgres connection string}
 - NODE_ENV={development or production}
-- AUTH_SECRET={generated for auth js}
-- AUTH_GITHUB_ID={authjs github id}
-- AUTH_GITHUB_SECRET={authjs github secret}
-- AUTH_DISCORD_ID={authjs discord id}
-- AUTH_DISCORD_SECRET={authjs discord secret}
-- AUTH_GOOGLE_ID={authjs google id}
-- AUTH_GOOGLE_SECRET={authjs google secret}
-
-### We diverge between dev and production
-
-Development </br>
-
-- AUTH_TRUST_HOST=true
-
-Production </br>
-
-- AUTH_TRUST_HOST=false
-- AUTH_URL={https://hosteddomain.com for example}
-
-The reason why I diverge and manually set this in production is because I don't host in vercel or cloudflare pages. These are made to auto detect said settings.
+- BETTER_AUTH_SECRET={generated secret}
+- BETTER_AUTH_URL={https://hosteddomain.com for example}
+- GITHUB_CLIENT_ID={github oauth client id}
+- GITHUB_CLIENT_SECRET={github oauth client secret}
+- DISCORD_CLIENT_ID={discord oauth client id}
+- DISCORD_CLIENT_SECRET={discord oauth client secret}
+- GOOGLE_CLIENT_ID={google oauth client id}
+- GOOGLE_CLIENT_SECRET={google oauth client secret}

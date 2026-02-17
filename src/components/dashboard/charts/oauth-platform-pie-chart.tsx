@@ -23,13 +23,13 @@ export default async function OAuthPlatformPieChart() {
 
   const plateCountByState = await database
     .select({
-      provider: accounts.provider,
-      providerCount: sql<number>`cast(count(${accounts.provider}) as int)`.as(
+      provider: accounts.providerId,
+      providerCount: sql<number>`cast(count(${accounts.providerId}) as int)`.as(
         'providerCount'
       ),
     })
     .from(accounts)
-    .groupBy(accounts.provider);
+    .groupBy(accounts.providerId);
 
   return <OAuthPlatformPieChartRender data={plateCountByState} />;
 }

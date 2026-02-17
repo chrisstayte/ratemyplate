@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-export function middleware(request: Request) {
+export function proxy(request: Request) {
   const url = new URL(request.url);
   const origin = url.origin;
   const pathname = url.pathname;
@@ -11,7 +11,7 @@ export function middleware(request: Request) {
   requestHeaders.set('x-pathname', pathname);
   requestHeaders.set('x-fullPath', fullPath);
 
-  // Define the paths where you want the middleware to run
+  // Define the paths where you want the proxy logging to run
   const paths = ['/', '/plate'];
 
   if (paths.some((path) => path === pathname)) {

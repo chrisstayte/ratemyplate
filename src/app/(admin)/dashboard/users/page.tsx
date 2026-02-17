@@ -48,7 +48,7 @@ export default async function UsersPage() {
       name: users.name,
       email: users.email,
       createdAt: users.createdAt,
-      provider: accounts.provider,
+      provider: accounts.providerId,
       favoriteCount:
         sql<number>`COALESCE(${favoriteCountSubquery.count}, 0)`.as(
           'favoriteCount'

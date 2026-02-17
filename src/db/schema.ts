@@ -5,11 +5,11 @@ import {
   serial,
   text,
   primaryKey,
+  uniqueIndex,
   varchar,
   integer,
 } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
-import type { AdapterAccountType } from 'next-auth/adapters';
 
 export const plates = pgTable('rmp_plates', {
   id: serial('id').primaryKey(),
@@ -46,17 +46,20 @@ export const comments_relations = relations(comments, ({ one }) => ({
   }),
 }));
 
-// Next AUTH -> Postgres
+// Better Auth tables
 
-export const users = pgTable('rmp_user', {
+export const users = pgTable('rmp_auth_users', {
   id: text('id')
     .primaryKey()
     .$defaultFn(() => crypto.randomUUID()),
   name: text('name'),
   email: text('email').notNull(),
-  emailVerified: timestamp('emailVerified', { mode: 'date' }),
+  emailVerified: boolean('emailVerified').notNull().default(false),
   image: text('image'),
-  createdAt: timestamp('created_at', { withTimezone: true })
+  createdAt: timestamp('createdAt', { mode: 'date', withTimezone: true })
+    .notNull()
+    .defaultNow(),
+  updatedAt: timestamp('updatedAt', { mode: 'date', withTimezone: true })
     .notNull()
     .defaultNow(),
 });
@@ -68,68 +71,102 @@ export const users_relations = relations(users, ({ many }) => ({
 }));
 
 export const accounts = pgTable(
-  'rmp_account',
+  'rmp_auth_accounts',
   {
+    id: text('id')
+      .primaryKey()
+      .$defaultFn(() => crypto.randomUUID()),
     userId: text('userId')
       .notNull()
       .references(() => users.id, { onDelete: 'cascade' }),
-    type: text('type').$type<AdapterAccountType>().notNull(),
-    provider: text('provider').notNull(),
-    providerAccountId: text('providerAccountId').notNull(),
-    refresh_token: text('refresh_token'),
-    access_token: text('access_token'),
-    expires_at: integer('expires_at'),
-    token_type: text('token_type'),
+    accountId: text('accountId').notNull(),
+    providerId: text('providerId').notNull(),
+    accessToken: text('accessToken'),
+    refreshToken: text('refreshToken'),
+    accessTokenExpiresAt: timestamp('accessTokenExpiresAt', {
+      mode: 'date',
+      withTimezone: true,
+    }),
+    refreshTokenExpiresAt: timestamp('refreshTokenExpiresAt', {
+      mode: 'date',
+      withTimezone: true,
+    }),
     scope: text('scope'),
-    id_token: text('id_token'),
-    session_state: text('session_state'),
+    idToken: text('idToken'),
+    password: text('password'),
+    createdAt: timestamp('createdAt', { mode: 'date', withTimezone: true })
+      .notNull()
+      .defaultNow(),
+    updatedAt: timestamp('updatedAt', { mode: 'date', withTimezone: true })
+      .notNull()
+      .defaultNow(),
   },
   (account) => ({
-    compoundKey: primaryKey({
-      columns: [account.provider, account.providerAccountId],
-    }),
+    providerAccountIdIdx: uniqueIndex(
+      'rmp_auth_accounts_providerId_accountId_idx'
+    ).on(account.providerId, account.accountId),
   })
 );
 
-export const sessions = pgTable('rmp_session', {
-  sessionToken: text('sessionToken').primaryKey(),
+export const sessions = pgTable('rmp_auth_sessions', {
+  id: text('id')
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
   userId: text('userId')
     .notNull()
     .references(() => users.id, { onDelete: 'cascade' }),
-  expires: timestamp('expires', { mode: 'date' }).notNull(),
+  token: text('token').notNull().unique(),
+  expiresAt: timestamp('expiresAt', { mode: 'date', withTimezone: true }).notNull(),
+  ipAddress: text('ipAddress'),
+  userAgent: text('userAgent'),
+  createdAt: timestamp('createdAt', { mode: 'date', withTimezone: true })
+    .notNull()
+    .defaultNow(),
+  updatedAt: timestamp('updatedAt', { mode: 'date', withTimezone: true })
+    .notNull()
+    .defaultNow(),
 });
 
 export const verificationTokens = pgTable(
-  'rmp_verificationToken',
+  'rmp_auth_verifications',
   {
+    id: text('id')
+      .primaryKey()
+      .$defaultFn(() => crypto.randomUUID()),
     identifier: text('identifier').notNull(),
-    token: text('token').notNull(),
-    expires: timestamp('expires', { mode: 'date' }).notNull(),
+    value: text('value').notNull(),
+    expiresAt: timestamp('expiresAt', { mode: 'date', withTimezone: true }).notNull(),
+    createdAt: timestamp('createdAt', { mode: 'date', withTimezone: true })
+      .notNull()
+      .defaultNow(),
+    updatedAt: timestamp('updatedAt', { mode: 'date', withTimezone: true })
+      .notNull()
+      .defaultNow(),
   },
-  (verificationToken) => ({
-    compositePk: primaryKey({
-      columns: [verificationToken.identifier, verificationToken.token],
-    }),
+  (verification) => ({
+    identifierValueIdx: uniqueIndex(
+      'rmp_auth_verifications_identifier_value_idx'
+    ).on(verification.identifier, verification.value),
   })
 );
 
-export const authenticators = pgTable(
-  'rmp_authenticator',
+export const passkeys = pgTable(
+  'rmp_auth_passkeys',
   {
-    credentialID: text('credentialID').notNull().unique(),
+    credentialId: text('credentialId').notNull().unique(),
     userId: text('userId')
       .notNull()
       .references(() => users.id, { onDelete: 'cascade' }),
-    providerAccountId: text('providerAccountId').notNull(),
-    credentialPublicKey: text('credentialPublicKey').notNull(),
+    providerUserId: text('providerUserId').notNull(),
+    publicKey: text('publicKey').notNull(),
     counter: integer('counter').notNull(),
-    credentialDeviceType: text('credentialDeviceType').notNull(),
-    credentialBackedUp: boolean('credentialBackedUp').notNull(),
+    deviceType: text('deviceType').notNull(),
+    backedUp: boolean('backedUp').notNull(),
     transports: text('transports'),
   },
-  (authenticator) => ({
+  (passkey) => ({
     compositePK: primaryKey({
-      columns: [authenticator.userId, authenticator.credentialID],
+      columns: [passkey.userId, passkey.credentialId],
     }),
   })
 );

@@ -23,14 +23,12 @@ export default function PrivacyPage() {
             <li>Github</li>
           </ul>
           <p>
-            As far as information stored. I use the default schema in AUTH js to
-            store users, accounts, sessions, etc. This information is not sent
-            to the front end just the comments and plates. I believe it captures
-            the email and name. I do not use this information for anything other
-            than keeping bots from flooding the website. I do however tie each
-            comment to the associated account as well if said person was the
-            first commenter on a plate. That being said I can see how this could
-            be a privacy concern.
+            As far as information stored, I use Better Auth tables for users,
+            linked OAuth accounts, sessions, and verification records. This
+            information is not sent to the front end beyond what is needed for
+            an authenticated session. I primarily retain name and email so we
+            can limit abuse and tie a comment to the account that posted it.
+            That said, I understand this can still raise privacy concerns.
           </p>
           <p className='text-xl mt-7'>Contact</p>
           <p>
