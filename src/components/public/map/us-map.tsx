@@ -6,6 +6,7 @@ import type { State } from '@/lib/us-states';
 import StatePanel from './state-panel';
 import type maplibregl from 'maplibre-gl';
 import type { ExpressionSpecification } from 'maplibre-gl';
+import { AnimatePresence } from 'framer-motion';
 
 type StatePlateCount = {
   state: string;
@@ -47,6 +48,8 @@ function StatesLayer({
   const [selectedState, setSelectedState] = useState<string | null>(null);
   const [hoveredStateId, setHoveredStateId] = useState<number | null>(null);
   const hoveredStateIdRef = useRef<number | null>(null);
+  const [hoveredAbbr, setHoveredAbbr] = useState<string | null>(null);
+  const [hoveredPoint, setHoveredPoint] = useState<{ x: number; y: number } | null>(null);
   const [isDark, setIsDark] = useState(
     () => typeof document !== 'undefined' && document.documentElement.classList.contains('dark')
   );
@@ -105,8 +108,11 @@ function StatesLayer({
           );
         }
         const id = features[0].id as number;
+        const abbr = features[0].properties?.STUSPS as string | undefined;
         hoveredStateIdRef.current = id;
         setHoveredStateId(id);
+        setHoveredAbbr(abbr ?? null);
+        setHoveredPoint({ x: e.point.x, y: e.point.y });
         map.setFeatureState(
           { source: 'us-states', id },
           { hover: true }
@@ -121,6 +127,8 @@ function StatesLayer({
         }
         hoveredStateIdRef.current = null;
         setHoveredStateId(null);
+        setHoveredAbbr(null);
+        setHoveredPoint(null);
         map.getCanvas().style.cursor = '';
       }
     },
@@ -137,6 +145,8 @@ function StatesLayer({
     }
     hoveredStateIdRef.current = null;
     setHoveredStateId(null);
+    setHoveredAbbr(null);
+    setHoveredPoint(null);
     map.getCanvas().style.cursor = '';
   }, [map]);
 
@@ -215,15 +225,52 @@ function StatesLayer({
 
   return (
     <>
-      {selectedState && selectedStateName && (
-        <StatePanel
-          stateAbbreviation={selectedState}
-          stateName={selectedStateName}
-          plateCount={selectedStateCount}
-          onClose={() => setSelectedState(null)}
-        />
+      {hoveredAbbr && hoveredPoint && (
+        <div
+          className='absolute z-20 pointer-events-none rounded-md border bg-popover px-3 py-1.5 text-sm shadow-md'
+          style={{ left: hoveredPoint.x + 12, top: hoveredPoint.y - 40 }}
+        >
+          <span className='font-medium'>{stateNameMap.get(hoveredAbbr) ?? hoveredAbbr}</span>
+          <span className='text-muted-foreground ml-2'>
+            {countMap.get(hoveredAbbr) ?? 0} {(countMap.get(hoveredAbbr) ?? 0) === 1 ? 'plate' : 'plates'}
+          </span>
+        </div>
       )}
+      <AnimatePresence>
+        {selectedState && selectedStateName && (
+          <StatePanel
+            stateAbbreviation={selectedState}
+            stateName={selectedStateName}
+            plateCount={selectedStateCount}
+            onClose={() => setSelectedState(null)}
+          />
+        )}
+      </AnimatePresence>
+      <MapLegend maxCount={maxCount} isDark={isDark} />
     </>
+  );
+}
+
+function MapLegend({ maxCount, isDark }: { maxCount: number; isDark: boolean }) {
+  const stops = 10;
+  const colors = Array.from({ length: stops + 1 }, (_, i) =>
+    getColor(Math.round((i / stops) * maxCount), maxCount, isDark)
+  );
+
+  return (
+    <div className='absolute bottom-6 left-4 z-10 rounded-md border bg-popover p-3 text-xs shadow-md'>
+      <div className='font-medium mb-1.5'>Plates</div>
+      <div
+        className='h-3 w-40 rounded-sm'
+        style={{
+          background: `linear-gradient(to right, ${colors.join(', ')})`,
+        }}
+      />
+      <div className='flex justify-between mt-1 text-muted-foreground'>
+        <span>0</span>
+        <span>{maxCount}</span>
+      </div>
+    </div>
   );
 }
 
