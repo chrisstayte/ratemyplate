@@ -48,8 +48,8 @@ const LicensePlate: React.FC<LicensePlateProps> = async ({
   } else {
     return (
       <Card
-        className={`select-none flex flex-col items-center h-full max-h-52 relative w-full max-w-96 p-3 aspect-video shadow-sm ${className}`}>
-        {plate.state && <Badge className='text-xl'>{stateName}</Badge>}
+        className={`select-none flex flex-col items-center h-full max-h-52 relative w-full max-w-96 p-3 gap-0 aspect-video ${className}`}>
+        {plate.state && <Badge className='text-xl h-auto'>{stateName}</Badge>}
         <div className='absolute inset-0 flex items-center justify-center uppercase'>
           <p className='text-4xl'>{plate.plateNumber}</p>
         </div>

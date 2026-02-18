@@ -27,7 +27,7 @@ export default async function LoginDialog({ buttonTitle }: LoginDialogProps) {
   if (!session?.user) {
     return (
       <Dialog>
-        <DialogTrigger>
+        <DialogTrigger asChild>
           <Button>{buttonTitle ?? 'Signin'}</Button>
         </DialogTrigger>
         <DialogContent className='w-11/12'>

@@ -17,7 +17,7 @@ export default async function RootLayout({
   return (
     <div className={`flex flex-col min-h-screen`}>
       {isAdmin && <Navbar />}
-      <main className='flex flex-grow'>{children}</main>
+      <main className='flex grow'>{children}</main>
       <hr />
     </div>
   );
