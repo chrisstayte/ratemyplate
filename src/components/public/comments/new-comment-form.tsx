@@ -8,11 +8,7 @@ import { cn } from '@/lib/utils';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import {
-  Field,
-  FieldError,
-  FieldLabel,
-} from '@/components/ui/field';
+import { Field, FieldError, FieldLabel } from '@/components/ui/field';
 import { createPlate, postComment } from '@/app/actions';
 import confetti from 'canvas-confetti';
 
@@ -45,7 +41,7 @@ const NewCommentForm: React.FC<NewCommentFormProps> = ({
 
     if (response.id) {
       // Write message using plate id
-      const response2 = postComment(values.message, response.id);
+      const response2 = await postComment(values.message, response.id);
       onClose();
       shootFireworks();
 
@@ -95,19 +91,20 @@ const NewCommentForm: React.FC<NewCommentFormProps> = ({
   return (
     <form
       className={cn('grid items-start gap-4', className)}
-      onSubmit={form.handleSubmit(onSubmit)}>
+      onSubmit={form.handleSubmit(onSubmit)}
+    >
       <Field data-invalid={!!messageError}>
-        <FieldLabel htmlFor='new-comment-message'>Comment</FieldLabel>
+        <FieldLabel htmlFor="new-comment-message">Comment</FieldLabel>
         <Textarea
-          id='new-comment-message'
-          className='text-[16px]'
+          id="new-comment-message"
+          className="text-[16px]"
           aria-invalid={!!messageError}
           {...form.register('message')}
         />
         {messageError && <FieldError errors={[messageError]} />}
       </Field>
-      {error && <p className='text-red-500'>{error}</p>}
-      <Button type='submit'>Post</Button>
+      {error && <p className="text-red-500">{error}</p>}
+      <Button type="submit">Post</Button>
     </form>
   );
 };
