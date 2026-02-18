@@ -4,7 +4,7 @@ import { database } from '@/db/database';
 import { plates, comments, user_favorite_plates } from '@/db/schema';
 import { revalidatePath } from 'next/cache';
 import { auth, isCurrentUserAdmin } from '@/auth';
-import { eq, and } from 'drizzle-orm';
+import { eq, and, desc } from 'drizzle-orm';
 import { Plate } from '@/lib/plates';
 
 export async function createPlate(plate: Plate): Promise<any> {
@@ -119,6 +119,22 @@ export async function removePlateFromFavorites(plate: Plate) {
     .execute();
 
   revalidatePath('/favorites');
+}
+
+export async function getRecentCommentsByState(stateAbbreviation: string) {
+  const results = await database
+    .select({
+      commentText: comments.comment,
+      plateNumber: plates.plateNumber,
+      timestamp: comments.timestamp,
+    })
+    .from(comments)
+    .innerJoin(plates, eq(comments.plateId, plates.id))
+    .where(eq(plates.state, stateAbbreviation))
+    .orderBy(desc(comments.timestamp))
+    .limit(20);
+
+  return results;
 }
 
 export async function deleteComment(id: number): Promise<boolean> {
