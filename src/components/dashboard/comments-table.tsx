@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { DataTable } from '@/components/data-table';
 import { ColumnDef } from '@tanstack/react-table';
 import '@/lib/extensions';
@@ -38,6 +38,10 @@ export default function CommentsTable({
 }: CommentsTableProps) {
   const [siteComments, setSiteComments] = useState<Comment[]>(tableData);
   const [selectedStates, setSelectedStates] = useState<Set<string>>(new Set());
+
+  useEffect(() => {
+    setSiteComments(tableData);
+  }, [tableData]);
 
   function handleDelete(id: number) {
     setSiteComments((prevComments) =>
