@@ -6,8 +6,7 @@ import NotAuthenticated from '@/components/dashboard/not-authenticated';
 import { database } from '@/db/database';
 import { desc, eq, sql } from 'drizzle-orm';
 import { users, accounts, user_favorite_plates, comments } from '@/db/schema';
-import { DataTable } from '@/components/data-table';
-import { usersColumn } from '@/components/dashboard/users-column';
+import UsersTable from '@/components/dashboard/users-table';
 import LoginPage from '@/components/login-page';
 
 export default async function UsersPage() {
@@ -63,10 +62,16 @@ export default async function UsersPage() {
     .leftJoin(commentCountSubquery, eq(users.id, commentCountSubquery.userId))
     .orderBy(desc(users.createdAt));
 
+  const uniqueProviders = [
+    ...new Set(
+      siteUsers.map((u) => u.provider).filter((p): p is string => p !== null)
+    ),
+  ].sort();
+
   return (
-    <div className='container flex flex-col gap-5 py-5'>
-      <p className='text-2xl'>Users</p>
-      <DataTable columns={usersColumn} data={siteUsers} className='w-full' />
+    <div className="container flex flex-col gap-5 py-5">
+      <p className="text-2xl">Users</p>
+      <UsersTable data={siteUsers} providers={uniqueProviders} />
     </div>
   );
 }

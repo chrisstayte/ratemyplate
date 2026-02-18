@@ -36,10 +36,16 @@ export default async function CommentsPage() {
     .leftJoin(plates, eq(comments.plateId, plates.id))
     .orderBy(desc(comments.timestamp));
 
+  const uniqueStates = [
+    ...new Set(
+      siteComments.map((c) => c.state).filter((s): s is string => s !== null)
+    ),
+  ].sort();
+
   return (
-    <div className='container flex flex-col gap-5 py-5'>
-      <p className='text-2xl'>Comments</p>
-      <CommentsTable tableData={siteComments} />
+    <div className="container flex flex-col gap-5 py-5">
+      <p className="text-2xl">Comments</p>
+      <CommentsTable tableData={siteComments} states={uniqueStates} />
     </div>
   );
 }

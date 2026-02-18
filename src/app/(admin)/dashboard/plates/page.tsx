@@ -6,8 +6,7 @@ import NotAuthenticated from '@/components/dashboard/not-authenticated';
 import { database } from '@/db/database';
 import { desc, eq, sql } from 'drizzle-orm';
 import { plates, comments, user_favorite_plates } from '@/db/schema';
-import { DataTable } from '@/components/data-table';
-import { plateColumns } from '@/components/dashboard/plates-column';
+import PlatesTable from '@/components/dashboard/plates-table';
 import LoginPage from '@/components/login-page';
 
 export default async function PlatesPage() {
@@ -64,14 +63,14 @@ export default async function PlatesPage() {
     .leftJoin(commentCountSubquery, eq(plates.id, commentCountSubquery.plateId))
     .orderBy(desc(plates.timestamp));
 
+  const uniqueStates = [
+    ...new Set(licensePlates.map((p) => p.state)),
+  ].sort();
+
   return (
-    <div className='container flex flex-col gap-5 py-5'>
-      <p className='text-2xl'>Plates</p>
-      <DataTable
-        columns={plateColumns}
-        data={licensePlates}
-        className='w-full'
-      />
+    <div className="container flex flex-col gap-5 py-5">
+      <p className="text-2xl">Plates</p>
+      <PlatesTable data={licensePlates} states={uniqueStates} />
     </div>
   );
 }
