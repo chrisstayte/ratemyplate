@@ -14,10 +14,11 @@ export default function RecentEntriesSection() {
   const numberOfEntriesToDisplay = 10;
 
   return (
-    <div className='flex flex-col gap-5 justify-center w-full h-full'>
-      <p className='text-2xl '>Recent Comments</p>
+    <div className="flex flex-col gap-5 justify-center w-full h-full">
+      <p className="text-2xl ">Recent Comments</p>
       <Suspense
-        fallback={<RecentEntriesSkeleton limit={numberOfEntriesToDisplay} />}>
+        fallback={<RecentEntriesSkeleton limit={numberOfEntriesToDisplay} />}
+      >
         <RecentEntries limit={numberOfEntriesToDisplay} />
       </Suspense>
     </div>
@@ -44,15 +45,15 @@ async function RecentEntries({ limit = 10 }) {
 
   if (recentPlates.length === 0) {
     return (
-      <div className='h-full text-center place-content-center'>
-        <p className='text-xl'>No recent comments</p>
-        <p className='text-xl'>Be the first!</p>
+      <div className="h-full text-center place-content-center">
+        <p className="text-xl">No recent comments</p>
+        <p className="text-xl">Be the first!</p>
       </div>
     );
   }
 
   return (
-    <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5 '>
+    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 ">
       {recentPlates.map(async (plate) => (
         <LicensePlateTiny
           key={plate.id}
@@ -69,7 +70,7 @@ function RecentEntriesSkeleton({ limit = 10 }) {
   const skeletons = Array.from({ length: limit });
 
   return (
-    <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5'>
+    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
       {skeletons.map((_, index) => (
         <LicensePlateTinySkeleton key={index} />
       ))}
