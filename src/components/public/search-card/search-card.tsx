@@ -61,7 +61,7 @@ export default function SearchCard() {
   const stateError = form.formState.errors.state;
 
   return (
-    <Card className="w-full max-w-md h-full">
+    <Card className="w-full max-w-md">
       <CardHeader>
         <CardTitle>Let&apos;s find em.</CardTitle>
         <CardDescription>Enter the plate number and state</CardDescription>

@@ -40,7 +40,7 @@ const StatePicker: React.FC<StatePickerProps> = ({
       <SelectTrigger id={id} className='w-full' aria-invalid={ariaInvalid}>
         <SelectValue className='text-[16px]' placeholder='Select a state' />
       </SelectTrigger>
-      <SelectContent className='text-[16px]'>
+      <SelectContent position="popper" className='text-[16px] max-h-60'>
         {states.map((state) => (
           <SelectItem
             className='text-[16px]'
