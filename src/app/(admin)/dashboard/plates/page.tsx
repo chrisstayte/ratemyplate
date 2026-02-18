@@ -4,7 +4,7 @@ import { auth, isUserAdmin } from '@/auth';
 import NotAuthenticated from '@/components/dashboard/not-authenticated';
 
 import { database } from '@/db/database';
-import { desc, eq, sql } from 'drizzle-orm';
+import { desc, eq, ilike, sql } from 'drizzle-orm';
 import { plates, comments, user_favorite_plates } from '@/db/schema';
 import PlatesTable from '@/components/dashboard/plates-table';
 import { SearchBar } from '@/components/dashboard/search-bar';
@@ -48,7 +48,7 @@ export default async function PlatesPage({
     .groupBy(comments.plateId)
     .as('commentCountSubquery');
 
-  const allPlates = await database
+  const query = database
     .select({
       id: plates.id,
       state: plates.state,
@@ -70,13 +70,16 @@ export default async function PlatesPage({
     .leftJoin(commentCountSubquery, eq(plates.id, commentCountSubquery.plateId))
     .orderBy(desc(plates.timestamp));
 
-  const licensePlates = q
-    ? allPlates.filter((p) =>
-        p.plateNumber.toLowerCase().includes(q.toLowerCase())
-      )
-    : allPlates;
+  if (q) {
+    query.where(ilike(plates.plateNumber, `%${q}%`));
+  }
 
-  const uniqueStates = [...new Set(allPlates.map((p) => p.state))].sort();
+  const licensePlates = await query;
+
+  const statesResult = await database
+    .selectDistinct({ state: plates.state })
+    .from(plates);
+  const uniqueStates = statesResult.map((r) => r.state).sort();
 
   return (
     <div className="container flex flex-col gap-5 py-5">

@@ -4,7 +4,7 @@ import { auth, isUserAdmin } from '@/auth';
 import NotAuthenticated from '@/components/dashboard/not-authenticated';
 
 import { database } from '@/db/database';
-import { desc, eq, sql } from 'drizzle-orm';
+import { desc, eq, ilike, or, sql } from 'drizzle-orm';
 import { users, accounts, user_favorite_plates, comments } from '@/db/schema';
 import UsersTable from '@/components/dashboard/users-table';
 import { SearchBar } from '@/components/dashboard/search-bar';
@@ -48,7 +48,7 @@ export default async function UsersPage({
     .groupBy(comments.userId)
     .as('commentCountSubquery');
 
-  const allUsers = await database
+  const query = database
     .select({
       id: users.id,
       name: users.name,
@@ -69,20 +69,21 @@ export default async function UsersPage({
     .leftJoin(commentCountSubquery, eq(users.id, commentCountSubquery.userId))
     .orderBy(desc(users.createdAt));
 
-  const siteUsers = q
-    ? allUsers.filter((u) => {
-        const query = q.toLowerCase();
-        const matchesName = u.name?.toLowerCase().includes(query) ?? false;
-        const matchesEmail = u.email.toLowerCase().includes(query);
-        return matchesName || matchesEmail;
-      })
-    : allUsers;
+  if (q) {
+    query.where(
+      or(ilike(users.name, `%${q}%`), ilike(users.email, `%${q}%`))
+    );
+  }
 
-  const uniqueProviders = [
-    ...new Set(
-      allUsers.map((u) => u.provider).filter((p): p is string => p !== null)
-    ),
-  ].sort();
+  const siteUsers = await query;
+
+  const providersResult = await database
+    .selectDistinct({ provider: accounts.providerId })
+    .from(accounts);
+  const uniqueProviders = providersResult
+    .map((r) => r.provider)
+    .filter((p): p is string => p !== null)
+    .sort();
 
   return (
     <div className="container flex flex-col gap-5 py-5">
