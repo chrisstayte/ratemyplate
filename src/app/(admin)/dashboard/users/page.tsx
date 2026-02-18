@@ -48,7 +48,7 @@ export default async function UsersPage({
     .groupBy(comments.userId)
     .as('commentCountSubquery');
 
-  const query = database
+  const siteUsers = await database
     .select({
       id: users.id,
       name: users.name,
@@ -67,15 +67,12 @@ export default async function UsersPage({
     .leftJoin(accounts, eq(users.id, accounts.userId))
     .leftJoin(favoriteCountSubquery, eq(users.id, favoriteCountSubquery.userId))
     .leftJoin(commentCountSubquery, eq(users.id, commentCountSubquery.userId))
+    .where(
+      q
+        ? or(ilike(users.name, `%${q}%`), ilike(users.email, `%${q}%`))
+        : undefined
+    )
     .orderBy(desc(users.createdAt));
-
-  if (q) {
-    query.where(
-      or(ilike(users.name, `%${q}%`), ilike(users.email, `%${q}%`))
-    );
-  }
-
-  const siteUsers = await query;
 
   const providersResult = await database
     .selectDistinct({ provider: accounts.providerId })

@@ -47,7 +47,7 @@ export function SearchBar({ placeholder }: SearchBarProps) {
         placeholder={placeholder}
         value={value}
         onChange={(e) => setValue(e.target.value)}
-        className="pl-9"
+        className="pl-9 bg-card"
       />
     </div>
   );

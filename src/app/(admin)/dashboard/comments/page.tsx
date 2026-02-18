@@ -29,7 +29,7 @@ export default async function CommentsPage({
     return <NotAuthenticated />;
   }
 
-  const query = database
+  const siteComments = await database
     .select({
       id: comments.id,
       comment: comments.comment,
@@ -41,19 +41,16 @@ export default async function CommentsPage({
     .from(comments)
     .leftJoin(users, eq(comments.userId, users.id))
     .leftJoin(plates, eq(comments.plateId, plates.id))
+    .where(
+      q
+        ? or(
+            ilike(plates.plateNumber, `%${q}%`),
+            ilike(users.email, `%${q}%`),
+            ilike(comments.comment, `%${q}%`)
+          )
+        : undefined
+    )
     .orderBy(desc(comments.timestamp));
-
-  if (q) {
-    query.where(
-      or(
-        ilike(plates.plateNumber, `%${q}%`),
-        ilike(users.email, `%${q}%`),
-        ilike(comments.comment, `%${q}%`)
-      )
-    );
-  }
-
-  const siteComments = await query;
 
   const statesResult = await database
     .selectDistinct({ state: plates.state })
@@ -63,8 +60,11 @@ export default async function CommentsPage({
     .filter((s): s is string => s !== null)
     .sort();
 
+  console.log(q);
+  console.log(siteComments.length);
+
   return (
-    <div className="container flex flex-col gap-5 py-5">
+    <div className="container mx-auto flex flex-col gap-5 py-5">
       <p className="text-2xl">Comments</p>
       <SearchBar placeholder="Search by plate, user, or comment..." />
       <CommentsTable tableData={siteComments} states={uniqueStates} />

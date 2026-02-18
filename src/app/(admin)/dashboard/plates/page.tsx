@@ -48,7 +48,7 @@ export default async function PlatesPage({
     .groupBy(comments.plateId)
     .as('commentCountSubquery');
 
-  const query = database
+  const licensePlates = await database
     .select({
       id: plates.id,
       state: plates.state,
@@ -68,13 +68,8 @@ export default async function PlatesPage({
       eq(plates.id, favoriteCountSubquery.plateId)
     )
     .leftJoin(commentCountSubquery, eq(plates.id, commentCountSubquery.plateId))
+    .where(q ? ilike(plates.plateNumber, `%${q}%`) : undefined)
     .orderBy(desc(plates.timestamp));
-
-  if (q) {
-    query.where(ilike(plates.plateNumber, `%${q}%`));
-  }
-
-  const licensePlates = await query;
 
   const statesResult = await database
     .selectDistinct({ state: plates.state })

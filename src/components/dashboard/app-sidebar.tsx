@@ -50,7 +50,7 @@ export function AppSidebar({ user, signOutAction, ...props }: AppSidebarProps) {
   const pathname = usePathname();
 
   return (
-    <Sidebar variant="sidebar" {...props}>
+    <Sidebar variant="sidebar" collapsible="icon" {...props}>
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
