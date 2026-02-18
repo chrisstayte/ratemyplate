@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { redirect } from 'next/navigation';
 import { auth, isCurrentUserAdmin, signOut } from '@/auth';
 import { AppSidebar } from '@/components/dashboard/app-sidebar';
 import {
@@ -22,7 +23,19 @@ export default async function RootLayout({
   const isAdmin = await isCurrentUserAdmin();
 
   if (!isAdmin) {
-    return null;
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="text-center space-y-4">
+          <h1 className="text-4xl font-bold">Not Authorized</h1>
+          <p className="text-muted-foreground">
+            You don&apos;t have permission to access this page.
+          </p>
+          <a href="/" className="inline-block underline underline-offset-4 hover:text-primary">
+            Back to home
+          </a>
+        </div>
+      </div>
+    );
   }
 
   const session = await auth();
@@ -34,6 +47,7 @@ export default async function RootLayout({
   async function handleSignOut() {
     'use server';
     await signOut();
+    redirect('/');
   }
 
   return (

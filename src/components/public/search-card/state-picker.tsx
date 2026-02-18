@@ -37,15 +37,20 @@ const StatePicker: React.FC<StatePickerProps> = ({
 
   return (
     <Select onValueChange={onValueChange} value={value}>
-      <SelectTrigger id={id} className='w-full' aria-invalid={ariaInvalid}>
-        <SelectValue className='text-[16px]' placeholder='Select a state' />
+      <SelectTrigger
+        id={id}
+        className="w-ful bg-card"
+        aria-invalid={ariaInvalid}
+      >
+        <SelectValue className="text-[16px]" placeholder="Select a state" />
       </SelectTrigger>
-      <SelectContent position="popper" className='text-[16px] max-h-60'>
+      <SelectContent position="popper" className="text-[16px] max-h-60">
         {states.map((state) => (
           <SelectItem
-            className='text-[16px]'
+            className="text-[16px]"
             key={state.abbreviation}
-            value={state.abbreviation}>
+            value={state.abbreviation}
+          >
             {state.name}
           </SelectItem>
         ))}

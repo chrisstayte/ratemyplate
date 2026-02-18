@@ -9,6 +9,7 @@ import {
   MessageSquare,
   ChevronsUpDown,
   LogOut,
+  ExternalLink,
 } from 'lucide-react';
 import {
   Sidebar,
@@ -26,8 +27,10 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { ThemeMenuRadioOptions } from '@/components/navbar/theme-menu-radio-options';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import '@/lib/extensions';
 
@@ -123,6 +126,15 @@ export function AppSidebar({ user, signOutAction, ...props }: AppSidebarProps) {
                 align="end"
                 sideOffset={4}
               >
+                <ThemeMenuRadioOptions />
+                <DropdownMenuSeparator />
+                <Link href="/">
+                  <DropdownMenuItem>
+                    <ExternalLink />
+                    Back to Site
+                  </DropdownMenuItem>
+                </Link>
+                <DropdownMenuSeparator />
                 <form action={signOutAction}>
                   <button type="submit" className="w-full">
                     <DropdownMenuItem>

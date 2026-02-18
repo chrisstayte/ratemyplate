@@ -76,7 +76,7 @@ export default function SearchCard() {
               <FieldLabel htmlFor="search-card-plate">License Plate</FieldLabel>
               <Input
                 id="search-card-plate"
-                className="uppercase text-[16px]"
+                className="uppercase text-[16px] bg-card"
                 placeholder=""
                 aria-invalid={!!plateError}
                 {...form.register('plate')}
