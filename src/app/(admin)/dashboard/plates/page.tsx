@@ -7,9 +7,16 @@ import { database } from '@/db/database';
 import { desc, eq, sql } from 'drizzle-orm';
 import { plates, comments, user_favorite_plates } from '@/db/schema';
 import PlatesTable from '@/components/dashboard/plates-table';
+import { SearchBar } from '@/components/dashboard/search-bar';
 import LoginPage from '@/components/login-page';
 
-export default async function PlatesPage() {
+export default async function PlatesPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ q?: string }>;
+}) {
+  const { q } = await searchParams;
+
   const session = await auth();
   if (!session) {
     return <LoginPage />;
@@ -41,7 +48,7 @@ export default async function PlatesPage() {
     .groupBy(comments.plateId)
     .as('commentCountSubquery');
 
-  const licensePlates = await database
+  const allPlates = await database
     .select({
       id: plates.id,
       state: plates.state,
@@ -63,13 +70,18 @@ export default async function PlatesPage() {
     .leftJoin(commentCountSubquery, eq(plates.id, commentCountSubquery.plateId))
     .orderBy(desc(plates.timestamp));
 
-  const uniqueStates = [
-    ...new Set(licensePlates.map((p) => p.state)),
-  ].sort();
+  const licensePlates = q
+    ? allPlates.filter((p) =>
+        p.plateNumber.toLowerCase().includes(q.toLowerCase())
+      )
+    : allPlates;
+
+  const uniqueStates = [...new Set(allPlates.map((p) => p.state))].sort();
 
   return (
     <div className="container flex flex-col gap-5 py-5">
       <p className="text-2xl">Plates</p>
+      <SearchBar placeholder="Search plate number..." />
       <PlatesTable data={licensePlates} states={uniqueStates} />
     </div>
   );

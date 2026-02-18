@@ -6,9 +6,8 @@ import { ColumnDef } from '@tanstack/react-table';
 import '@/lib/extensions';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Toggle } from '@/components/ui/toggle';
-import { ArrowUpDown, MoreHorizontal, Search } from 'lucide-react';
+import { ArrowUpDown, MoreHorizontal } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -38,7 +37,6 @@ export default function CommentsTable({
   states,
 }: CommentsTableProps) {
   const [siteComments, setSiteComments] = useState<Comment[]>(tableData);
-  const [search, setSearch] = useState('');
   const [selectedStates, setSelectedStates] = useState<Set<string>>(new Set());
 
   function handleDelete(id: number) {
@@ -60,15 +58,6 @@ export default function CommentsTable({
   }
 
   const filteredData = siteComments.filter((comment) => {
-    if (search) {
-      const q = search.toLowerCase();
-      const matchesPlate =
-        comment.plateNumber?.toLowerCase().includes(q) ?? false;
-      const matchesUser =
-        comment.userEmail?.toLowerCase().includes(q) ?? false;
-      const matchesComment = comment.comment.toLowerCase().includes(q);
-      if (!matchesPlate && !matchesUser && !matchesComment) return false;
-    }
     if (
       selectedStates.size > 0 &&
       (!comment.state || !selectedStates.has(comment.state))
@@ -79,32 +68,21 @@ export default function CommentsTable({
 
   return (
     <div>
-      <div className="flex flex-col gap-3 pb-4">
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-          <Input
-            placeholder="Search by plate, user, or comment..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="pl-9"
-          />
+      {states.length > 0 && (
+        <div className="flex flex-wrap items-center gap-2 pb-4">
+          {states.map((state) => (
+            <Toggle
+              key={state}
+              variant="outline"
+              size="sm"
+              pressed={selectedStates.has(state)}
+              onPressedChange={() => toggleState(state)}
+            >
+              {state}
+            </Toggle>
+          ))}
         </div>
-        {states.length > 0 && (
-          <div className="flex flex-wrap items-center gap-2">
-            {states.map((state) => (
-              <Toggle
-                key={state}
-                variant="outline"
-                size="sm"
-                pressed={selectedStates.has(state)}
-                onPressedChange={() => toggleState(state)}
-              >
-                {state}
-              </Toggle>
-            ))}
-          </div>
-        )}
-      </div>
+      )}
       <DataTable
         columns={commentsColumn(handleDelete)}
         data={filteredData}

@@ -7,9 +7,16 @@ import { database } from '@/db/database';
 import { desc, eq, sql } from 'drizzle-orm';
 import { users, accounts, user_favorite_plates, comments } from '@/db/schema';
 import UsersTable from '@/components/dashboard/users-table';
+import { SearchBar } from '@/components/dashboard/search-bar';
 import LoginPage from '@/components/login-page';
 
-export default async function UsersPage() {
+export default async function UsersPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ q?: string }>;
+}) {
+  const { q } = await searchParams;
+
   const session = await auth();
   if (!session) {
     return <LoginPage />;
@@ -41,7 +48,7 @@ export default async function UsersPage() {
     .groupBy(comments.userId)
     .as('commentCountSubquery');
 
-  const siteUsers = await database
+  const allUsers = await database
     .select({
       id: users.id,
       name: users.name,
@@ -62,15 +69,25 @@ export default async function UsersPage() {
     .leftJoin(commentCountSubquery, eq(users.id, commentCountSubquery.userId))
     .orderBy(desc(users.createdAt));
 
+  const siteUsers = q
+    ? allUsers.filter((u) => {
+        const query = q.toLowerCase();
+        const matchesName = u.name?.toLowerCase().includes(query) ?? false;
+        const matchesEmail = u.email.toLowerCase().includes(query);
+        return matchesName || matchesEmail;
+      })
+    : allUsers;
+
   const uniqueProviders = [
     ...new Set(
-      siteUsers.map((u) => u.provider).filter((p): p is string => p !== null)
+      allUsers.map((u) => u.provider).filter((p): p is string => p !== null)
     ),
   ].sort();
 
   return (
     <div className="container flex flex-col gap-5 py-5">
       <p className="text-2xl">Users</p>
+      <SearchBar placeholder="Search by name or email..." />
       <UsersTable data={siteUsers} providers={uniqueProviders} />
     </div>
   );
