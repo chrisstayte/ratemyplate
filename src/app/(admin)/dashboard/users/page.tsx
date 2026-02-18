@@ -4,13 +4,19 @@ import { auth, isUserAdmin } from '@/auth';
 import NotAuthenticated from '@/components/dashboard/not-authenticated';
 
 import { database } from '@/db/database';
-import { desc, eq, sql } from 'drizzle-orm';
+import { desc, eq, ilike, or, sql } from 'drizzle-orm';
 import { users, accounts, user_favorite_plates, comments } from '@/db/schema';
-import { DataTable } from '@/components/data-table';
-import { usersColumn } from '@/components/dashboard/users-column';
+import UsersTable from '@/components/dashboard/users-table';
+import { SearchBar } from '@/components/dashboard/search-bar';
 import LoginPage from '@/components/login-page';
 
-export default async function UsersPage() {
+export default async function UsersPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ q?: string }>;
+}) {
+  const { q } = await searchParams;
+
   const session = await auth();
   if (!session) {
     return <LoginPage />;
@@ -61,12 +67,26 @@ export default async function UsersPage() {
     .leftJoin(accounts, eq(users.id, accounts.userId))
     .leftJoin(favoriteCountSubquery, eq(users.id, favoriteCountSubquery.userId))
     .leftJoin(commentCountSubquery, eq(users.id, commentCountSubquery.userId))
+    .where(
+      q
+        ? or(ilike(users.name, `%${q}%`), ilike(users.email, `%${q}%`))
+        : undefined
+    )
     .orderBy(desc(users.createdAt));
 
+  const providersResult = await database
+    .selectDistinct({ provider: accounts.providerId })
+    .from(accounts);
+  const uniqueProviders = providersResult
+    .map((r) => r.provider)
+    .filter((p): p is string => p !== null)
+    .sort();
+
   return (
-    <div className='container flex flex-col gap-5 py-5'>
-      <p className='text-2xl'>Users</p>
-      <DataTable columns={usersColumn} data={siteUsers} className='w-full' />
+    <div className="container flex flex-col gap-5 py-5">
+      <p className="text-2xl">Users</p>
+      <SearchBar placeholder="Search by name or email..." />
+      <UsersTable data={siteUsers} providers={uniqueProviders} />
     </div>
   );
 }

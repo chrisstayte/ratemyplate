@@ -1,11 +1,12 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { DataTable } from '@/components/data-table';
 import { ColumnDef } from '@tanstack/react-table';
 import '@/lib/extensions';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Toggle } from '@/components/ui/toggle';
 import { ArrowUpDown, MoreHorizontal } from 'lucide-react';
 import {
   DropdownMenu,
@@ -28,10 +29,19 @@ export type Comment = {
 
 interface CommentsTableProps {
   tableData: Comment[];
+  states: string[];
 }
 
-export default function CommentsTable({ tableData }: CommentsTableProps) {
+export default function CommentsTable({
+  tableData,
+  states,
+}: CommentsTableProps) {
   const [siteComments, setSiteComments] = useState<Comment[]>(tableData);
+  const [selectedStates, setSelectedStates] = useState<Set<string>>(new Set());
+
+  useEffect(() => {
+    setSiteComments(tableData);
+  }, [tableData]);
 
   function handleDelete(id: number) {
     setSiteComments((prevComments) =>
@@ -39,12 +49,50 @@ export default function CommentsTable({ tableData }: CommentsTableProps) {
     );
   }
 
+  function toggleState(state: string) {
+    setSelectedStates((prev) => {
+      const next = new Set(prev);
+      if (next.has(state)) {
+        next.delete(state);
+      } else {
+        next.add(state);
+      }
+      return next;
+    });
+  }
+
+  const filteredData = siteComments.filter((comment) => {
+    if (
+      selectedStates.size > 0 &&
+      (!comment.state || !selectedStates.has(comment.state))
+    )
+      return false;
+    return true;
+  });
+
   return (
-    <DataTable
-      columns={commentsColumn(handleDelete)}
-      data={siteComments}
-      className='w-full'
-    />
+    <div>
+      {states.length > 0 && (
+        <div className="flex flex-wrap items-center gap-2 pb-4">
+          {states.map((state) => (
+            <Toggle
+              key={state}
+              variant="outline"
+              size="sm"
+              pressed={selectedStates.has(state)}
+              onPressedChange={() => toggleState(state)}
+            >
+              {state}
+            </Toggle>
+          ))}
+        </div>
+      )}
+      <DataTable
+        columns={commentsColumn(handleDelete)}
+        data={filteredData}
+        className="w-full"
+      />
+    </div>
   );
 }
 
@@ -56,16 +104,17 @@ export const commentsColumn = (
     header: ({ column }) => {
       return (
         <Button
-          variant='ghost'
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        >
           Added
-          <ArrowUpDown className='ml-2 h-4 w-4' />
+          <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
     cell: ({ row }) => {
       return (
-        <Badge variant='outline' className='text-center truncate text-sm'>
+        <Badge variant="outline" className="text-center truncate text-sm">
           {row.getValue<Date>('timestamp').prettyDateTime()}
         </Badge>
       );
@@ -76,10 +125,11 @@ export const commentsColumn = (
     header: ({ column }) => {
       return (
         <Button
-          variant='ghost'
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        >
           User
-          <ArrowUpDown className='ml-2 h-4 w-4' />
+          <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
@@ -89,10 +139,11 @@ export const commentsColumn = (
     header: ({ column }) => {
       return (
         <Button
-          variant='ghost'
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        >
           Plate
-          <ArrowUpDown className='ml-2 h-4 w-4' />
+          <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
@@ -102,10 +153,11 @@ export const commentsColumn = (
     header: ({ column }) => {
       return (
         <Button
-          variant='ghost'
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        >
           State
-          <ArrowUpDown className='ml-2 h-4 w-4' />
+          <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
@@ -115,10 +167,11 @@ export const commentsColumn = (
     header: ({ column }) => {
       return (
         <Button
-          variant='ghost'
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        >
           Comment
-          <ArrowUpDown className='ml-2 h-4 w-4' />
+          <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
@@ -141,8 +194,8 @@ const ActionCell: React.FC<ActionCellProps> = ({ row, onDelete }) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant='ghost' size='icon'>
-          <MoreHorizontal className='h-4 w-4' />
+        <Button variant="ghost" size="icon">
+          <MoreHorizontal className="h-4 w-4" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
@@ -151,9 +204,8 @@ const ActionCell: React.FC<ActionCellProps> = ({ row, onDelete }) => {
             await deleteComment(row.original.id);
             onDelete(row.original.id);
           }}
-          // className={`bg-[linear-gradient(90deg,rgba(255,0,0,1)0%,rgba(255,0,0,0)${progress}%,rgba(0,0,0,0)100%)]`}
         >
-          <Trash className='mr-2 h-4 w-4' />
+          <Trash className="mr-2 h-4 w-4" />
           <span>Delete</span>
         </DropdownMenuItem>
       </DropdownMenuContent>

@@ -1,7 +1,10 @@
 import BuyMeACoffeeButton from '@/components/public/buy-me-a-coffee-button';
 import Link from 'next/link';
+import { isCurrentUserAdmin } from '@/auth';
 
-const Footer = () => {
+const Footer = async () => {
+  const isAdmin = await isCurrentUserAdmin();
+
   return (
     <footer className='w-full min-h-28 flex py-10'>
       <div className='container flex flex-col items-center   gap-12 justify-between'>
@@ -17,10 +20,14 @@ const Footer = () => {
           <a href='https://x.com/chrisstayte' target='_blank'>
             <p>@ChrisStayte</p>
           </a>
-          <div>&bull;</div>
-          <Link href='/dashboard'>
-            <p>Dashboard</p>
-          </Link>
+          {isAdmin && (
+            <>
+              <div>&bull;</div>
+              <Link href='/dashboard'>
+                <p>Dashboard</p>
+              </Link>
+            </>
+          )}
           <div>&bull;</div>
           <a href='https://github.com/chrisstayte/ratemyplate' target='_blank'>
             <p>Source</p>

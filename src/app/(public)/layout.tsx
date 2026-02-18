@@ -1,8 +1,6 @@
 import type { Metadata } from 'next';
-import { Inconsolata } from 'next/font/google';
 import Navbar from '@/components/public/navbar/navbar';
 import Footer from '@/components/public/footer/footer';
-import { ThemeProvider } from '@/components/theme-prodiver';
 
 export const metadata: Metadata = {
   title: 'Rate My Plate',
@@ -15,7 +13,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className={`flex flex-col min-h-screen`}>
+    <div className='flex flex-col min-h-screen'>
       <Navbar />
       <main className='grow'>{children}</main>
       <hr />

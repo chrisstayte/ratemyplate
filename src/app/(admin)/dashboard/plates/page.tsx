@@ -4,13 +4,19 @@ import { auth, isUserAdmin } from '@/auth';
 import NotAuthenticated from '@/components/dashboard/not-authenticated';
 
 import { database } from '@/db/database';
-import { desc, eq, sql } from 'drizzle-orm';
+import { desc, eq, ilike, sql } from 'drizzle-orm';
 import { plates, comments, user_favorite_plates } from '@/db/schema';
-import { DataTable } from '@/components/data-table';
-import { plateColumns } from '@/components/dashboard/plates-column';
+import PlatesTable from '@/components/dashboard/plates-table';
+import { SearchBar } from '@/components/dashboard/search-bar';
 import LoginPage from '@/components/login-page';
 
-export default async function PlatesPage() {
+export default async function PlatesPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ q?: string }>;
+}) {
+  const { q } = await searchParams;
+
   const session = await auth();
   if (!session) {
     return <LoginPage />;
@@ -62,16 +68,19 @@ export default async function PlatesPage() {
       eq(plates.id, favoriteCountSubquery.plateId)
     )
     .leftJoin(commentCountSubquery, eq(plates.id, commentCountSubquery.plateId))
+    .where(q ? ilike(plates.plateNumber, `%${q}%`) : undefined)
     .orderBy(desc(plates.timestamp));
 
+  const statesResult = await database
+    .selectDistinct({ state: plates.state })
+    .from(plates);
+  const uniqueStates = statesResult.map((r) => r.state).sort();
+
   return (
-    <div className='container flex flex-col gap-5 py-5'>
-      <p className='text-2xl'>Plates</p>
-      <DataTable
-        columns={plateColumns}
-        data={licensePlates}
-        className='w-full'
-      />
+    <div className="container flex flex-col gap-5 py-5">
+      <p className="text-2xl">Plates</p>
+      <SearchBar placeholder="Search plate number..." />
+      <PlatesTable data={licensePlates} states={uniqueStates} />
     </div>
   );
 }
