@@ -15,10 +15,11 @@ export default function MostFavoritedPlatesSection() {
   const numberOfEntriesToDisplay = 10;
 
   return (
-    <div className='flex flex-col gap-5 justify-center w-full h-full'>
-      <p className='text-2xl'>Favorited Drivers</p>
+    <div className="flex flex-col gap-5 justify-center w-full h-full">
+      <p className="text-2xl">Favorited Drivers</p>
       <Suspense
-        fallback={<FavoritedPlatesSkeleton limit={numberOfEntriesToDisplay} />}>
+        fallback={<FavoritedPlatesSkeleton limit={numberOfEntriesToDisplay} />}
+      >
         <FavoritedPlates limit={numberOfEntriesToDisplay} />
       </Suspense>
     </div>
@@ -49,15 +50,15 @@ async function FavoritedPlates({ limit = 10 }) {
 
   if (popularPlates.length === 0) {
     return (
-      <div className='h-full text-center place-content-center'>
-        <p className='text-xl'>No favorited plates</p>
-        <p className='text-xl'>Be the first!</p>
+      <div className="h-full text-center place-content-center">
+        <p className="text-xl">No favorited plates</p>
+        <p className="text-xl">Be the first!</p>
       </div>
     );
   }
 
   return (
-    <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5'>
+    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
       {popularPlates.map(async (plate) => (
         <LicensePlateTiny
           key={plate.id}
@@ -74,7 +75,7 @@ function FavoritedPlatesSkeleton({ limit = 10 }) {
   const skeletons = Array.from({ length: limit });
 
   return (
-    <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5'>
+    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
       {skeletons.map((_, index) => (
         <LicensePlateTinySkeleton key={index} />
       ))}
