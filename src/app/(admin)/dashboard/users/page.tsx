@@ -1,14 +1,8 @@
-'use server';
-
-import { auth, isUserAdmin } from '@/auth';
-import NotAuthenticated from '@/components/dashboard/not-authenticated';
-
 import { database } from '@/db/database';
 import { desc, eq, ilike, or, sql } from 'drizzle-orm';
 import { users, accounts, user_favorite_plates, comments } from '@/db/schema';
 import UsersTable from '@/components/dashboard/users-table';
 import { SearchBar } from '@/components/dashboard/search-bar';
-import LoginPage from '@/components/login-page';
 
 export default async function UsersPage({
   searchParams,
@@ -16,19 +10,6 @@ export default async function UsersPage({
   searchParams: Promise<{ q?: string }>;
 }) {
   const { q } = await searchParams;
-
-  const session = await auth();
-  if (!session) {
-    return <LoginPage />;
-  }
-
-  const user = session.user;
-
-  const isAdmin = await isUserAdmin(user!.id!);
-
-  if (!isAdmin) {
-    return <NotAuthenticated />;
-  }
 
   const favoriteCountSubquery = database
     .select({

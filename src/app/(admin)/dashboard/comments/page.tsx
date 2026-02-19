@@ -1,11 +1,6 @@
-'use server';
-
-import { auth, isUserAdmin } from '@/auth';
-import NotAuthenticated from '@/components/dashboard/not-authenticated';
 import { database } from '@/db/database';
 import { desc, eq, ilike, or } from 'drizzle-orm';
 import { comments, users, plates } from '@/db/schema';
-import LoginPage from '@/components/login-page';
 import CommentsTable from '@/components/dashboard/comments-table';
 import { SearchBar } from '@/components/dashboard/search-bar';
 
@@ -15,19 +10,6 @@ export default async function CommentsPage({
   searchParams: Promise<{ q?: string }>;
 }) {
   const { q } = await searchParams;
-
-  const session = await auth();
-  if (!session) {
-    return <LoginPage />;
-  }
-
-  const user = session.user;
-
-  const isAdmin = await isUserAdmin(user!.id!);
-
-  if (!isAdmin) {
-    return <NotAuthenticated />;
-  }
 
   const siteComments = await database
     .select({
@@ -59,9 +41,6 @@ export default async function CommentsPage({
     .map((r) => r.state)
     .filter((s): s is string => s !== null)
     .sort();
-
-  console.log(q);
-  console.log(siteComments.length);
 
   return (
     <div className="container mx-auto flex flex-col gap-5 py-5">
