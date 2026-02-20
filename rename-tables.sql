@@ -27,8 +27,16 @@ ALTER TABLE "rmp_user_favorite_plates" RENAME TO "user_favorite_plates";
 
 -- 4. Rename indexes to match new table names
 ALTER INDEX IF EXISTS "rmp_auth_accounts_providerId_accountId_idx" RENAME TO "account_providerId_accountId_idx";
-ALTER INDEX IF EXISTS "rmp_auth_sessions_token_idx" RENAME TO "session_token_unique";
-ALTER INDEX IF EXISTS "rmp_auth_sessions_token_unique" RENAME TO "session_token_unique";
 ALTER INDEX IF EXISTS "rmp_auth_verifications_identifier_value_idx" RENAME TO "verification_identifier_value_idx";
+
+-- The session token unique index may have been created under either name
+DO $$
+BEGIN
+  IF EXISTS (SELECT 1 FROM pg_indexes WHERE indexname = 'rmp_auth_sessions_token_idx') THEN
+    ALTER INDEX "rmp_auth_sessions_token_idx" RENAME TO "session_token_unique";
+  ELSIF EXISTS (SELECT 1 FROM pg_indexes WHERE indexname = 'rmp_auth_sessions_token_unique') THEN
+    ALTER INDEX "rmp_auth_sessions_token_unique" RENAME TO "session_token_unique";
+  END IF;
+END $$;
 
 COMMIT;
