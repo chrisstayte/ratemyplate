@@ -1,6 +1,6 @@
 import { database } from '@/db/database';
 import { desc, eq, ilike, or } from 'drizzle-orm';
-import { comments, users, plates } from '@/db/schema';
+import { plate_reviews, users, plates } from '@/db/schema';
 import CommentsTable from '@/components/dashboard/comments-table';
 import { SearchBar } from '@/components/dashboard/search-bar';
 
@@ -13,26 +13,26 @@ export default async function CommentsPage({
 
   const siteComments = await database
     .select({
-      id: comments.id,
-      comment: comments.comment,
-      timestamp: comments.timestamp,
+      id: plate_reviews.id,
+      comment: plate_reviews.comment,
+      timestamp: plate_reviews.createdAt,
       userEmail: users.email,
       plateNumber: plates.plateNumber,
       state: plates.state,
     })
-    .from(comments)
-    .leftJoin(users, eq(comments.userId, users.id))
-    .leftJoin(plates, eq(comments.plateId, plates.id))
+    .from(plate_reviews)
+    .leftJoin(users, eq(plate_reviews.userId, users.id))
+    .leftJoin(plates, eq(plate_reviews.plateId, plates.id))
     .where(
       q
         ? or(
             ilike(plates.plateNumber, `%${q}%`),
             ilike(users.email, `%${q}%`),
-            ilike(comments.comment, `%${q}%`)
+            ilike(plate_reviews.comment, `%${q}%`)
           )
         : undefined
     )
-    .orderBy(desc(comments.timestamp));
+    .orderBy(desc(plate_reviews.createdAt));
 
   const statesResult = await database
     .selectDistinct({ state: plates.state })

@@ -1,6 +1,6 @@
 import { database } from '@/db/database';
 import { desc, eq, ilike, or, sql } from 'drizzle-orm';
-import { users, accounts, user_favorite_plates, comments } from '@/db/schema';
+import { users, accounts, user_favorite_plates, plate_reviews } from '@/db/schema';
 import UsersTable from '@/components/dashboard/users-table';
 import { SearchBar } from '@/components/dashboard/search-bar';
 
@@ -22,11 +22,11 @@ export default async function UsersPage({
 
   const commentCountSubquery = database
     .select({
-      userId: comments.userId,
+      userId: plate_reviews.userId,
       count: sql<number>`count(*)`.as('commentCount'),
     })
-    .from(comments)
-    .groupBy(comments.userId)
+    .from(plate_reviews)
+    .groupBy(plate_reviews.userId)
     .as('commentCountSubquery');
 
   const siteUsers = await database

@@ -1,15 +1,17 @@
 import {
   boolean,
+  check,
   timestamp,
   pgTable,
   serial,
+  smallint,
   text,
   primaryKey,
   uniqueIndex,
   varchar,
   integer,
 } from 'drizzle-orm/pg-core';
-import { relations } from 'drizzle-orm';
+import { relations, sql } from 'drizzle-orm';
 
 export const plates = pgTable('plates', {
   id: serial('id').primaryKey(),
@@ -20,29 +22,76 @@ export const plates = pgTable('plates', {
 });
 
 export const plates_relations = relations(plates, ({ one, many }) => ({
-  comments: many(comments),
+  reviews: many(plate_reviews),
   user: one(users, {
     fields: [plates.userId],
     references: [users.id],
   }),
 }));
 
-export const comments = pgTable('comments', {
-  id: serial('id').primaryKey(),
-  userId: text('userId').references(() => users.id),
-  plateId: integer('plateId').references(() => plates.id),
-  comment: text('comment').notNull(),
-  timestamp: timestamp('timestamp', { mode: 'date' }).notNull().defaultNow(),
-});
+export const plate_reviews = pgTable(
+  'plate_reviews',
+  {
+    id: serial('id').primaryKey(),
+    plateId: integer('plateId')
+      .notNull()
+      .references(() => plates.id),
+    userId: text('userId')
+      .notNull()
+      .references(() => users.id),
+    rating: smallint('rating'),
+    comment: text('comment'),
+    createdAt: timestamp('createdAt', { mode: 'date' }).notNull().defaultNow(),
+    updatedAt: timestamp('updatedAt', { mode: 'date' }).notNull().defaultNow(),
+  },
+  (t) => ({
+    uniqueUserPlate: uniqueIndex('plate_reviews_userId_plateId_idx').on(
+      t.userId,
+      t.plateId
+    ),
+    ratingCheck: check(
+      'plate_reviews_rating_check',
+      sql`rating IS NULL OR (rating >= 1 AND rating <= 5)`
+    ),
+  })
+);
 
-export const comments_relations = relations(comments, ({ one }) => ({
+export const plate_reviews_relations = relations(
+  plate_reviews,
+  ({ one, many }) => ({
+    user: one(users, {
+      fields: [plate_reviews.userId],
+      references: [users.id],
+    }),
+    plate: one(plates, {
+      fields: [plate_reviews.plateId],
+      references: [plates.id],
+    }),
+    likes: many(review_likes),
+  })
+);
+
+export const review_likes = pgTable(
+  'review_likes',
+  {
+    userId: text('userId')
+      .notNull()
+      .references(() => users.id, { onDelete: 'cascade' }),
+    reviewId: integer('reviewId')
+      .notNull()
+      .references(() => plate_reviews.id, { onDelete: 'cascade' }),
+  },
+  (t) => ({ pk: primaryKey({ columns: [t.userId, t.reviewId] }) })
+);
+
+export const review_likes_relations = relations(review_likes, ({ one }) => ({
   user: one(users, {
-    fields: [comments.userId],
+    fields: [review_likes.userId],
     references: [users.id],
   }),
-  plate: one(plates, {
-    fields: [comments.plateId],
-    references: [plates.id],
+  review: one(plate_reviews, {
+    fields: [review_likes.reviewId],
+    references: [plate_reviews.id],
   }),
 }));
 
@@ -65,7 +114,8 @@ export const users = pgTable('user', {
 });
 
 export const users_relations = relations(users, ({ many }) => ({
-  comments: many(comments),
+  reviews: many(plate_reviews),
+  reviewLikes: many(review_likes),
   plates: many(plates),
   userRoles: many(user_roles),
 }));

@@ -1,7 +1,7 @@
 'use server';
 
 import { database } from '@/db/database';
-import { plates, comments, user_favorite_plates } from '@/db/schema';
+import { plates, plate_reviews, user_favorite_plates } from '@/db/schema';
 import { revalidatePath } from 'next/cache';
 import { auth, isCurrentUserAdmin } from '@/auth';
 import { eq, and, desc } from 'drizzle-orm';
@@ -49,7 +49,7 @@ export async function postComment(
 
   try {
     database
-      .insert(comments)
+      .insert(plate_reviews)
       .values({
         comment: comment,
         plateId: plateId,
@@ -124,14 +124,14 @@ export async function removePlateFromFavorites(plate: Plate) {
 export async function getRecentCommentsByState(stateAbbreviation: string) {
   const results = await database
     .select({
-      commentText: comments.comment,
+      commentText: plate_reviews.comment,
       plateNumber: plates.plateNumber,
-      timestamp: comments.timestamp,
+      timestamp: plate_reviews.createdAt,
     })
-    .from(comments)
-    .innerJoin(plates, eq(comments.plateId, plates.id))
+    .from(plate_reviews)
+    .innerJoin(plates, eq(plate_reviews.plateId, plates.id))
     .where(eq(plates.state, stateAbbreviation))
-    .orderBy(desc(comments.timestamp))
+    .orderBy(desc(plate_reviews.createdAt))
     .limit(20);
 
   return results;
@@ -148,7 +148,7 @@ export async function deleteComment(id: number): Promise<boolean> {
     throw new Error('Unauthorized');
   }
 
-  const response = await database.delete(comments).where(eq(comments.id, id));
+  const response = await database.delete(plate_reviews).where(eq(plate_reviews.id, id));
   revalidatePath('/', 'layout');
   return response.length > 0;
 }

@@ -3,7 +3,7 @@ import { Plate } from '@/lib/plates';
 import { desc } from 'drizzle-orm';
 import { Card } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
-import { comments } from '@/db/schema';
+import { plate_reviews } from '@/db/schema';
 import { Badge } from '@/components/ui/badge';
 import { database } from '@/db/database';
 import LoginDialog from '../login-dialog';
@@ -85,9 +85,9 @@ async function Comments({
     return <p>No comments yet</p>;
   }
 
-  const plateComments = await database.query.comments.findMany({
-    where: (comments, { eq }) => eq(comments.plateId, licensePlate?.id),
-    orderBy: [desc(comments.timestamp)],
+  const plateComments = await database.query.plate_reviews.findMany({
+    where: (plate_reviews, { eq }) => eq(plate_reviews.plateId, licensePlate?.id),
+    orderBy: [desc(plate_reviews.createdAt)],
   });
 
   if (!plateComments || plateComments.length === 0) {
@@ -105,7 +105,7 @@ async function Comments({
               {comment.comment}
             </p>
             <Badge className='self-end text-sm h-auto'>
-              {new Date(comment.timestamp!).toLocaleString('en-US', {
+              {new Date(comment.createdAt).toLocaleString('en-US', {
                 year: 'numeric',
                 month: '2-digit',
                 day: '2-digit',
