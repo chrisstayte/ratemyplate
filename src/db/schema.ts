@@ -11,7 +11,7 @@ import {
 } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 
-export const plates = pgTable('rmp_plates', {
+export const plates = pgTable('plates', {
   id: serial('id').primaryKey(),
   plateNumber: text('plateNumber').notNull(),
   state: varchar('state', { length: 2 }).notNull(),
@@ -27,7 +27,7 @@ export const plates_relations = relations(plates, ({ one, many }) => ({
   }),
 }));
 
-export const comments = pgTable('rmp_comments', {
+export const comments = pgTable('comments', {
   id: serial('id').primaryKey(),
   userId: text('userId').references(() => users.id),
   plateId: integer('plateId').references(() => plates.id),
@@ -48,12 +48,12 @@ export const comments_relations = relations(comments, ({ one }) => ({
 
 // Better Auth tables
 
-export const users = pgTable('rmp_auth_users', {
+export const users = pgTable('user', {
   id: text('id')
     .primaryKey()
     .$defaultFn(() => crypto.randomUUID()),
-  name: text('name'),
-  email: text('email').notNull(),
+  name: text('name').notNull(),
+  email: text('email').notNull().unique(),
   emailVerified: boolean('emailVerified').notNull().default(false),
   image: text('image'),
   createdAt: timestamp('createdAt', { mode: 'date', withTimezone: true })
@@ -71,7 +71,7 @@ export const users_relations = relations(users, ({ many }) => ({
 }));
 
 export const accounts = pgTable(
-  'rmp_auth_accounts',
+  'account',
   {
     id: text('id')
       .primaryKey()
@@ -103,12 +103,12 @@ export const accounts = pgTable(
   },
   (account) => ({
     providerAccountIdIdx: uniqueIndex(
-      'rmp_auth_accounts_providerId_accountId_idx'
+      'account_providerId_accountId_idx'
     ).on(account.providerId, account.accountId),
   })
 );
 
-export const sessions = pgTable('rmp_auth_sessions', {
+export const sessions = pgTable('session', {
   id: text('id')
     .primaryKey()
     .$defaultFn(() => crypto.randomUUID()),
@@ -128,7 +128,7 @@ export const sessions = pgTable('rmp_auth_sessions', {
 });
 
 export const verificationTokens = pgTable(
-  'rmp_auth_verifications',
+  'verification',
   {
     id: text('id')
       .primaryKey()
@@ -145,33 +145,12 @@ export const verificationTokens = pgTable(
   },
   (verification) => ({
     identifierValueIdx: uniqueIndex(
-      'rmp_auth_verifications_identifier_value_idx'
+      'verification_identifier_value_idx'
     ).on(verification.identifier, verification.value),
   })
 );
 
-export const passkeys = pgTable(
-  'rmp_auth_passkeys',
-  {
-    credentialId: text('credentialId').notNull().unique(),
-    userId: text('userId')
-      .notNull()
-      .references(() => users.id, { onDelete: 'cascade' }),
-    providerUserId: text('providerUserId').notNull(),
-    publicKey: text('publicKey').notNull(),
-    counter: integer('counter').notNull(),
-    deviceType: text('deviceType').notNull(),
-    backedUp: boolean('backedUp').notNull(),
-    transports: text('transports'),
-  },
-  (passkey) => ({
-    compositePK: primaryKey({
-      columns: [passkey.userId, passkey.credentialId],
-    }),
-  })
-);
-
-export const roles = pgTable('rmp_roles', {
+export const roles = pgTable('roles', {
   id: serial('id').primaryKey(),
   name: text('name').notNull(),
 });
@@ -181,7 +160,7 @@ export const roles_relations = relations(roles, ({ many }) => ({
 }));
 
 export const user_roles = pgTable(
-  'rmp_user_roles',
+  'user_roles',
   {
     userId: text('userId').references(() => users.id, { onDelete: 'cascade' }),
     roleId: integer('roleId').references(() => roles.id, {
@@ -203,7 +182,7 @@ export const user_role_relations = relations(user_roles, ({ one }) => ({
 }));
 
 export const user_favorite_plates = pgTable(
-  'rmp_user_favorite_plates',
+  'user_favorite_plates',
   {
     userId: text('userId').references(() => users.id, { onDelete: 'cascade' }),
     plateId: integer('plateId').references(() => plates.id, {
