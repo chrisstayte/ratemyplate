@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { auth, isCurrentUserAdmin, signOut } from '@/auth';
 import { AppSidebar } from '@/components/dashboard/app-sidebar';
@@ -38,6 +39,9 @@ export default async function RootLayout({
     );
   }
 
+  const cookieStore = await cookies();
+  const defaultOpen = cookieStore.get('sidebar_state')?.value !== 'false';
+
   const session = await auth();
   const user = {
     name: session?.user?.name ?? null,
@@ -52,7 +56,7 @@ export default async function RootLayout({
 
   return (
     <TooltipProvider>
-      <SidebarProvider>
+      <SidebarProvider defaultOpen={defaultOpen}>
         <AppSidebar user={user} signOutAction={handleSignOut} />
         <SidebarInset>
           <header className="flex h-16 shrink-0 items-center gap-2">

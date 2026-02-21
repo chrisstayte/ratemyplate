@@ -57,6 +57,20 @@
       "when": 1771357200000,
       "tag": "0007_create_missing_auth_verifications",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1771694071498,
+      "tag": "0008_cynical_thanos",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1771694102336,
+      "tag": "0009_marvelous_bastion",
+      "breakpoints": true
     }
   ]
 }

@@ -4,26 +4,19 @@ import { FaUsers } from 'react-icons/fa';
 import { TbRectangleFilled } from 'react-icons/tb';
 import { FaComment } from 'react-icons/fa6';
 import { database } from '@/db/database';
-import { auth, isUserAdmin } from '@/auth';
+import { sql } from 'drizzle-orm';
+import { users, plates, comments } from '@/db/schema';
 
 export default async function StatCardsSection() {
-  const session = await auth();
-  if (!session) {
-    return <p>NOT AUTHENTICATED</p>;
-  }
+  const [userResult, plateResult, commentResult] = await Promise.all([
+    database.select({ count: sql<number>`cast(count(*) as int)` }).from(users),
+    database.select({ count: sql<number>`cast(count(*) as int)` }).from(plates),
+    database.select({ count: sql<number>`cast(count(*) as int)` }).from(comments),
+  ]);
 
-  const user = session.user;
-
-  const isAdmin = await isUserAdmin(user!.id!);
-
-  if (!isAdmin) {
-    return <p>NOT AUTHENTICATED</p>;
-  }
-
-  const userCount: number = (await database.query.users.findMany()).length;
-  const plateCount: number = (await database.query.plates.findMany()).length;
-  const commentCount: number = (await database.query.comments.findMany())
-    .length;
+  const userCount = userResult[0].count;
+  const plateCount = plateResult[0].count;
+  const commentCount = commentResult[0].count;
 
   return (
     <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5'>
