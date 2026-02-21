@@ -59,7 +59,7 @@ export default function StatePanel({
   const handleSearch = () => {
     const trimmed = searchPlate.trim().toUpperCase();
     if (!trimmed) return;
-    router.push(`/plate?plate=${trimmed}&state=${stateAbbreviation}`);
+    router.push(`/${stateAbbreviation}/${trimmed}`);
   };
 
   return (
@@ -138,7 +138,7 @@ export default function StatePanel({
                 return (
                   <Link
                     key={`${comment.plateNumber}-${i}`}
-                    href={`/plate?plate=${comment.plateNumber}&state=${stateAbbreviation}`}
+                    href={`/${stateAbbreviation}/${comment.plateNumber}`}
                     className='rounded-md border p-3 text-sm block hover:bg-accent transition-colors'
                   >
                     <div className='flex items-center justify-between mb-1'>

@@ -57,7 +57,7 @@ export async function postComment(
       })
       .execute();
 
-    revalidatePath('/plate');
+    revalidatePath('/', 'layout');
   } catch (error) {
     console.error(error);
     return { message: 'Failed to add comment', status: 500 };
@@ -149,6 +149,6 @@ export async function deleteComment(id: number): Promise<boolean> {
   }
 
   const response = await database.delete(comments).where(eq(comments.id, id));
-  revalidatePath('/plate');
+  revalidatePath('/', 'layout');
   return response.length > 0;
 }

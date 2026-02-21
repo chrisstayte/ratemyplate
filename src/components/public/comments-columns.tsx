@@ -85,9 +85,7 @@ export const commentsColumn: ColumnDef<Comment>[] = [
       return (
         <Link
           className='cursor-pointer'
-          href={`/plate?plate=${row.getValue<String>(
-            'plateNumber'
-          )}&state=${row.getValue<String>('state')}`}>
+          href={`/${row.getValue<String>('state')}/${row.getValue<String>('plateNumber')}`}>
           <ExternalLink className='h-4 w-4' />
         </Link>
       );
