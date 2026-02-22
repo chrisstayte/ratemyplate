@@ -51,7 +51,7 @@ export default function InlineSearch() {
       className="flex flex-col sm:flex-row gap-3 w-full max-w-xl"
     >
       <Input
-        className="uppercase text-[16px] flex-1"
+        className="uppercase text-[16px] flex-1 bg-card"
         placeholder="Plate number"
         aria-invalid={!!plateError}
         {...form.register('plate')}

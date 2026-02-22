@@ -6,9 +6,9 @@ import DrivingSaferSection from '@/components/public/plate-sections/driving-safe
 
 export default function Home() {
   return (
-    <div className="container flex flex-col gap-16 py-10 items-center">
+    <>
       {/* Hero + Inline Search */}
-      <section className="flex flex-col items-center gap-6 text-center max-w-2xl">
+      <section className="flex flex-col items-center gap-6 text-center py-20 pb-16 border-b">
         <h1 className="text-5xl font-bold tracking-tight">
           Rate Any License Plate
         </h1>
@@ -33,11 +33,13 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Recently Rated */}
-      <RecentlyRatedSection />
+      <div className="container flex flex-col gap-16 py-16 items-center">
+        {/* Recently Rated */}
+        <RecentlyRatedSection />
 
-      {/* Driving Safer Together */}
-      <DrivingSaferSection />
-    </div>
+        {/* Driving Safer Together */}
+        <DrivingSaferSection />
+      </div>
+    </>
   );
 }

@@ -4,12 +4,7 @@ import { plate_reviews, plates } from '@/db/schema';
 import { sql, eq } from 'drizzle-orm';
 import { Card, CardContent } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
-import {
-  EyeOff,
-  Activity,
-  Users,
-  ShieldAlert,
-} from 'lucide-react';
+import { EyeOff, Activity, Users, ShieldAlert } from 'lucide-react';
 
 const features = [
   {
@@ -41,7 +36,7 @@ const features = [
 export default function DrivingSaferSection() {
   return (
     <section className="flex flex-col gap-6 w-full">
-      <div className="text-center">
+      <div className="text-end">
         <h2 className="text-3xl font-bold">Driving Safer Together</h2>
         <p className="text-muted-foreground mt-1">
           Join a community committed to road safety
@@ -109,7 +104,9 @@ async function StatsGrid() {
       {stats.map((stat) => (
         <Card key={stat.label}>
           <CardContent className="flex flex-col items-center justify-center p-6 text-center">
-            <span className="text-3xl font-bold">{stat.value.toLocaleString()}</span>
+            <span className="text-3xl font-bold">
+              {stat.value.toLocaleString()}
+            </span>
             <span className="text-sm text-muted-foreground mt-1">
               {stat.label}
             </span>
