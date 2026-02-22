@@ -52,9 +52,12 @@ async function PlateOfTheDayCard() {
     );
   }
 
-  // Deterministic "random" pick based on the current date
+  // Deterministic "random" pick based on the current UTC date
   const today = new Date();
-  const daysSinceEpoch = Math.floor(today.getTime() / (1000 * 60 * 60 * 24));
+  const daysSinceEpoch = Math.floor(
+    Date.UTC(today.getFullYear(), today.getMonth(), today.getDate()) /
+      (1000 * 60 * 60 * 24)
+  );
   const index = daysSinceEpoch % reviewedPlates.length;
   const plate = reviewedPlates[index];
 
