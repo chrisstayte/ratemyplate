@@ -8,6 +8,7 @@ import { plate_reviews, plates } from '@/db/schema';
 import { DataTable } from '@/components/data-table';
 import { commentsColumn } from '@/components/public/comments-columns';
 import { Badge } from '@/components/ui/badge';
+import BreadCrumbs from '@/components/bread-crumbs';
 
 export default async function AccountPage() {
   const session = await auth();
@@ -38,28 +39,29 @@ export default async function AccountPage() {
     .orderBy(desc(plate_reviews.createdAt));
 
   return (
-    <div className='container w-full flex flex-col gap-10'>
-      <div className='w-full rounded-md bg-gray-950 dark:bg-transparent  py-10'>
-        <div className='text-white flex flex-col justify-center items-center gap-3'>
-          <Avatar className='size-28 pointer-events-none'>
-            <AvatarImage src={userImageUrl} alt='user image' />
+    <div className="container w-full flex flex-col gap-5 pt-5">
+      <BreadCrumbs />
+      <div className="w-full rounded-md bg-gray-950 dark:bg-transparent  py-10">
+        <div className="text-white flex flex-col justify-center items-center gap-3">
+          <Avatar className="size-28 pointer-events-none">
+            <AvatarImage src={userImageUrl} alt="user image" />
             <AvatarFallback>{initials}</AvatarFallback>
           </Avatar>
-          <div className='flex flex-col justify-center items-center'>
-            <p className='text-2xl font-bold'>{user?.name}</p>
-            <p className='text-xl text-muted-foreground'>{user?.email ?? ''}</p>
-            <Badge variant='secondary' className='mt-2 text-sm'>
+          <div className="flex flex-col justify-center items-center">
+            <p className="text-2xl font-bold">{user?.name}</p>
+            <p className="text-xl text-muted-foreground">{user?.email ?? ''}</p>
+            <Badge variant="secondary" className="mt-2 text-sm">
               Joined {userData?.createdAt.toLocaleDateString()}
             </Badge>
           </div>
         </div>
       </div>
-      <div className=' w-full flex flex-col gap-5'>
-        <p className='text-2xl'>Comments</p>
+      <div className=" w-full flex flex-col gap-5">
+        <p className="text-2xl">Comments</p>
         <DataTable
           columns={commentsColumn}
           data={userComments}
-          className='w-full'
+          className="w-full"
         />
       </div>
     </div>
