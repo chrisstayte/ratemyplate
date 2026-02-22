@@ -1,7 +1,24 @@
+import fs from 'node:fs';
+import path from 'node:path';
 import Link from 'next/link';
-import { MapPin, ArrowRight, Map } from 'lucide-react';
+import { MapPin, ArrowRight } from 'lucide-react';
+import StateCycler from './state-cycler';
+
+function getStateAnimations(): string[] {
+  const dir = path.join(process.cwd(), 'public/images/state-animations');
+  try {
+    return fs
+      .readdirSync(dir)
+      .filter((f) => f.endsWith('.svg'))
+      .map((f) => `/images/state-animations/${f}`);
+  } catch {
+    return [];
+  }
+}
 
 export default function ExploreMapSection() {
+  const svgs = getStateAnimations();
+
   return (
     <section className="flex flex-col gap-6 w-full">
       <div className="text-start">
@@ -32,8 +49,12 @@ export default function ExploreMapSection() {
             <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
           </div>
         </div>
-        <div className="relative flex items-center justify-center bg-muted/50 min-h-[200px]">
-          <Map className="size-24 text-muted-foreground/30 group-hover:text-primary/30 transition-colors" strokeWidth={1} />
+        <div className="relative flex items-center justify-center bg-muted/50 min-h-[250px]">
+          {svgs.length > 0 ? (
+            <StateCycler svgs={svgs} />
+          ) : (
+            <MapPin className="size-24 text-muted-foreground/30" />
+          )}
         </div>
       </Link>
     </section>
