@@ -46,18 +46,18 @@ export default function ReviewLikeButton({
       onClick={handleClick}
       disabled={disabled || pending}
       className={cn(
-        'flex items-center gap-1 text-xs transition-colors',
+        'flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-medium transition-colors',
         disabled
-          ? 'text-muted-foreground cursor-default'
+          ? 'border-muted text-muted-foreground cursor-default'
           : liked
-            ? 'text-primary hover:text-primary/80 cursor-pointer'
-            : 'text-muted-foreground hover:text-foreground cursor-pointer'
+            ? 'border-primary/30 bg-primary/10 text-primary hover:bg-primary/20 cursor-pointer'
+            : 'border-border text-muted-foreground hover:bg-accent hover:text-foreground cursor-pointer'
       )}
     >
       <ThumbsUp
         className={cn('size-3.5', liked && 'fill-current')}
       />
-      {count > 0 && <span>{count}</span>}
+      <span>{count}</span>
     </button>
   );
 }
