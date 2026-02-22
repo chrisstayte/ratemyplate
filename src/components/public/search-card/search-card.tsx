@@ -53,7 +53,7 @@ export default function SearchCard() {
 
   async function onSubmit(values: z.infer<typeof searchCardFormSchema>) {
     router.push(
-      `/plate?plate=${values.plate.toUpperCase()}&state=${values.state}`
+      `/${values.state}/${values.plate.toUpperCase()}`
     );
   }
 

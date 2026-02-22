@@ -5,7 +5,7 @@ import { Suspense } from 'react';
 import { sql, desc, eq } from 'drizzle-orm';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Plate } from '@/lib/plates';
-import { plates, comments } from '@/db/schema';
+import { plates, plate_reviews } from '@/db/schema';
 
 import LicensePlateTiny, {
   LicensePlateTinySkeleton,
@@ -36,14 +36,14 @@ async function PopularEntries({ limit = 10 }) {
       plateNumber: plates.plateNumber,
       state: plates.state,
       id: plates.id,
-      commentCount: sql<number>`cast(count(${comments.plateId}) as int)`.as(
+      commentCount: sql<number>`cast(count(${plate_reviews.plateId}) as int)`.as(
         'commentCount'
       ),
     })
     .from(plates)
-    .leftJoin(comments, eq(plates.id, comments.plateId))
+    .leftJoin(plate_reviews, eq(plates.id, plate_reviews.plateId))
     .groupBy(plates.plateNumber, plates.state, plates.id)
-    .having(sql`count(${comments.plateId}) > 0`)
+    .having(sql`count(${plate_reviews.plateId}) > 0`)
     .orderBy(({ commentCount }) => desc(commentCount))
     .limit(limit);
 

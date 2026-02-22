@@ -32,7 +32,8 @@ const LicensePlate: React.FC<LicensePlateProps> = async ({
   if (imageExists) {
     return (
       <div
-        className={`select-none flex flex-col items-center h-full max-h-52 relative w-full max-w-96 p-3 aspect-video  rounded-lg   ${className}`}>
+        className={`select-none flex flex-col items-center h-full max-h-52 relative w-full max-w-96 p-3 aspect-video  rounded-lg   ${className}`}
+      >
         {/* <Image
           className='rounded-xl shadow-lg'
           alt={`License plate for ${stateName}`}
@@ -40,18 +41,19 @@ const LicensePlate: React.FC<LicensePlateProps> = async ({
           style={{ objectFit: 'cover' }}
           src={`/images/state-plates/${stateName}.svg`}
         /> */}
-        <div className='absolute inset-0 flex items-center justify-center uppercase'>
-          <p className='text-4xl md:text-5xl'>{plate.plateNumber}</p>
+        <div className="absolute inset-0 flex items-center justify-center uppercase">
+          <p className="text-4xl md:text-5xl">{plate.plateNumber}</p>
         </div>
       </div>
     );
   } else {
     return (
       <Card
-        className={`select-none flex flex-col items-center h-full max-h-52 relative w-full max-w-96 p-3 gap-0 aspect-video ${className}`}>
-        {plate.state && <Badge className='text-xl h-auto'>{stateName}</Badge>}
-        <div className='absolute inset-0 flex items-center justify-center uppercase'>
-          <p className='text-4xl'>{plate.plateNumber}</p>
+        className={`select-none flex flex-col items-center h-full max-h-52 relative w-full max-w-96 p-3 gap-0 aspect-video ${className}`}
+      >
+        {plate.state && <Badge className="text-sm h-5">{stateName}</Badge>}
+        <div className="absolute inset-0 flex items-center justify-center uppercase">
+          <p className="text-4xl">{plate.plateNumber}</p>
         </div>
       </Card>
     );

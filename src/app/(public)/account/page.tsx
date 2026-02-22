@@ -4,7 +4,7 @@ import { redirect } from 'next/navigation';
 import '@/lib/extensions';
 import { database } from '@/db/database';
 import { desc, eq } from 'drizzle-orm';
-import { comments, plates } from '@/db/schema';
+import { plate_reviews, plates } from '@/db/schema';
 import { DataTable } from '@/components/data-table';
 import { commentsColumn } from '@/components/public/comments-columns';
 import { Badge } from '@/components/ui/badge';
@@ -26,16 +26,16 @@ export default async function AccountPage() {
 
   const userComments = await database
     .select({
-      userId: comments.userId,
-      comment: comments.comment,
-      timestamp: comments.timestamp,
+      userId: plate_reviews.userId,
+      comment: plate_reviews.comment,
+      timestamp: plate_reviews.createdAt,
       plateNumber: plates.plateNumber,
       state: plates.state,
     })
-    .from(comments)
-    .where(eq(comments.userId, user?.id!))
-    .leftJoin(plates, eq(comments.plateId, plates.id))
-    .orderBy(desc(comments.timestamp));
+    .from(plate_reviews)
+    .where(eq(plate_reviews.userId, user?.id!))
+    .leftJoin(plates, eq(plate_reviews.plateId, plates.id))
+    .orderBy(desc(plate_reviews.createdAt));
 
   return (
     <div className='container w-full flex flex-col gap-10'>

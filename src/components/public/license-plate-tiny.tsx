@@ -38,7 +38,7 @@ const LicensePlateTiny: React.FC<LicensePlateTinyProps> = async ({
 
   if (imageExists) {
     return (
-      <Link href={`/plate?plate=${plate.plateNumber}&state=${plate.state}`}>
+      <Link href={`/${plate.state}/${plate.plateNumber}`}>
         <div className="flex flex-col items-center h-full max-h-52 relative w-full max-w-96 p-3 aspect-video  rounded-lg   ">
           {/* <Image
             className='rounded-xl shadow-lg'
@@ -57,7 +57,7 @@ const LicensePlateTiny: React.FC<LicensePlateTinyProps> = async ({
     );
   } else {
     return (
-      <Link href={`/plate?plate=${plate.plateNumber}&state=${plate.state}`}>
+      <Link href={`/${plate.state}/${plate.plateNumber}`}>
         <Card className="aspect-video flex flex-col justify-center items-center gap-0 py-3">
           <div className="flex flex-col h-full relative p-1 md:p-2">
             <Badge className="md:text-xs h-5">{stateName}</Badge>
