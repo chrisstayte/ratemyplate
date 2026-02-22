@@ -24,6 +24,7 @@ import { plate_reviews } from '@/db/schema';
 import { eq, sql, avg, count } from 'drizzle-orm';
 import { formatDistanceToNow } from 'date-fns';
 import InlineSearch from '@/components/public/inline-search';
+import SharePlateButton from '@/components/public/share-plate-button';
 
 export const dynamic = 'force-dynamic';
 
@@ -131,6 +132,10 @@ export default async function PlatePage({ params }: Props) {
               </div>
             </CardContent>
           </Card>
+
+          <div className="flex justify-end">
+            <SharePlateButton plateNumber={upperPlate} state={upperState} />
+          </div>
 
           <Card>
             <CardContent className="flex flex-col gap-4 p-5">

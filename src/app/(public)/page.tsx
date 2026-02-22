@@ -3,6 +3,7 @@ import { Badge } from '@/components/ui/badge';
 import InlineSearch from '@/components/public/inline-search';
 import RecentlyRatedSection from '@/components/public/plate-sections/recently-rated-section';
 import DrivingSaferSection from '@/components/public/plate-sections/driving-safer-section';
+import PlateOfTheDaySection from '@/components/public/plate-sections/plate-of-the-day-section';
 
 export default function Home() {
   return (
@@ -34,6 +35,9 @@ export default function Home() {
       </section>
 
       <div className="container flex flex-col gap-16 py-16 items-center">
+        {/* Plate of the Day */}
+        <PlateOfTheDaySection />
+
         {/* Recently Rated */}
         <RecentlyRatedSection />
 

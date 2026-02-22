@@ -2,6 +2,7 @@ import Link from 'next/link';
 import React from 'react';
 import { LayoutDashboard } from 'lucide-react';
 import AuthMenu from '@/components/navbar/auth-menu';
+import RandomPlateButton from '@/components/public/random-plate-button';
 
 const Navbar = () => {
   return (
@@ -22,6 +23,7 @@ const Navbar = () => {
           >
             Map
           </Link>
+          <RandomPlateButton />
         </div>
 
         <div className="flex flex-1 gap-2 items-center justify-end">

@@ -184,6 +184,19 @@ export async function getRecentCommentsByState(stateAbbreviation: string) {
   return results;
 }
 
+export async function getRandomPlate(): Promise<{ state: string; plateNumber: string } | null> {
+  const [result] = await database
+    .select({
+      plateNumber: plates.plateNumber,
+      state: plates.state,
+    })
+    .from(plates)
+    .orderBy(sql`random()`)
+    .limit(1);
+
+  return result ?? null;
+}
+
 export async function deleteComment(id: number): Promise<boolean> {
   const session = await auth();
 
