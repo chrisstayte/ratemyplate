@@ -102,7 +102,7 @@ export default async function PlatePage({ params }: Props) {
       .select({
         avgRating: sql<number>`cast(avg(${plate_reviews.rating}) as float)`,
         totalReviews: count(),
-        lastActivity: sql<Date>`max(${plate_reviews.createdAt})`,
+        lastActivity: sql<Date>`greatest(max(${plate_reviews.createdAt}), max(${plate_reviews.updatedAt}))`,
       })
       .from(plate_reviews)
       .where(eq(plate_reviews.plateId, plate.id));

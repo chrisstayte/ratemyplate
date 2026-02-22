@@ -30,6 +30,7 @@ export default async function CommentsSection({
   });
 
   var isFavorite: boolean = false;
+  var existingReview: { id: number; rating: number | null; comment: string | null } | undefined;
 
   if (session && databasePlate) {
     isFavorite = await database
@@ -45,6 +46,21 @@ export default async function CommentsSection({
       .then((result) => {
         return result.length > 0;
       });
+
+    const userReview = await database.query.plate_reviews.findFirst({
+      where: and(
+        eq(plate_reviews.plateId, databasePlate.id),
+        eq(plate_reviews.userId, session.user!.id!)
+      ),
+    });
+
+    if (userReview) {
+      existingReview = {
+        id: userReview.id,
+        rating: userReview.rating,
+        comment: userReview.comment,
+      };
+    }
   }
 
   return (
@@ -58,7 +74,10 @@ export default async function CommentsSection({
               isFavorite={isFavorite}
               plate={{ state, plateNumber }}
             />
-            <NewCommentButton plate={{ state, plateNumber }} />
+            <NewCommentButton
+              plate={{ state, plateNumber }}
+              existingReview={existingReview}
+            />
           </div>
         )}
       </div>
@@ -130,6 +149,9 @@ async function Comments({
             {/* Timestamp */}
             <span className="text-xs text-muted-foreground">
               {formatDistanceToNow(comment.createdAt, { addSuffix: true })}
+              {comment.updatedAt > comment.createdAt && (
+                <> · edited {formatDistanceToNow(comment.updatedAt, { addSuffix: true })}</>
+              )}
             </span>
           </div>
         </Card>

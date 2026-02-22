@@ -17,7 +17,7 @@ export const plates = pgTable('plates', {
   id: serial('id').primaryKey(),
   plateNumber: text('plateNumber').notNull(),
   state: varchar('state', { length: 2 }).notNull(),
-  timestamp: timestamp('timestamp', { mode: 'date' }).notNull().defaultNow(),
+  timestamp: timestamp('timestamp', { mode: 'date', withTimezone: true }).notNull().defaultNow(),
   userId: text('userId').references(() => users.id),
 });
 
@@ -41,8 +41,8 @@ export const plate_reviews = pgTable(
       .references(() => users.id),
     rating: smallint('rating'),
     comment: text('comment'),
-    createdAt: timestamp('createdAt', { mode: 'date' }).notNull().defaultNow(),
-    updatedAt: timestamp('updatedAt', { mode: 'date' }).notNull().defaultNow(),
+    createdAt: timestamp('createdAt', { mode: 'date', withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp('updatedAt', { mode: 'date', withTimezone: true }).notNull().defaultNow(),
   },
   (t) => ({
     uniqueUserPlate: uniqueIndex('plate_reviews_userId_plateId_idx').on(

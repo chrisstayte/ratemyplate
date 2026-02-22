@@ -23,7 +23,9 @@ import {
   DrawerTrigger,
 } from '@/components/ui/drawer';
 
-import NewCommentForm from '@/components/public/comments/new-comment-form';
+import NewCommentForm, {
+  ExistingReview,
+} from '@/components/public/comments/new-comment-form';
 
 import { Plate } from '@/lib/plates';
 import { useState } from 'react';
@@ -31,29 +33,40 @@ import { useState } from 'react';
 interface NewCommentButtonProps {
   className?: string;
   plate: Plate;
+  existingReview?: ExistingReview;
 }
 
 const NewCommentButton: React.FC<NewCommentButtonProps> = ({
   plate,
   className,
+  existingReview,
 }) => {
   const [open, setOpen] = useState(false);
   const isDesktop = useMediaQuery('(min-width: 768px)');
+
+  const isEditing = !!existingReview;
+  const buttonLabel = isEditing ? 'Edit Review' : 'Add a Review';
+  const dialogTitle = isEditing ? 'Edit Review' : 'Add a Review';
+  const dialogDescription = isEditing
+    ? 'Update your rating and comment.'
+    : 'Rate this driver and share your experience.';
 
   if (isDesktop) {
     return (
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
-          <Button>New Comment</Button>
+          <Button>{buttonLabel}</Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>New Comment</DialogTitle>
-            <DialogDescription>
-              Let them know what you think about them.
-            </DialogDescription>
+            <DialogTitle>{dialogTitle}</DialogTitle>
+            <DialogDescription>{dialogDescription}</DialogDescription>
           </DialogHeader>
-          <NewCommentForm plate={plate} onClose={() => setOpen(false)} />
+          <NewCommentForm
+            plate={plate}
+            onClose={() => setOpen(false)}
+            existingReview={existingReview}
+          />
         </DialogContent>
       </Dialog>
     );
@@ -62,18 +75,17 @@ const NewCommentButton: React.FC<NewCommentButtonProps> = ({
   return (
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
-        <Button className="">New Comment</Button>
+        <Button>{buttonLabel}</Button>
       </DrawerTrigger>
       <DrawerContent>
         <DrawerHeader className="text-left">
-          <DrawerTitle>New Comment</DrawerTitle>
-          <DrawerDescription>
-            Let them know what you think about them.
-          </DrawerDescription>
+          <DrawerTitle>{dialogTitle}</DrawerTitle>
+          <DrawerDescription>{dialogDescription}</DrawerDescription>
         </DrawerHeader>
         <NewCommentForm
           plate={plate}
           onClose={() => setOpen(false)}
+          existingReview={existingReview}
           className="px-4"
         />
         <DrawerFooter className="pt-2">
