@@ -7,8 +7,29 @@ import PlausibleProvider from 'next-plausible';
 const inconsolata = Inconsolata({ subsets: ['latin'], display: 'swap' });
 
 export const metadata: Metadata = {
-  title: 'Rate My Plate',
-  description: 'Anonymous rating for drivers',
+  title: {
+    default: 'Rate My Plate',
+    template: '%s | Rate My Plate',
+  },
+  description:
+    'Rate and review drivers anonymously by license plate. Share your experiences and help make roads safer.',
+  metadataBase: new URL(
+    process.env.BETTER_AUTH_URL ?? 'https://ratemyplate.wtf'
+  ),
+  openGraph: {
+    title: 'Rate My Plate',
+    description:
+      'Rate and review drivers anonymously by license plate. Share your experiences and help make roads safer.',
+    type: 'website',
+    locale: 'en_US',
+    siteName: 'Rate My Plate',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Rate My Plate',
+    description:
+      'Rate and review drivers anonymously by license plate. Share your experiences and help make roads safer.',
+  },
 };
 
 export default function RootLayout({

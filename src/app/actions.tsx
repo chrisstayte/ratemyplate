@@ -7,11 +7,15 @@ import { auth, isCurrentUserAdmin } from '@/auth';
 import { eq, and, desc, sql } from 'drizzle-orm';
 import { Plate } from '@/lib/plates';
 
-export async function createPlate(plate: Plate): Promise<any> {
+export async function createPlate(plate: Plate): Promise<{ message: string; id: number }> {
   const session = await auth();
 
   if (!session) {
     throw new Error('Unauthorized');
+  }
+
+  if (!plate.plateNumber || !plate.state) {
+    throw new Error('Plate number and state are required');
   }
 
   const existingPlate = await database?.query.plates.findFirst({
@@ -42,10 +46,14 @@ export async function postReview(
   comment: string,
   rating: number,
   plateId: number
-): Promise<any> {
+): Promise<{ message: string; status: number }> {
   const session = await auth();
   if (!session) {
     throw new Error('Unauthorized');
+  }
+
+  if (rating < 1 || rating > 5) {
+    return { message: 'Rating must be between 1 and 5', status: 400 };
   }
 
   try {
@@ -71,10 +79,14 @@ export async function updateReview(
   reviewId: number,
   comment: string,
   rating: number
-): Promise<any> {
+): Promise<{ message: string; status: number }> {
   const session = await auth();
   if (!session) {
     throw new Error('Unauthorized');
+  }
+
+  if (rating < 1 || rating > 5) {
+    return { message: 'Rating must be between 1 and 5', status: 400 };
   }
 
   const existing = await database.query.plate_reviews.findFirst({
@@ -113,7 +125,7 @@ export async function addPlateToFavorites(plate: Plate) {
     throw new Error('Failed to add plate to favorites');
   }
 
-  database
+  await database
     .insert(user_favorite_plates)
     .values({
       userId: session!.user!.id,
@@ -143,7 +155,7 @@ export async function removePlateFromFavorites(plate: Plate) {
     throw new Error('Plate not found');
   }
 
-  database
+  await database
     .delete(user_favorite_plates)
     .where(
       and(

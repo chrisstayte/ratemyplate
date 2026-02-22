@@ -1,11 +1,5 @@
-import type { Metadata } from 'next';
 import Navbar from '@/components/public/navbar/navbar';
 import Footer from '@/components/public/footer/footer';
-
-export const metadata: Metadata = {
-  title: 'Rate My Plate',
-  description: 'Anonymous rating for drivers',
-};
 
 export default function RootLayout({
   children,
