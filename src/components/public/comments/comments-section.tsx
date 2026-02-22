@@ -10,9 +10,7 @@ import { auth } from '@/auth';
 import NewCommentButton from './new-comment-button';
 import { user_favorite_plates } from '@/db/schema';
 import FavoritePlateButton from '@/components/public/favorite-plate-button';
-import ReviewLikeButton from './review-like-button';
-import { Star } from 'lucide-react';
-import { formatDistanceToNow } from 'date-fns';
+import CommentsTabs from './comments-tabs';
 
 interface CommentsSectionProps {
   state: string;
@@ -146,57 +144,17 @@ async function Comments({
     userLikedSet = new Set(userLikes.map((l) => l.reviewId));
   }
 
-  return (
-    <div className="flex flex-col gap-4">
-      {plateComments.map((comment) => (
-        <Card
-          key={comment.id}
-          className="p-4 gap-0"
-        >
-          <div className="flex flex-col gap-3">
-            {/* Rating stars */}
-            {comment.rating !== null && (
-              <div className="flex gap-0.5">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <Star
-                    key={i}
-                    className={`size-4 ${
-                      i < (comment.rating ?? 0)
-                        ? 'fill-yellow-400 text-yellow-400'
-                        : 'text-muted-foreground/40'
-                    }`}
-                  />
-                ))}
-              </div>
-            )}
+  const reviews = plateComments.map((comment) => ({
+    id: comment.id,
+    rating: comment.rating,
+    comment: comment.comment,
+    createdAt: comment.createdAt,
+    updatedAt: comment.updatedAt,
+    likeCount: likeCountMap.get(comment.id) ?? 0,
+    isLiked: userLikedSet.has(comment.id),
+  }));
 
-            {/* Comment text */}
-            {comment.comment && (
-              <p className="text-sm text-wrap break-words">
-                {comment.comment}
-              </p>
-            )}
-
-            {/* Timestamp and like */}
-            <div className="flex items-center gap-3">
-              <span className="text-xs text-muted-foreground">
-                {formatDistanceToNow(comment.createdAt, { addSuffix: true })}
-                {comment.updatedAt > comment.createdAt && (
-                  <> · edited {formatDistanceToNow(comment.updatedAt, { addSuffix: true })}</>
-                )}
-              </span>
-              <ReviewLikeButton
-                reviewId={comment.id}
-                likeCount={likeCountMap.get(comment.id) ?? 0}
-                isLiked={userLikedSet.has(comment.id)}
-                disabled={!session}
-              />
-            </div>
-          </div>
-        </Card>
-      ))}
-    </div>
-  );
+  return <CommentsTabs reviews={reviews} isLoggedIn={!!session} />;
 }
 
 function CommentsSkeleton({ limit = 10 }) {
