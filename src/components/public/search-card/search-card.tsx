@@ -39,22 +39,24 @@ export const searchCardFormSchema = z
     }
   );
 
-export default function SearchCard() {
+export default function SearchCard({
+  defaultState,
+}: {
+  defaultState?: string;
+}) {
   const router = useRouter();
-  const [stateValue, setStateValue] = useState('');
+  const [stateValue, setStateValue] = useState(defaultState ?? '');
 
   const form = useForm<z.infer<typeof searchCardFormSchema>>({
     resolver: zodResolver(searchCardFormSchema),
     defaultValues: {
       plate: '',
-      state: '',
+      state: defaultState ?? '',
     },
   });
 
   async function onSubmit(values: z.infer<typeof searchCardFormSchema>) {
-    router.push(
-      `/${values.state}/${values.plate.toUpperCase()}`
-    );
+    router.push(`/${values.state}/${values.plate.toUpperCase()}`);
   }
 
   const plateError = form.formState.errors.plate;
@@ -62,45 +64,46 @@ export default function SearchCard() {
 
   return (
     <Card className="w-full max-w-md">
-      <CardHeader>
-        <CardTitle>Let&apos;s find em.</CardTitle>
-        <CardDescription>Enter the plate number and state</CardDescription>
-      </CardHeader>
       <CardContent>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
           className="flex flex-col gap-5"
         >
           <FieldGroup className="flex flex-col sm:flex-row gap-5">
-            <Field className="basis-1/2" data-invalid={!!plateError}>
+            <Field
+              className={defaultState ? 'w-full' : 'basis-1/2'}
+              data-invalid={!!plateError}
+            >
               <FieldLabel htmlFor="search-card-plate">License Plate</FieldLabel>
               <Input
                 id="search-card-plate"
-                className="uppercase text-[16px] bg-card"
+                className="uppercase text-[16px] bg-accent/50"
                 placeholder=""
                 aria-invalid={!!plateError}
                 {...form.register('plate')}
               />
               {plateError && <FieldError errors={[plateError]} />}
             </Field>
-            <Field className="basis-1/2" data-invalid={!!stateError}>
-              <FieldLabel htmlFor="search-card-state">State</FieldLabel>
-              <input type="hidden" {...form.register('state')} />
-              <StatePicker
-                id="search-card-state"
-                onValueChange={(value) => {
-                  setStateValue(value);
-                  form.setValue('state', value, {
-                    shouldDirty: true,
-                    shouldTouch: true,
-                    shouldValidate: true,
-                  });
-                }}
-                value={stateValue}
-                ariaInvalid={!!stateError}
-              />
-              {stateError && <FieldError errors={[stateError]} />}
-            </Field>
+            {!defaultState && (
+              <Field className="basis-1/2" data-invalid={!!stateError}>
+                <FieldLabel htmlFor="search-card-state">State</FieldLabel>
+                <input type="hidden" {...form.register('state')} />
+                <StatePicker
+                  id="search-card-state"
+                  onValueChange={(value) => {
+                    setStateValue(value);
+                    form.setValue('state', value, {
+                      shouldDirty: true,
+                      shouldTouch: true,
+                      shouldValidate: true,
+                    });
+                  }}
+                  value={stateValue}
+                  ariaInvalid={!!stateError}
+                />
+                {stateError && <FieldError errors={[stateError]} />}
+              </Field>
+            )}
           </FieldGroup>
           <div className="w-full flex justify-end">
             <Button type="submit">Search</Button>
