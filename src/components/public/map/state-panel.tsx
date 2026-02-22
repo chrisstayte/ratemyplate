@@ -19,7 +19,7 @@ import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 
 type Comment = {
-  commentText: string;
+  commentText: string | null;
   plateNumber: string;
   timestamp: Date;
 };
@@ -133,7 +133,7 @@ export default function StatePanel({
                 </SelectContent>
               </Select>
               {sortedComments.map((comment, i) => {
-                const text = comment.commentText;
+                const text = comment.commentText ?? '';
                 const truncated = text.length > 100;
                 return (
                   <Link

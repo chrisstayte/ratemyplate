@@ -11,7 +11,7 @@ import Link from 'next/link';
 // I can use a zod schema if i want
 
 export type Comment = {
-  comment: string;
+  comment: string | null;
   timestamp: Date;
   plateNumber: string | null;
   state: string | null;
