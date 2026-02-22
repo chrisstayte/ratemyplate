@@ -72,7 +72,7 @@ const BreadCrumbs = ({ className }: BreadCrumbsProps) => {
   return (
     <Breadcrumb className={cn(className, 'select-none')}>
       <BreadcrumbList>
-        <BreadcrumbLink href={AppRoutes.HOME}>Dashboard</BreadcrumbLink>
+        <BreadcrumbLink href={AppRoutes.HOME}>Home</BreadcrumbLink>
         <BreadcrumbSeparator />
         {breadcrumbs.map((crumb, index) => (
           <React.Fragment key={index}>

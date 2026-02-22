@@ -47,12 +47,12 @@ export default async function CommentsSection({
   }
 
   return (
-    <div className='h-full w-full flex flex-col gap-5'>
-      <div className='flex flex-col gap-5 sm:flex-row justify-between items-center'>
-        <p className='text-2xl'>Comments</p>
-        {!session && <LoginDialog buttonTitle='Sign in to comment' />}
+    <div className="h-full w-full flex flex-col gap-5">
+      <div className="flex flex-col sm:flex-row justify-between items-start">
+        <p className="text-2xl w-full leading-none">Reviews</p>
+        {!session && <LoginDialog buttonTitle="Sign in to comment" />}
         {session && (
-          <div className='w-full flex flex-row gap-8 justify-between items-center sm:justify-end'>
+          <div className="w-full flex flex-row gap-8 justify-between items-center sm:justify-end">
             <FavoritePlateButton
               isFavorite={isFavorite}
               plate={{ state, plateNumber }}
@@ -86,7 +86,8 @@ async function Comments({
   }
 
   const plateComments = await database.query.plate_reviews.findMany({
-    where: (plate_reviews, { eq }) => eq(plate_reviews.plateId, licensePlate?.id),
+    where: (plate_reviews, { eq }) =>
+      eq(plate_reviews.plateId, licensePlate?.id),
     orderBy: [desc(plate_reviews.createdAt)],
   });
 
@@ -95,16 +96,17 @@ async function Comments({
   }
 
   return (
-    <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5'>
+    <div className="flex flex-col gap-5">
       {plateComments.map((comment) => (
         <Card
           key={comment.id}
-          className='flex flex-col justify-center items-center p-3 gap-0 h-full'>
-          <div className='flex flex-col justify-between content-between h-full w-full gap-5'>
-            <p className='text-wrap overflow-wrap break-words'>
+          className="flex flex-col justify-center items-center p-3 gap-0 h-full"
+        >
+          <div className="flex flex-col justify-between content-between h-full w-full gap-5">
+            <p className="text-wrap overflow-wrap break-words">
               {comment.comment}
             </p>
-            <Badge className='self-end text-sm h-auto'>
+            <Badge className="self-end text-sm h-auto">
               {new Date(comment.createdAt).toLocaleString('en-US', {
                 year: 'numeric',
                 month: '2-digit',
@@ -123,7 +125,7 @@ function CommentsSkeleton({ limit = 10 }) {
   const skeletons = Array.from({ length: limit });
 
   return (
-    <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5'>
+    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5">
       {skeletons.map((_, index) => (
         <CommentSkeleton key={index} />
       ))}
@@ -133,11 +135,11 @@ function CommentsSkeleton({ limit = 10 }) {
 
 function CommentSkeleton() {
   return (
-    <Card className='aspect-video flex flex-col justify-center items-center gap-0 py-3'>
-      <div className='flex flex-col h-full relative p-1 w-full items-center'>
-        <Skeleton className='w-full max-w-[50px] h-[20px] ' />
-        <div className='absolute inset-0 flex items-center justify-center uppercase'>
-          <Skeleton className='w-full max-w-[100px] h-[20px] ' />
+    <Card className="aspect-video flex flex-col justify-center items-center gap-0 py-3">
+      <div className="flex flex-col h-full relative p-1 w-full items-center">
+        <Skeleton className="w-full max-w-[50px] h-[20px] " />
+        <div className="absolute inset-0 flex items-center justify-center uppercase">
+          <Skeleton className="w-full max-w-[100px] h-[20px] " />
         </div>
       </div>
     </Card>

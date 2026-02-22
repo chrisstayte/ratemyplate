@@ -46,7 +46,7 @@ const NewCommentButton: React.FC<NewCommentButtonProps> = ({
         <DialogTrigger asChild>
           <Button>New Comment</Button>
         </DialogTrigger>
-        <DialogContent className='sm:max-w-[425px]'>
+        <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
             <DialogTitle>New Comment</DialogTitle>
             <DialogDescription>
@@ -62,10 +62,10 @@ const NewCommentButton: React.FC<NewCommentButtonProps> = ({
   return (
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
-        <Button>New Comment</Button>
+        <Button className="">New Comment</Button>
       </DrawerTrigger>
       <DrawerContent>
-        <DrawerHeader className='text-left'>
+        <DrawerHeader className="text-left">
           <DrawerTitle>New Comment</DrawerTitle>
           <DrawerDescription>
             Let them know what you think about them.
@@ -74,11 +74,11 @@ const NewCommentButton: React.FC<NewCommentButtonProps> = ({
         <NewCommentForm
           plate={plate}
           onClose={() => setOpen(false)}
-          className='px-4'
+          className="px-4"
         />
-        <DrawerFooter className='pt-2'>
+        <DrawerFooter className="pt-2">
           <DrawerClose asChild>
-            <Button variant='outline'>Cancel</Button>
+            <Button variant="outline">Cancel</Button>
           </DrawerClose>
         </DrawerFooter>
       </DrawerContent>

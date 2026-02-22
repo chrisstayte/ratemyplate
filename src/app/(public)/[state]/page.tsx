@@ -11,6 +11,8 @@ import SearchCard from '@/components/public/search-card/search-card';
 
 import type { Metadata, ResolvingMetadata } from 'next';
 
+export const dynamic = 'force-dynamic';
+
 type Props = {
   params: Promise<{ state: string }>;
 };
