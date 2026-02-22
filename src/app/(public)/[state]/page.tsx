@@ -10,6 +10,7 @@ import { Plus } from 'lucide-react';
 import SearchCard from '@/components/public/search-card/search-card';
 
 import type { Metadata, ResolvingMetadata } from 'next';
+import BreadCrumbs from '@/components/bread-crumbs';
 
 export const dynamic = 'force-dynamic';
 
@@ -60,35 +61,38 @@ export default async function StatePage({ params }: Props) {
     .orderBy(desc(plates.timestamp));
 
   return (
-    <div className="container flex flex-col gap-10 py-10 items-center">
-      <div className="flex flex-col gap-2 items-center">
-        <h1 className="text-4xl font-bold text-center">{stateName}</h1>
-        <p className="text-muted-foreground text-center">
-          {statePlates.length} {statePlates.length === 1 ? 'plate' : 'plates'}{' '}
-          rated
-        </p>
-      </div>
-
-      {statePlates.length === 0 ? (
-        <div className="flex flex-col items-center gap-6 min-w-md">
-          <p className="text-lg text-muted-foreground text-center">
-            Add the first plate for {stateName} today
+    <div className="flex flex-col max-w-6xl mx-auto px-5 mb-10 pt-5">
+      <BreadCrumbs />
+      <div className="container flex flex-col gap-10 py-10 items-center">
+        <div className="flex flex-col gap-2 items-center">
+          <h1 className="text-4xl font-bold text-center">{stateName}</h1>
+          <p className="text-muted-foreground text-center">
+            {statePlates.length} {statePlates.length === 1 ? 'plate' : 'plates'}{' '}
+            rated
           </p>
-          <SearchCard />
         </div>
-      ) : (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 w-full">
-          {statePlates.map((plate) => (
-            <LicensePlateTiny
-              key={plate.id}
-              plate={{
-                state: plate.state,
-                plateNumber: plate.plateNumber,
-              }}
-            />
-          ))}
-        </div>
-      )}
+
+        {statePlates.length === 0 ? (
+          <div className="flex flex-col items-center gap-6 min-w-md">
+            <p className="text-lg text-muted-foreground text-center">
+              Add the first plate for {stateName} today
+            </p>
+            <SearchCard />
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 w-full">
+            {statePlates.map((plate) => (
+              <LicensePlateTiny
+                key={plate.id}
+                plate={{
+                  state: plate.state,
+                  plateNumber: plate.plateNumber,
+                }}
+              />
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

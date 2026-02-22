@@ -13,7 +13,7 @@ import Link from 'next/link';
 export default function RecentlyRatedSection() {
   return (
     <section className="flex flex-col gap-6 w-full">
-      <div className="">
+      <div className="text-center">
         <h2 className="text-3xl font-bold">Recently Rated</h2>
         <p className="text-muted-foreground mt-1">
           See what the community is saying

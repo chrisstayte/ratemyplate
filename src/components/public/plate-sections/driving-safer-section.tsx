@@ -35,8 +35,8 @@ const features = [
 
 export default function DrivingSaferSection() {
   return (
-    <section className="flex flex-col gap-6 w-full">
-      <div className="text-end">
+    <section className="flex flex-col gap-12 w-full">
+      <div className="text-start">
         <h2 className="text-3xl font-bold">Driving Safer Together</h2>
         <p className="text-muted-foreground mt-1">
           Join a community committed to road safety

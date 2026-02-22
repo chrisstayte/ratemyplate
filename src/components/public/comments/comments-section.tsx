@@ -4,13 +4,14 @@ import { desc } from 'drizzle-orm';
 import { Card } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { plate_reviews } from '@/db/schema';
-import { Badge } from '@/components/ui/badge';
 import { database } from '@/db/database';
 import LoginDialog from '../login-dialog';
 import { auth } from '@/auth';
 import NewCommentButton from './new-comment-button';
 import { user_favorite_plates } from '@/db/schema';
 import FavoritePlateButton from '@/components/public/favorite-plate-button';
+import { Star } from 'lucide-react';
+import { formatDistanceToNow } from 'date-fns';
 
 interface CommentsSectionProps {
   state: string;
@@ -49,7 +50,7 @@ export default async function CommentsSection({
   return (
     <div className="h-full w-full flex flex-col gap-5">
       <div className="flex flex-col sm:flex-row justify-between items-start">
-        <p className="text-2xl w-full leading-none">Reviews</p>
+        <p className="text-2xl font-bold w-full leading-none">Reviews</p>
         {!session && <LoginDialog buttonTitle="Sign in to comment" />}
         {session && (
           <div className="w-full flex flex-row gap-8 justify-between items-center sm:justify-end">
@@ -82,7 +83,7 @@ async function Comments({
   });
 
   if (!licensePlate) {
-    return <p>No comments yet</p>;
+    return <p className="text-muted-foreground">No comments yet</p>;
   }
 
   const plateComments = await database.query.plate_reviews.findMany({
@@ -92,28 +93,44 @@ async function Comments({
   });
 
   if (!plateComments || plateComments.length === 0) {
-    return <p>No comments yet</p>;
+    return <p className="text-muted-foreground">No comments yet</p>;
   }
 
   return (
-    <div className="flex flex-col gap-5">
+    <div className="flex flex-col gap-4">
       {plateComments.map((comment) => (
         <Card
           key={comment.id}
-          className="flex flex-col justify-center items-center p-3 gap-0 h-full"
+          className="p-4 gap-0"
         >
-          <div className="flex flex-col justify-between content-between h-full w-full gap-5">
-            <p className="text-wrap overflow-wrap break-words">
-              {comment.comment}
-            </p>
-            <Badge className="self-end text-sm h-auto">
-              {new Date(comment.createdAt).toLocaleString('en-US', {
-                year: 'numeric',
-                month: '2-digit',
-                day: '2-digit',
-                hour12: true,
-              })}
-            </Badge>
+          <div className="flex flex-col gap-3">
+            {/* Rating stars */}
+            {comment.rating !== null && (
+              <div className="flex gap-0.5">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <Star
+                    key={i}
+                    className={`size-4 ${
+                      i < (comment.rating ?? 0)
+                        ? 'fill-yellow-400 text-yellow-400'
+                        : 'text-muted-foreground/40'
+                    }`}
+                  />
+                ))}
+              </div>
+            )}
+
+            {/* Comment text */}
+            {comment.comment && (
+              <p className="text-sm text-wrap break-words">
+                {comment.comment}
+              </p>
+            )}
+
+            {/* Timestamp */}
+            <span className="text-xs text-muted-foreground">
+              {formatDistanceToNow(comment.createdAt, { addSuffix: true })}
+            </span>
           </div>
         </Card>
       ))}
@@ -125,7 +142,7 @@ function CommentsSkeleton({ limit = 10 }) {
   const skeletons = Array.from({ length: limit });
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5">
+    <div className="flex flex-col gap-4">
       {skeletons.map((_, index) => (
         <CommentSkeleton key={index} />
       ))}
@@ -135,12 +152,16 @@ function CommentsSkeleton({ limit = 10 }) {
 
 function CommentSkeleton() {
   return (
-    <Card className="aspect-video flex flex-col justify-center items-center gap-0 py-3">
-      <div className="flex flex-col h-full relative p-1 w-full items-center">
-        <Skeleton className="w-full max-w-[50px] h-[20px] " />
-        <div className="absolute inset-0 flex items-center justify-center uppercase">
-          <Skeleton className="w-full max-w-[100px] h-[20px] " />
+    <Card className="p-4">
+      <div className="flex flex-col gap-3">
+        <div className="flex gap-0.5">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <Skeleton key={i} className="size-4 rounded-full" />
+          ))}
         </div>
+        <Skeleton className="h-4 w-full" />
+        <Skeleton className="h-4 w-3/4" />
+        <Skeleton className="h-3 w-20" />
       </div>
     </Card>
   );
