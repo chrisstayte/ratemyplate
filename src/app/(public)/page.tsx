@@ -1,22 +1,45 @@
-import SearchCard from '@/components/public/search-card/search-card';
-import RecentEntriesSection from '@/components/public/plate-sections/recent-commented-plates-section';
-import PopularEntriesSection from '@/components/public/plate-sections/popular-plates-section';
-import MostFavoritedPlatesSection from '@/components/public/plate-sections/most-favorites-plates-section';
+import { EyeOff, MapPin, Users } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import InlineSearch from '@/components/public/inline-search';
+import RecentlyRatedSection from '@/components/public/plate-sections/recently-rated-section';
+import DrivingSaferSection from '@/components/public/plate-sections/driving-safer-section';
 
 export default function Home() {
   return (
-    <div className='container flex flex-col gap-10 py-10 items-center'>
-      <div className='flex flex-col gap-5  min-h-36 justify-center items-center'>
-        <p className='text-5xl text-center'>R8MYPL8</p>
-        <p className='text-lg text-center'>
+    <>
+      {/* Hero + Inline Search */}
+      <section className="flex flex-col items-center gap-6 text-center py-20 pb-16 border-b">
+        <h1 className="text-5xl font-bold tracking-tight">
+          Rate Any License Plate
+        </h1>
+        <p className="text-lg text-muted-foreground">
           See what others are saying. Share your own experiences. Stay
           anonymous.
         </p>
+        <InlineSearch />
+        <div className="flex flex-wrap gap-2 justify-center">
+          <Badge className="bg-purple-400 dark:bg-purple-200">
+            <EyeOff className="size-3" />
+            100% Anonymous
+          </Badge>
+          <Badge className="bg-purple-400 dark:bg-purple-200">
+            <MapPin className="size-3" />
+            50 States
+          </Badge>
+          <Badge className="bg-purple-400 dark:bg-purple-200">
+            <Users className="size-3" />
+            Community Driven
+          </Badge>
+        </div>
+      </section>
+
+      <div className="container flex flex-col gap-16 py-16 items-center">
+        {/* Recently Rated */}
+        <RecentlyRatedSection />
+
+        {/* Driving Safer Together */}
+        <DrivingSaferSection />
       </div>
-      <SearchCard />
-      <PopularEntriesSection />
-      <RecentEntriesSection />
-      <MostFavoritedPlatesSection />
-    </div>
+    </>
   );
 }

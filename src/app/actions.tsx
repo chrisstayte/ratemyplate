@@ -1,10 +1,10 @@
 'use server';
 
 import { database } from '@/db/database';
-import { plates, comments, user_favorite_plates } from '@/db/schema';
+import { plates, plate_reviews, user_favorite_plates } from '@/db/schema';
 import { revalidatePath } from 'next/cache';
 import { auth, isCurrentUserAdmin } from '@/auth';
-import { eq, and, desc } from 'drizzle-orm';
+import { eq, and, desc, sql } from 'drizzle-orm';
 import { Plate } from '@/lib/plates';
 
 export async function createPlate(plate: Plate): Promise<any> {
@@ -38,8 +38,9 @@ export async function createPlate(plate: Plate): Promise<any> {
   return { message: 'Plate created', id: newPlateList[0].id };
 }
 
-export async function postComment(
+export async function postReview(
   comment: string,
+  rating: number,
   plateId: number
 ): Promise<any> {
   const session = await auth();
@@ -48,21 +49,55 @@ export async function postComment(
   }
 
   try {
-    database
-      .insert(comments)
+    await database
+      .insert(plate_reviews)
       .values({
         comment: comment,
+        rating: rating,
         plateId: plateId,
         userId: session!.user!.id,
       })
       .execute();
 
-    revalidatePath('/plate');
+    revalidatePath('/', 'layout');
   } catch (error) {
     console.error(error);
-    return { message: 'Failed to add comment', status: 500 };
+    return { message: 'Failed to add review', status: 500 };
   }
-  return { message: 'Added comment', status: 200 };
+  return { message: 'Added review', status: 200 };
+}
+
+export async function updateReview(
+  reviewId: number,
+  comment: string,
+  rating: number
+): Promise<any> {
+  const session = await auth();
+  if (!session) {
+    throw new Error('Unauthorized');
+  }
+
+  const existing = await database.query.plate_reviews.findFirst({
+    where: (plate_reviews, { eq }) => eq(plate_reviews.id, reviewId),
+  });
+
+  if (!existing || existing.userId !== session.user!.id) {
+    throw new Error('Unauthorized');
+  }
+
+  try {
+    await database
+      .update(plate_reviews)
+      .set({ comment, rating, updatedAt: sql`now()` })
+      .where(eq(plate_reviews.id, reviewId))
+      .execute();
+
+    revalidatePath('/', 'layout');
+  } catch (error) {
+    console.error(error);
+    return { message: 'Failed to update review', status: 500 };
+  }
+  return { message: 'Updated review', status: 200 };
 }
 
 export async function addPlateToFavorites(plate: Plate) {
@@ -124,14 +159,14 @@ export async function removePlateFromFavorites(plate: Plate) {
 export async function getRecentCommentsByState(stateAbbreviation: string) {
   const results = await database
     .select({
-      commentText: comments.comment,
+      commentText: plate_reviews.comment,
       plateNumber: plates.plateNumber,
-      timestamp: comments.timestamp,
+      timestamp: plate_reviews.createdAt,
     })
-    .from(comments)
-    .innerJoin(plates, eq(comments.plateId, plates.id))
+    .from(plate_reviews)
+    .innerJoin(plates, eq(plate_reviews.plateId, plates.id))
     .where(eq(plates.state, stateAbbreviation))
-    .orderBy(desc(comments.timestamp))
+    .orderBy(desc(plate_reviews.createdAt))
     .limit(20);
 
   return results;
@@ -148,7 +183,7 @@ export async function deleteComment(id: number): Promise<boolean> {
     throw new Error('Unauthorized');
   }
 
-  const response = await database.delete(comments).where(eq(comments.id, id));
-  revalidatePath('/plate');
+  const response = await database.delete(plate_reviews).where(eq(plate_reviews.id, id));
+  revalidatePath('/', 'layout');
   return response.length > 0;
 }
