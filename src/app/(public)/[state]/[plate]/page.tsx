@@ -81,7 +81,7 @@ export default async function PlatePage({ params }: Props) {
   }
 
   return (
-    <div className=" flex flex-col gap-20 max-w-6xl mx-auto px-5 mb-10">
+    <div className=" flex flex-col gap-20 max-w-6xl mx-auto px-5 mb-10 pt-5">
       <BreadCrumbs />
       <div className="flex flex-col gap-5 md:gap-5 md:flex-row">
         <div className="flex min-w-82 flex-col">
