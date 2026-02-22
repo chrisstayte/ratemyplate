@@ -1,7 +1,7 @@
 'use server';
 
 import { database } from '@/db/database';
-import { plates, plate_reviews, user_favorite_plates } from '@/db/schema';
+import { plates, plate_reviews, user_favorite_plates, review_likes } from '@/db/schema';
 import { revalidatePath } from 'next/cache';
 import { auth, isCurrentUserAdmin } from '@/auth';
 import { eq, and, desc, sql } from 'drizzle-orm';
@@ -170,6 +170,48 @@ export async function getRecentCommentsByState(stateAbbreviation: string) {
     .limit(20);
 
   return results;
+}
+
+export async function toggleReviewLike(reviewId: number) {
+  const session = await auth();
+
+  if (!session) {
+    throw new Error('Unauthorized');
+  }
+
+  const userId = session.user!.id!;
+
+  const existing = await database
+    .select()
+    .from(review_likes)
+    .where(
+      and(
+        eq(review_likes.userId, userId),
+        eq(review_likes.reviewId, reviewId)
+      )
+    )
+    .execute();
+
+  if (existing.length > 0) {
+    await database
+      .delete(review_likes)
+      .where(
+        and(
+          eq(review_likes.userId, userId),
+          eq(review_likes.reviewId, reviewId)
+        )
+      )
+      .execute();
+    revalidatePath('/', 'layout');
+    return { liked: false };
+  } else {
+    await database
+      .insert(review_likes)
+      .values({ userId, reviewId })
+      .execute();
+    revalidatePath('/', 'layout');
+    return { liked: true };
+  }
 }
 
 export async function deleteComment(id: number): Promise<boolean> {

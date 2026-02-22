@@ -1,15 +1,16 @@
-import { eq, and } from 'drizzle-orm';
+import { eq, and, sql } from 'drizzle-orm';
 import { Plate } from '@/lib/plates';
 import { desc } from 'drizzle-orm';
 import { Card } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
-import { plate_reviews } from '@/db/schema';
+import { plate_reviews, review_likes } from '@/db/schema';
 import { database } from '@/db/database';
 import LoginDialog from '../login-dialog';
 import { auth } from '@/auth';
 import NewCommentButton from './new-comment-button';
 import { user_favorite_plates } from '@/db/schema';
 import FavoritePlateButton from '@/components/public/favorite-plate-button';
+import ReviewLikeButton from './review-like-button';
 import { Star } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 
@@ -93,6 +94,8 @@ async function Comments({
   limit?: number;
   plate: Plate;
 }) {
+  const session = await auth();
+
   const licensePlate = await database.query.plates.findFirst({
     where: (plates, { eq }) =>
       and(
@@ -113,6 +116,34 @@ async function Comments({
 
   if (!plateComments || plateComments.length === 0) {
     return <p className="text-muted-foreground">No comments yet</p>;
+  }
+
+  // Fetch like counts for all reviews in one query
+  const reviewIds = plateComments.map((c) => c.id);
+  const likeCounts = await database
+    .select({
+      reviewId: review_likes.reviewId,
+      count: sql<number>`count(*)`.as('count'),
+    })
+    .from(review_likes)
+    .where(sql`${review_likes.reviewId} in ${reviewIds}`)
+    .groupBy(review_likes.reviewId);
+
+  const likeCountMap = new Map(likeCounts.map((l) => [l.reviewId, l.count]));
+
+  // Fetch current user's likes
+  let userLikedSet = new Set<number>();
+  if (session?.user?.id) {
+    const userLikes = await database
+      .select({ reviewId: review_likes.reviewId })
+      .from(review_likes)
+      .where(
+        and(
+          eq(review_likes.userId, session.user.id),
+          sql`${review_likes.reviewId} in ${reviewIds}`
+        )
+      );
+    userLikedSet = new Set(userLikes.map((l) => l.reviewId));
   }
 
   return (
@@ -146,13 +177,21 @@ async function Comments({
               </p>
             )}
 
-            {/* Timestamp */}
-            <span className="text-xs text-muted-foreground">
-              {formatDistanceToNow(comment.createdAt, { addSuffix: true })}
-              {comment.updatedAt > comment.createdAt && (
-                <> · edited {formatDistanceToNow(comment.updatedAt, { addSuffix: true })}</>
-              )}
-            </span>
+            {/* Timestamp and like */}
+            <div className="flex items-center gap-3">
+              <span className="text-xs text-muted-foreground">
+                {formatDistanceToNow(comment.createdAt, { addSuffix: true })}
+                {comment.updatedAt > comment.createdAt && (
+                  <> · edited {formatDistanceToNow(comment.updatedAt, { addSuffix: true })}</>
+                )}
+              </span>
+              <ReviewLikeButton
+                reviewId={comment.id}
+                likeCount={likeCountMap.get(comment.id) ?? 0}
+                isLiked={userLikedSet.has(comment.id)}
+                disabled={!session}
+              />
+            </div>
           </div>
         </Card>
       ))}
