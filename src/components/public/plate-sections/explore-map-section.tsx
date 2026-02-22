@@ -29,7 +29,7 @@ export default function ExploreMapSection() {
       </div>
       <Link
         href="/map"
-        className="group relative grid md:grid-cols-2 overflow-hidden rounded-xl border hover:border-primary/50 transition-colors"
+        className="bg-card group relative grid md:grid-cols-2 overflow-hidden rounded-xl border hover:border-primary/50 transition-colors"
       >
         <div className="flex flex-col justify-center gap-4 p-8 sm:p-10">
           <div className="flex items-center gap-3">
