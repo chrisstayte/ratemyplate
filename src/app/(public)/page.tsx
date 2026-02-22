@@ -2,6 +2,7 @@ import { EyeOff, MapPin, Users } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import InlineSearch from '@/components/public/inline-search';
 import RecentlyRatedSection from '@/components/public/plate-sections/recently-rated-section';
+import ExploreMapSection from '@/components/public/plate-sections/explore-map-section';
 import DrivingSaferSection from '@/components/public/plate-sections/driving-safer-section';
 
 export default function Home() {
@@ -36,6 +37,9 @@ export default function Home() {
       <div className="container flex flex-col gap-16 py-16 items-center">
         {/* Recently Rated */}
         <RecentlyRatedSection />
+
+        {/* Explore the Map */}
+        <ExploreMapSection />
 
         {/* Driving Safer Together */}
         <DrivingSaferSection />

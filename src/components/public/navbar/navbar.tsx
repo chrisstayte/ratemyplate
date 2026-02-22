@@ -2,6 +2,7 @@ import Link from 'next/link';
 import React from 'react';
 import { LayoutDashboard } from 'lucide-react';
 import AuthMenu from '@/components/navbar/auth-menu';
+import { Badge } from '@/components/ui/badge';
 
 const Navbar = () => {
   return (
@@ -20,7 +21,9 @@ const Navbar = () => {
             href="/map"
             className="text-sm text-muted-foreground hover:text-foreground transition-colors"
           >
-            Map
+            <Badge className="bg-orange-500 text-white">
+              Check Out The Map
+            </Badge>
           </Link>
         </div>
 
@@ -29,7 +32,9 @@ const Navbar = () => {
             href="/map"
             className="sm:hidden text-sm text-muted-foreground hover:text-foreground transition-colors"
           >
-            Map
+            <Badge className="bg-orange-500 text-white">
+              Check Out The Map
+            </Badge>
           </Link>
           <AuthMenu />
         </div>

@@ -77,7 +77,7 @@ export default async function StatePage({ params }: Props) {
             <p className="text-lg text-muted-foreground text-center">
               Add the first plate for {stateName} today
             </p>
-            <SearchCard />
+            <SearchCard defaultState={upperState} />
           </div>
         ) : (
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 w-full">

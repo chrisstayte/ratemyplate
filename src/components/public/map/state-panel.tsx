@@ -68,68 +68,70 @@ export default function StatePanel({
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: 20 }}
       transition={{ duration: 0.2 }}
-      className='absolute top-4 right-4 w-80 max-h-[calc(100%-2rem)] z-10 flex flex-col'
+      className="absolute top-4 right-4 w-80 max-h-[calc(100%-2rem)] z-10 flex flex-col"
     >
-      <Card className='flex flex-col shadow-lg max-h-full'>
-        <CardHeader className='pb-3'>
-          <div className='flex items-start justify-between'>
-            <div className='flex flex-col gap-1'>
-              <CardTitle className='text-lg'>{stateName}</CardTitle>
-              <div className='flex gap-2'>
-                <Badge variant='secondary'>{stateAbbreviation}</Badge>
-                <Badge variant='outline'>
+      <Card className="flex flex-col shadow-lg max-h-full">
+        <CardHeader className="pb-3">
+          <div className="flex items-start justify-between">
+            <div className="flex flex-col gap-1">
+              <CardTitle className="text-lg">
+                <Link href={`/${stateAbbreviation}`}>{stateName}</Link>
+              </CardTitle>
+              <div className="flex gap-2">
+                <Badge variant="secondary">{stateAbbreviation}</Badge>
+                <Badge variant="outline">
                   {plateCount} {plateCount === 1 ? 'plate' : 'plates'}
                 </Badge>
               </div>
             </div>
             <Button
-              variant='ghost'
-              size='icon'
-              className='h-8 w-8 shrink-0'
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8 shrink-0"
               onClick={onClose}
             >
-              <X className='h-4 w-4' />
+              <X className="h-4 w-4" />
             </Button>
           </div>
-          <div className='flex gap-2 mt-2'>
+          <div className="flex gap-2 mt-2">
             <Input
-              placeholder='Search plate...'
+              placeholder="Search plate..."
               value={searchPlate}
               onChange={(e) => setSearchPlate(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-              className='h-8 text-sm'
+              className="h-8 text-sm"
             />
             <Button
-              variant='outline'
-              size='icon'
-              className='h-8 w-8 shrink-0'
+              variant="outline"
+              size="icon"
+              className="h-8 w-8 shrink-0"
               onClick={handleSearch}
             >
-              <Search className='h-3.5 w-3.5' />
+              <Search className="h-3.5 w-3.5" />
             </Button>
           </div>
         </CardHeader>
-        <CardContent className='flex-1 overflow-y-auto pt-0'>
+        <CardContent className="flex-1 overflow-y-auto pt-0">
           {isPending ? (
-            <div className='flex items-center justify-center py-8'>
-              <Loader2 className='h-5 w-5 animate-spin text-muted-foreground' />
+            <div className="flex items-center justify-center py-8">
+              <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
             </div>
           ) : comments.length === 0 ? (
-            <p className='text-sm text-muted-foreground py-4 text-center'>
+            <p className="text-sm text-muted-foreground py-4 text-center">
               No comments yet for this state.
             </p>
           ) : (
-            <div className='flex flex-col gap-3'>
+            <div className="flex flex-col gap-3">
               <Select
                 value={sortOrder}
                 onValueChange={(v) => setSortOrder(v as 'recent' | 'oldest')}
               >
-                <SelectTrigger className='h-8 text-xs w-fit'>
+                <SelectTrigger className="h-8 text-xs w-fit">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value='recent'>Most Recent</SelectItem>
-                  <SelectItem value='oldest'>Oldest First</SelectItem>
+                  <SelectItem value="recent">Most Recent</SelectItem>
+                  <SelectItem value="oldest">Oldest First</SelectItem>
                 </SelectContent>
               </Select>
               {sortedComments.map((comment, i) => {
@@ -139,20 +141,20 @@ export default function StatePanel({
                   <Link
                     key={`${comment.plateNumber}-${i}`}
                     href={`/${stateAbbreviation}/${comment.plateNumber}`}
-                    className='rounded-md border p-3 text-sm block hover:bg-accent transition-colors'
+                    className="rounded-md border p-3 text-sm block hover:bg-accent transition-colors"
                   >
-                    <div className='flex items-center justify-between mb-1'>
-                      <span className='font-mono font-semibold'>
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="font-mono font-semibold">
                         {comment.plateNumber}
                       </span>
-                      <span className='text-xs text-muted-foreground'>
+                      <span className="text-xs text-muted-foreground">
                         {new Date(comment.timestamp).toLocaleDateString()}
                       </span>
                     </div>
-                    <p className='text-muted-foreground'>
+                    <p className="text-muted-foreground">
                       {truncated ? text.slice(0, 100) + '...' : text}
                       {truncated && (
-                        <span className='text-primary ml-1 text-xs'>
+                        <span className="text-primary ml-1 text-xs">
                           read more
                         </span>
                       )}
