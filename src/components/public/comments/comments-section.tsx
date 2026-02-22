@@ -1,17 +1,16 @@
-import { eq, and } from 'drizzle-orm';
+import { eq, and, sql } from 'drizzle-orm';
 import { Plate } from '@/lib/plates';
 import { desc } from 'drizzle-orm';
 import { Card } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
-import { plate_reviews } from '@/db/schema';
+import { plate_reviews, review_likes } from '@/db/schema';
 import { database } from '@/db/database';
 import LoginDialog from '../login-dialog';
 import { auth } from '@/auth';
 import NewCommentButton from './new-comment-button';
 import { user_favorite_plates } from '@/db/schema';
 import FavoritePlateButton from '@/components/public/favorite-plate-button';
-import { Star } from 'lucide-react';
-import { formatDistanceToNow } from 'date-fns';
+import CommentsTabs from './comments-tabs';
 
 interface CommentsSectionProps {
   state: string;
@@ -93,6 +92,8 @@ async function Comments({
   limit?: number;
   plate: Plate;
 }) {
+  const session = await auth();
+
   const licensePlate = await database.query.plates.findFirst({
     where: (plates, { eq }) =>
       and(
@@ -115,49 +116,45 @@ async function Comments({
     return <p className="text-muted-foreground">No comments yet</p>;
   }
 
-  return (
-    <div className="flex flex-col gap-4">
-      {plateComments.map((comment) => (
-        <Card
-          key={comment.id}
-          className="p-4 gap-0"
-        >
-          <div className="flex flex-col gap-3">
-            {/* Rating stars */}
-            {comment.rating !== null && (
-              <div className="flex gap-0.5">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <Star
-                    key={i}
-                    className={`size-4 ${
-                      i < (comment.rating ?? 0)
-                        ? 'fill-yellow-400 text-yellow-400'
-                        : 'text-muted-foreground/40'
-                    }`}
-                  />
-                ))}
-              </div>
-            )}
+  // Fetch like counts for all reviews in one query
+  const reviewIds = plateComments.map((c) => c.id);
+  const likeCounts = await database
+    .select({
+      reviewId: review_likes.reviewId,
+      count: sql<number>`count(*)`.as('count'),
+    })
+    .from(review_likes)
+    .where(sql`${review_likes.reviewId} in ${reviewIds}`)
+    .groupBy(review_likes.reviewId);
 
-            {/* Comment text */}
-            {comment.comment && (
-              <p className="text-sm text-wrap break-words">
-                {comment.comment}
-              </p>
-            )}
+  const likeCountMap = new Map(likeCounts.map((l) => [l.reviewId, l.count]));
 
-            {/* Timestamp */}
-            <span className="text-xs text-muted-foreground">
-              {formatDistanceToNow(comment.createdAt, { addSuffix: true })}
-              {comment.updatedAt > comment.createdAt && (
-                <> · edited {formatDistanceToNow(comment.updatedAt, { addSuffix: true })}</>
-              )}
-            </span>
-          </div>
-        </Card>
-      ))}
-    </div>
-  );
+  // Fetch current user's likes
+  let userLikedSet = new Set<number>();
+  if (session?.user?.id) {
+    const userLikes = await database
+      .select({ reviewId: review_likes.reviewId })
+      .from(review_likes)
+      .where(
+        and(
+          eq(review_likes.userId, session.user.id),
+          sql`${review_likes.reviewId} in ${reviewIds}`
+        )
+      );
+    userLikedSet = new Set(userLikes.map((l) => l.reviewId));
+  }
+
+  const reviews = plateComments.map((comment) => ({
+    id: comment.id,
+    rating: comment.rating,
+    comment: comment.comment,
+    createdAt: comment.createdAt,
+    updatedAt: comment.updatedAt,
+    likeCount: likeCountMap.get(comment.id) ?? 0,
+    isLiked: userLikedSet.has(comment.id),
+  }));
+
+  return <CommentsTabs reviews={reviews} isLoggedIn={!!session} />;
 }
 
 function CommentsSkeleton({ limit = 10 }) {
