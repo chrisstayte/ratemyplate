@@ -1,0 +1,113 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-10 -10 420 420" width="100%" height="100%">
+  <defs>
+    <linearGradient id="stateGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#021124" />
+      <stop offset="50%" stop-color="#0A2240" />
+      <stop offset="100%" stop-color="#143A63" />
+    </linearGradient>
+
+    <linearGradient id="pathGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFD700" />
+      <stop offset="50%" stop-color="#BF0A30" />
+      <stop offset="100%" stop-color="#FFFFFF" />
+    </linearGradient>
+
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="3" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+
+    <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="1.5" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+
+    <path id="ohio-border" d="M 40.0,325.9 L 40.0,200.0 L 40.0,78.9 L 105.5,78.9 L 140.0,74.0 L 142.5,78.2 L 145.0,79.0 L 148.5,75.5 L 150.0,72.0 L 155.2,69.5 L 162.0,68.2 L 168.5,69.0 L 175.0,68.0 L 180.5,70.2 L 185.0,72.0 L 188.5,79.5 L 190.0,85.0 L 195.5,86.5 L 200.0,87.0 L 203.5,81.5 L 205.0,75.0 L 201.5,68.5 L 195.0,65.0 L 208.5,62.0 L 220.0,60.0 L 232.5,54.5 L 245.0,48.0 L 258.5,43.2 L 275.0,38.5 L 290.0,32.0 L 305.5,28.5 L 325.0,22.0 L 345.5,17.5 L 362.5,15.0 L 362.5,95.0 L 362.5,179.6 L 360.5,182.5 L 359.0,185.2 L 361.0,189.0 L 360.5,192.1 L 358.5,195.5 L 357.2,199.5 L 355.7,206.2 L 357.5,210.5 L 358.0,215.0 L 355.5,218.5 L 352.5,222.1 L 350.0,225.5 L 349.0,228.5 L 348.5,231.0 L 347.5,233.7 L 349.5,237.0 L 348.2,240.1 L 345.5,243.0 L 342.5,245.8 L 339.0,247.5 L 335.0,249.2 L 331.5,252.0 L 328.5,255.0 L 326.0,259.0 L 325.2,262.1 L 321.5,265.5 L 318.0,268.5 L 314.5,272.0 L 310.5,275.2 L 309.0,280.5 L 308.2,285.0 L 304.5,288.0 L 298.5,290.5 L 295.0,293.0 L 292.7,295.5 L 292.0,299.0 L 290.0,302.1 L 288.5,304.0 L 285.5,305.5 L 282.5,308.0 L 280.2,310.0 L 278.5,314.5 L 275.5,318.5 L 277.5,322.0 L 278.0,325.2 L 275.5,329.0 L 272.5,332.1 L 268.5,333.5 L 265.0,335.0 L 260.5,336.5 L 255.5,338.2 L 252.0,342.5 L 248.5,346.8 L 245.5,348.5 L 242.0,350.5 L 238.5,354.5 L 235.5,358.2 L 237.5,362.0 L 238.0,365.1 L 235.5,368.5 L 232.5,372.0 L 228.5,374.0 L 225.0,375.5 L 221.5,379.0 L 218.2,382.1 L 215.5,385.5 L 212.5,388.5 L 210.0,391.0 L 208.0,392.4 L 205.5,390.5 L 202.5,388.0 L 199.0,385.5 L 195.0,382.5 L 191.5,379.0 L 188.5,375.0 L 185.5,373.5 L 182.0,372.2 L 179.5,367.0 L 176.5,361.0 L 173.5,360.5 L 170.2,360.5 L 168.0,363.0 L 165.5,365.2 L 162.0,366.5 L 158.0,368.1 L 154.5,370.5 L 150.5,372.0 L 146.5,370.5 L 142.0,368.5 L 138.5,366.5 L 135.5,365.0 L 132.0,363.5 L 128.0,362.5 L 124.0,365.5 L 119.5,368.6 L 116.0,365.5 L 112.0,362.1 L 109.0,358.5 L 105.5,355.0 L 102.0,352.5 L 98.2,350.5 L 95.5,348.0 L 92.0,345.2 L 88.5,343.5 L 85.5,342.0 L 82.0,344.0 L 78.0,345.5 L 75.5,342.0 L 72.5,338.2 L 70.0,335.5 L 68.0,332.5 L 65.5,329.5 L 62.5,325.9 L 58.5,327.0 L 55.0,328.0 L 51.5,326.5 L 48.5,325.5 L 44.5,326.0 Z" pathLength="100" />
+
+    <clipPath id="state-clip">
+      <use href="#ohio-border" />
+    </clipPath>
+  </defs>
+
+  <style>
+    /* Base styling for the state */
+    .state-base {
+      fill: url(#stateGrad);
+      stroke: rgba(255, 255, 255, 0.15);
+      stroke-width: 1.5;
+      filter: drop-shadow(0px 8px 16px rgba(0,0,0,0.5));
+    }
+
+    /* Aviation trail drawing behind the glowing lead */
+    .trail {
+      fill: none;
+      stroke: url(#pathGrad);
+      stroke-width: 2.5;
+      stroke-linecap: round;
+      stroke-dasharray: 15 85;
+      animation: fly 12s linear infinite;
+    }
+
+    /* The glowing 'orbiter' honoring Ohio as the Birthplace of Aviation */
+    .head {
+      fill: none;
+      stroke: #FFFFFF;
+      stroke-width: 5;
+      stroke-linecap: round;
+      stroke-dasharray: 0 15 0.1 84.9;
+      filter: url(#glow);
+      animation: fly 12s linear infinite;
+    }
+
+    /* Synchronized orbit animation */
+    @keyframes fly {
+      from { stroke-dashoffset: 0; }
+      to { stroke-dashoffset: -100; }
+    }
+  </style>
+
+  <use href="#ohio-border" class="state-base" />
+
+  <g clip-path="url(#state-clip)">
+    <circle cx="100" cy="150" r="1.5" fill="#fff" opacity="0.8">
+      <animate attributeName="opacity" values="0.2;1;0.2" dur="3s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="250" cy="200" r="1" fill="#fff" opacity="0.5">
+      <animate attributeName="opacity" values="0.1;0.8;0.1" dur="4s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="180" cy="80" r="2" fill="#FFD700" filter="url(#softGlow)" opacity="0.9">
+      <animate attributeName="opacity" values="0.3;1;0.3" dur="2.5s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="320" cy="250" r="1.5" fill="#fff" opacity="0.6">
+      <animate attributeName="opacity" values="0.2;0.9;0.2" dur="5s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="140" cy="300" r="1" fill="#FFD700" opacity="0.7">
+      <animate attributeName="opacity" values="0.1;1;0.1" dur="3.5s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="80" cy="180" r="1" fill="#fff" opacity="0.4" />
+    <circle cx="280" cy="120" r="2" fill="#fff" opacity="0.6" />
+    <circle cx="220" cy="320" r="1.5" fill="#fff" opacity="0.5" />
+    <circle cx="90" cy="260" r="1" fill="#fff" opacity="0.7" />
+
+    <g transform="translate(177, 244)">
+      <circle cx="0" cy="0" r="0" fill="none" stroke="#BF0A30" stroke-width="1.5">
+        <animate attributeName="r" values="0; 35" dur="1.5s" repeatCount="indefinite" />
+        <animate attributeName="opacity" values="1; 0" dur="1.5s" repeatCount="indefinite" />
+      </circle>
+      <path d="M 0,4 L -4.5,-0.5 A 3,3 0 0,1 0,-4 A 3,3 0 0,1 4.5,-0.5 Z" fill="#BF0A30" filter="url(#glow)">
+        <animateTransform attributeName="transform" type="scale" values="1; 1.3; 1" dur="1.5s" repeatCount="indefinite" />
+      </path>
+    </g>
+  </g>
+
+  <use href="#ohio-border" class="trail" />
+  <use href="#ohio-border" class="head" />
+
+</svg>
