@@ -8,7 +8,7 @@ export default function Home() {
   return (
     <>
       {/* Hero + Inline Search */}
-      <section className="flex flex-col items-center gap-6 text-center py-20 pb-16 border-b">
+      <section className="flex flex-col items-center gap-6 text-center py-20 pb-16 border-b px-5 sm:px-0">
         <h1 className="text-5xl font-bold tracking-tight">
           Rate Any License Plate
         </h1>
