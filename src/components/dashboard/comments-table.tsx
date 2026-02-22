@@ -20,7 +20,7 @@ import { deleteComment } from '@/app/actions';
 
 export type Comment = {
   id: number;
-  comment: string;
+  comment: string | null;
   timestamp: Date;
   userEmail: string | null;
   plateNumber: string | null;
