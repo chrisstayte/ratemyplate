@@ -57,38 +57,36 @@ async function RecentlyRatedCards() {
       {reviews.map(async (review) => {
         const stateName = await usStateName(review.state);
         return (
-          <Card key={review.id}>
-            <CardContent className="flex flex-col gap-3 p-5">
-              <div className="flex items-center justify-between">
-                <Badge asChild>
-                  <Link href={`/${review.state}/${review.plateNumber}`}>
-                    {review.plateNumber}
-                  </Link>
-                </Badge>
+          <Link key={review.id} href={`/${review.state}/${review.plateNumber}`}>
+            <Card className="transition-transform hover:scale-[1.02] h-full">
+              <CardContent className="flex flex-col gap-3 p-5">
+                <div className="flex items-center justify-between">
+                  <Badge>{review.plateNumber}</Badge>
+                  <span className="text-xs text-muted-foreground">
+                    {stateName}
+                  </span>
+                </div>
+                <div className="flex gap-0.5">
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <Star
+                      key={i}
+                      className={`size-4 ${
+                        i < (review.rating ?? 0)
+                          ? 'fill-yellow-400 text-yellow-400'
+                          : 'text-muted-foreground/40'
+                      }`}
+                    />
+                  ))}
+                </div>
+                <p className="text-sm text-muted-foreground line-clamp-3">
+                  {review.comment}
+                </p>
                 <span className="text-xs text-muted-foreground">
-                  {stateName}
+                  {formatDistanceToNow(review.createdAt, { addSuffix: true })}
                 </span>
-              </div>
-              <div className="flex gap-0.5">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <Star
-                    key={i}
-                    className={`size-4 ${
-                      i < (review.rating ?? 0)
-                        ? 'fill-yellow-400 text-yellow-400'
-                        : 'text-muted-foreground/40'
-                    }`}
-                  />
-                ))}
-              </div>
-              <p className="text-sm text-muted-foreground line-clamp-3">
-                {review.comment}
-              </p>
-              <span className="text-xs text-muted-foreground">
-                {formatDistanceToNow(review.createdAt, { addSuffix: true })}
-              </span>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+          </Link>
         );
       })}
     </div>
