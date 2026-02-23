@@ -16,7 +16,7 @@ const Navbar = () => {
           <p className="text-xl font-bold">RateMyPlate</p>
         </Link>
 
-        <div className="hidden sm:flex sm:flex-1  sm:grow items-center gap-6 justify-center">
+        <div className="hidden md:flex md:flex-1  md:grow items-center gap-6 justify-center">
           <Link
             href="/map"
             className="text-sm text-muted-foreground hover:text-foreground transition-colors"
@@ -28,14 +28,6 @@ const Navbar = () => {
         </div>
 
         <div className="flex flex-1 gap-2 items-center justify-end">
-          <Link
-            href="/map"
-            className="sm:hidden text-sm text-muted-foreground hover:text-foreground transition-colors"
-          >
-            <Badge className="bg-orange-500 text-white">
-              Check Out The Map
-            </Badge>
-          </Link>
           <AuthMenu />
         </div>
       </div>
