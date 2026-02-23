@@ -7,12 +7,15 @@ import { eq, sql } from 'drizzle-orm';
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
-  const state = searchParams.get('state')?.toUpperCase();
-  const plateNumber = searchParams.get('plate')?.toUpperCase();
+  const stateParam = searchParams.get('state');
+  const plateParam = searchParams.get('plate');
 
-  if (!state || !plateNumber) {
+  if (!stateParam || !plateParam) {
     return new Response('Missing state or plate query params', { status: 400 });
   }
+
+  const plateNumber = plateParam.toUpperCase();
+  const stateUpper = stateParam.toUpperCase();
 
   const [fontData, interFontData, statesJson] = await Promise.all([
     readFile(join(process.cwd(), 'public/fonts/LICENSE-PLATE-USA.ttf')),
@@ -22,15 +25,16 @@ export async function GET(request: Request) {
 
   const states: { abbreviation: string; name: string }[] =
     JSON.parse(statesJson);
-  const stateData = states.find((s) => s.abbreviation === state);
-  const stateName = stateData?.name ?? state;
+  const stateData = states.find((s) => s.abbreviation === stateUpper);
+  // Use the full state name if found, otherwise preserve original casing
+  const stateName = stateData?.name ?? stateParam;
 
   // Look up plate and average rating
   let avgRating: number | null = null;
 
   const plateRecord = await database.query.plates.findFirst({
     where: (plates, { and, eq }) =>
-      and(eq(plates.state, state), eq(plates.plateNumber, plateNumber)),
+      and(eq(plates.state, stateUpper), eq(plates.plateNumber, plateNumber)),
   });
 
   if (plateRecord) {

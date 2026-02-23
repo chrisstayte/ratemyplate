@@ -9,6 +9,19 @@ const inconsolata = Inconsolata({ subsets: ['latin'], display: 'swap' });
 export const metadata: Metadata = {
   title: 'Rate My Plate',
   description: 'Anonymous rating for drivers',
+  openGraph: {
+    images: [
+      {
+        url: '/og.png',
+        width: 1200,
+        height: 630,
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    images: ['/og.png'],
+  },
 };
 
 export default function RootLayout({
@@ -17,20 +30,21 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang='en'>
+    <html lang="en">
       <head>
         <PlausibleProvider
-          domain='ratemyplate.wtf'
-          customDomain='https://plausible.chrisstayte.com'
+          domain="ratemyplate.wtf"
+          customDomain="https://plausible.chrisstayte.com"
         />
       </head>
       <body className={` ${inconsolata.className}`}>
         <ThemeProvider
-          attribute='class'
-          defaultTheme='system'
+          attribute="class"
+          defaultTheme="system"
           enableSystem
-          disableTransitionOnChange>
-          <main className=''>{children}</main>
+          disableTransitionOnChange
+        >
+          <main className="">{children}</main>
         </ThemeProvider>
       </body>
     </html>
