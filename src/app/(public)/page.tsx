@@ -4,14 +4,25 @@ import InlineSearch from '@/components/public/inline-search';
 import RecentlyRatedSection from '@/components/public/plate-sections/recently-rated-section';
 import ExploreMapSection from '@/components/public/plate-sections/explore-map-section';
 import DrivingSaferSection from '@/components/public/plate-sections/driving-safer-section';
+import TypingPlate from '@/components/public/typing-plate';
+import { database } from '@/db/database';
+import { plates } from '@/db/schema';
+import { sql } from 'drizzle-orm';
 
-export default function Home() {
+export default async function Home() {
+  const randomPlates = await database
+    .select({ plateNumber: plates.plateNumber })
+    .from(plates)
+    .orderBy(sql`RANDOM()`)
+    .limit(20);
+
+  const plateNumbers = randomPlates.map((p) => p.plateNumber);
   return (
     <>
       {/* Hero + Inline Search */}
-      <section className="flex flex-col items-center gap-6 text-center py-20 pb-16 border-b px-5 sm:px-0">
+      <section className="flex flex-col items-center gap-4 text-center py-20 pb-16 border-b px-5 sm:px-0 bg-card">
         <h1 className="text-5xl font-bold tracking-tight">
-          Rate Any License Plate
+          <TypingPlate plates={plateNumbers} />
         </h1>
         <p className="text-lg text-muted-foreground">
           See what others are saying. Share your own experiences. Stay
@@ -34,10 +45,12 @@ export default function Home() {
         </div>
       </section>
 
-      <div className="container flex flex-col gap-16 py-16 items-center">
-        {/* Recently Rated */}
+      {/* Recently Rated - full width for marquee */}
+      <div className="py-16">
         <RecentlyRatedSection />
+      </div>
 
+      <div className="max-w-6xl px-5 mx-auto flex flex-col gap-16 pb-16 items-center">
         {/* Explore the Map */}
         <ExploreMapSection />
 

@@ -5,6 +5,7 @@ import fs from 'fs';
 import path from 'path';
 import Image from 'next/image';
 import { Plate } from '@/lib/plates';
+import { licensePlateFont } from '@/lib/fonts';
 interface LicensePlateProps {
   plate: Plate;
   className?: string;
@@ -42,7 +43,7 @@ const LicensePlate: React.FC<LicensePlateProps> = async ({
           src={`/images/state-plates/${stateName}.svg`}
         /> */}
         <div className="absolute inset-0 flex items-center justify-center uppercase">
-          <p className="text-4xl md:text-5xl">{plate.plateNumber}</p>
+          <p className={`text-4xl md:text-5xl ${licensePlateFont.className}`}>{plate.plateNumber}</p>
         </div>
       </div>
     );
@@ -53,7 +54,7 @@ const LicensePlate: React.FC<LicensePlateProps> = async ({
       >
         {plate.state && <Badge className="text-sm h-5">{stateName}</Badge>}
         <div className="absolute inset-0 flex items-center justify-center uppercase">
-          <p className="text-4xl">{plate.plateNumber}</p>
+          <p className={`text-4xl ${licensePlateFont.className}`}>{plate.plateNumber}</p>
         </div>
       </Card>
     );

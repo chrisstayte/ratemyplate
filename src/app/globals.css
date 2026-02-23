@@ -137,6 +137,26 @@
   --color-sidebar: var(--sidebar);
   --animate-accordion-down: accordion-down 0.2s ease-out;
   --animate-accordion-up: accordion-up 0.2s ease-out;
+  --animate-marquee-left: marquee-left 30s linear infinite;
+  --animate-marquee-right: marquee-right 30s linear infinite;
+
+  @keyframes marquee-left {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-100%);
+    }
+  }
+
+  @keyframes marquee-right {
+    from {
+      transform: translateX(-100%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
 
   @keyframes accordion-down {
     from {

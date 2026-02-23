@@ -7,7 +7,7 @@ import { auth, isCurrentUserAdmin } from '@/auth';
 import { eq, and, desc, sql } from 'drizzle-orm';
 import { Plate } from '@/lib/plates';
 
-export async function createPlate(plate: Plate): Promise<any> {
+export async function createPlate(plate: Plate): Promise<{ message: string; id: number }> {
   const session = await auth();
 
   if (!session) {
@@ -42,7 +42,7 @@ export async function postReview(
   comment: string,
   rating: number,
   plateId: number
-): Promise<any> {
+): Promise<{ message: string; status: number }> {
   const session = await auth();
   if (!session) {
     throw new Error('Unauthorized');
@@ -71,7 +71,7 @@ export async function updateReview(
   reviewId: number,
   comment: string,
   rating: number
-): Promise<any> {
+): Promise<{ message: string; status: number }> {
   const session = await auth();
   if (!session) {
     throw new Error('Unauthorized');

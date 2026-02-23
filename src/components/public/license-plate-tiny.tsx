@@ -7,6 +7,7 @@ import Image from 'next/image';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Plate } from '@/lib/plates';
 import Link from 'next/link';
+import { licensePlateFont } from '@/lib/fonts';
 
 interface LicensePlateTinyProps {
   plate: Plate;
@@ -49,7 +50,7 @@ const LicensePlateTiny: React.FC<LicensePlateTinyProps> = async ({
           /> */}
           <div className="flex flex-col h-full relative p-1">
             <div className="absolute inset-0 flex items-center justify-center uppercase">
-              <p className="text-2xl">{plate.plateNumber}</p>
+              <p className={`text-2xl ${licensePlateFont.className}`}>{plate.plateNumber}</p>
             </div>
           </div>
         </div>
@@ -62,7 +63,7 @@ const LicensePlateTiny: React.FC<LicensePlateTinyProps> = async ({
           <div className="flex flex-col h-full relative p-1 md:p-2">
             <Badge className="md:text-xs h-5">{stateName}</Badge>
             <div className="absolute inset-0 flex items-center justify-center uppercase">
-              <p className="text-xl md:text-2xl">{plate.plateNumber}</p>
+              <p className={`text-xl md:text-2xl ${licensePlateFont.className}`}>{plate.plateNumber}</p>
             </div>
           </div>
         </Card>
