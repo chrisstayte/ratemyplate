@@ -105,7 +105,7 @@ export default function ReviewMarquee({
   const style = { animationDuration: `${duration}s` };
 
   return (
-    <div ref={containerRef} className="flex overflow-hidden">
+    <div ref={containerRef} className="flex ">
       {[0, 1].map((copy) => (
         <div
           key={copy}
