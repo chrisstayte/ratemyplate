@@ -61,7 +61,7 @@ async function RecentlyRatedMarquee() {
   const row2 = reviewsWithState.slice(mid);
 
   return (
-    <div className="relative overflow-hidden">
+    <div className="relative">
       <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-16 sm:w-32 z-10 bg-linear-to-r from-background to-transparent" />
       <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-16 sm:w-32 z-10 bg-linear-to-l from-background to-transparent" />
       <div className="flex flex-col gap-4">
