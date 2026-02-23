@@ -1,11 +1,7 @@
 'use client';
 
 import { useEffect, useState, useCallback } from 'react';
-import localFont from 'next/font/local';
-
-const licensePlateFont = localFont({
-  src: '../../../public/fonts/LICENSE-PLATE-USA.ttf',
-});
+import { licensePlateFont } from '@/lib/fonts';
 
 const TYPE_SPEED = 100;
 const HOLD_TIME = 2000;
@@ -57,9 +53,10 @@ export default function TypingPlate({ plates }: { plates: string[] }) {
   return (
     <span className="flex flex-col items-center">
       <span className="text-2xl text-muted-foreground mb-2">R8MYPL8</span>
-      <span className={`${licensePlateFont.className} tracking-wider`}>
+      <span className={`${licensePlateFont.className} tracking-wider text-6xl`}>
+        <span className="animate-pulse">/</span>
         {displayed}
-        <span className="animate-pulse">|</span>
+        <span className="animate-pulse">/</span>
       </span>
     </span>
   );

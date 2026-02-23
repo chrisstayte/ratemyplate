@@ -5,11 +5,7 @@ import fs from 'fs';
 import path from 'path';
 import Image from 'next/image';
 import { Plate } from '@/lib/plates';
-import localFont from 'next/font/local';
-
-const licensePlateFont = localFont({
-  src: '../../../public/fonts/LICENSE-PLATE-USA.ttf',
-});
+import { licensePlateFont } from '@/lib/fonts';
 interface LicensePlateProps {
   plate: Plate;
   className?: string;

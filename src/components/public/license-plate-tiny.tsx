@@ -7,11 +7,7 @@ import Image from 'next/image';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Plate } from '@/lib/plates';
 import Link from 'next/link';
-import localFont from 'next/font/local';
-
-const licensePlateFont = localFont({
-  src: '../../../public/fonts/LICENSE-PLATE-USA.ttf',
-});
+import { licensePlateFont } from '@/lib/fonts';
 
 interface LicensePlateTinyProps {
   plate: Plate;

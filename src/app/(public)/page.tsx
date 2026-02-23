@@ -45,10 +45,12 @@ export default async function Home() {
         </div>
       </section>
 
-      <div className="container flex flex-col gap-16 py-16 items-center">
-        {/* Recently Rated */}
+      {/* Recently Rated - full width for marquee */}
+      <div className="py-16">
         <RecentlyRatedSection />
+      </div>
 
+      <div className="max-w-6xl px-5 mx-auto flex flex-col gap-16 pb-16 items-center">
         {/* Explore the Map */}
         <ExploreMapSection />
 
