@@ -62,9 +62,8 @@ async function RecentlyRatedMarquee() {
 
   return (
     <div className="relative overflow-hidden">
-      <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-16 sm:w-32 z-10 bg-gradient-to-r from-background to-transparent" />
-      <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-16 sm:w-32 z-10 bg-gradient-to-l from-background to-transparent" />
-
+      <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-16 sm:w-32 z-10 bg-linear-to-r from-background to-transparent" />
+      <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-16 sm:w-32 z-10 bg-linear-to-l from-background to-transparent" />
       <div className="flex flex-col gap-4">
         <ReviewMarquee reviews={row1} direction="rtl" duration={150} />
         <ReviewMarquee
@@ -84,7 +83,7 @@ function RecentlyRatedSkeleton() {
         {[0, 1].map((row) => (
           <div key={row} className="flex gap-4">
             {Array.from({ length: 5 }).map((_, i) => (
-              <Card key={i} className="w-[300px] shrink-0">
+              <Card key={i} className="w-75 shrink-0">
                 <CardContent className="flex flex-col gap-3 p-5">
                   <div className="flex items-center justify-between">
                     <Skeleton className="h-5 w-20" />
