@@ -52,6 +52,19 @@ export async function generateMetadata(
   return {
     title: `${upperPlate} in ${upperState}`,
     description: `View comments for license plate ${upperPlate} in ${upperState}`,
+    openGraph: {
+      images: [
+        {
+          url: `/api/og?state=${upperState}&plate=${upperPlate}`,
+          width: 1200,
+          height: 630,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      images: [`/api/og?state=${upperState}&plate=${upperPlate}`],
+    },
   };
 }
 
