@@ -1,6 +1,5 @@
-import { eq, and, sql } from 'drizzle-orm';
+import { and, count, desc, eq, inArray } from 'drizzle-orm';
 import { Plate } from '@/lib/plates';
-import { desc } from 'drizzle-orm';
 import { Card } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { plate_reviews, review_likes } from '@/db/schema';
@@ -121,10 +120,10 @@ async function Comments({
   const likeCounts = await database
     .select({
       reviewId: review_likes.reviewId,
-      count: sql<number>`count(*)`.as('count'),
+      count: count().as('count'),
     })
     .from(review_likes)
-    .where(sql`${review_likes.reviewId} in ${reviewIds}`)
+    .where(inArray(review_likes.reviewId, reviewIds))
     .groupBy(review_likes.reviewId);
 
   const likeCountMap = new Map(likeCounts.map((l) => [l.reviewId, l.count]));
@@ -138,7 +137,7 @@ async function Comments({
       .where(
         and(
           eq(review_likes.userId, session.user.id),
-          sql`${review_likes.reviewId} in ${reviewIds}`
+          inArray(review_likes.reviewId, reviewIds)
         )
       );
     userLikedSet = new Set(userLikes.map((l) => l.reviewId));

@@ -2,7 +2,7 @@ import { Card } from '@/components/ui/card';
 import * as React from 'react';
 import { database } from '@/db/database';
 import { Suspense } from 'react';
-import { sql, desc, eq } from 'drizzle-orm';
+import { count, desc, eq, gt } from 'drizzle-orm';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Plate } from '@/lib/plates';
 import { plates, user_favorite_plates } from '@/db/schema';
@@ -36,15 +36,12 @@ async function FavoritedPlates({ limit = 10 }) {
       plateNumber: plates.plateNumber,
       state: plates.state,
       id: plates.id,
-      favoriteCount:
-        sql<number>`cast(count(${user_favorite_plates.plateId}) as int)`.as(
-          'favoriteCount'
-        ),
+      favoriteCount: count(user_favorite_plates.plateId).as('favoriteCount'),
     })
     .from(plates)
     .leftJoin(user_favorite_plates, eq(plates.id, user_favorite_plates.plateId))
     .groupBy(plates.plateNumber, plates.state, plates.id)
-    .having(sql`count(${user_favorite_plates.plateId}) > 0`)
+    .having(gt(count(user_favorite_plates.plateId), 0))
     .orderBy(({ favoriteCount }) => desc(favoriteCount))
     .limit(limit);
 

@@ -3,6 +3,11 @@
 import { useState } from 'react';
 import { DataTable } from '@/components/data-table';
 import { plateColumns, type Plate } from '@/components/dashboard/plates-column';
+import {
+  dashboardOutlineButtonClassName,
+  dashboardToggleClassName,
+  dashboardToolbarClassName,
+} from '@/components/dashboard/control-styles';
 import { Toggle } from '@/components/ui/toggle';
 import { MessageSquare, Star } from 'lucide-react';
 
@@ -38,12 +43,13 @@ export default function PlatesTable({ data, states }: PlatesTableProps) {
 
   return (
     <div>
-      <div className="flex flex-wrap items-center gap-2 pb-4">
+      <div className={`${dashboardToolbarClassName} mb-4`}>
         <Toggle
           variant="outline"
           size="sm"
           pressed={hasComments}
           onPressedChange={setHasComments}
+          className={dashboardToggleClassName}
         >
           <MessageSquare className="h-3.5 w-3.5" />
           Has Comments
@@ -53,6 +59,7 @@ export default function PlatesTable({ data, states }: PlatesTableProps) {
           size="sm"
           pressed={hasFavorites}
           onPressedChange={setHasFavorites}
+          className={dashboardToggleClassName}
         >
           <Star className="h-3.5 w-3.5" />
           Has Favorites
@@ -67,6 +74,7 @@ export default function PlatesTable({ data, states }: PlatesTableProps) {
                 size="sm"
                 pressed={selectedStates.has(state)}
                 onPressedChange={() => toggleState(state)}
+                className={dashboardToggleClassName}
               >
                 {state}
               </Toggle>
@@ -74,7 +82,12 @@ export default function PlatesTable({ data, states }: PlatesTableProps) {
           </>
         )}
       </div>
-      <DataTable columns={plateColumns} data={filteredData} className="w-full" />
+      <DataTable
+        columns={plateColumns}
+        data={filteredData}
+        className="w-full"
+        paginationButtonClassName={dashboardOutlineButtonClassName}
+      />
     </div>
   );
 }

@@ -1,14 +1,15 @@
 import type { Metadata } from 'next';
 import { cookies } from 'next/headers';
+import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { auth, isCurrentUserAdmin, signOut } from '@/auth';
+import BreadCrumbs from '@/components/bread-crumbs';
 import { AppSidebar } from '@/components/dashboard/app-sidebar';
 import {
   SidebarInset,
   SidebarProvider,
   SidebarTrigger,
 } from '@/components/ui/sidebar';
-import { Separator } from '@/components/ui/separator';
 import { TooltipProvider } from '@/components/ui/tooltip';
 
 export const metadata: Metadata = {
@@ -31,9 +32,9 @@ export default async function RootLayout({
           <p className="text-muted-foreground">
             You don&apos;t have permission to access this page.
           </p>
-          <a href="/" className="inline-block underline underline-offset-4 hover:text-primary">
+          <Link href="/" className="inline-block underline underline-offset-4 hover:text-primary">
             Back to home
-          </a>
+          </Link>
         </div>
       </div>
     );
@@ -56,16 +57,24 @@ export default async function RootLayout({
 
   return (
     <TooltipProvider>
-      <SidebarProvider defaultOpen={defaultOpen}>
+      <SidebarProvider
+        defaultOpen={defaultOpen}
+        className="h-svh overflow-hidden bg-muted/40"
+      >
         <AppSidebar user={user} signOutAction={handleSignOut} />
-        <SidebarInset>
-          <header className="flex h-16 shrink-0 items-center gap-2">
-            <div className="flex items-center gap-2 px-4">
-              <SidebarTrigger className="-ml-1" />
-              <Separator orientation="vertical" className="mr-2 h-4" />
-            </div>
+        <SidebarInset className="h-svh min-h-0 min-w-0 overflow-hidden">
+          <header className="sticky top-0 z-30 flex h-12 shrink-0 items-center gap-2 border-b bg-background px-4">
+            <SidebarTrigger className="-ml-1" />
+            <BreadCrumbs
+              baseHref="/dashboard"
+              baseLabel="Dashboard"
+              className="min-w-0"
+              showBaseWhenRoot
+            />
           </header>
-          <div className="flex flex-1 flex-col p-4 pt-0">{children}</div>
+          <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-y-auto overflow-x-clip bg-muted/30 p-4 pt-0 [overscroll-behavior:none]">
+            {children}
+          </div>
         </SidebarInset>
       </SidebarProvider>
     </TooltipProvider>

@@ -1,7 +1,7 @@
 import { Suspense } from 'react';
 import { database } from '@/db/database';
 import { plate_reviews, plates } from '@/db/schema';
-import { sql, eq } from 'drizzle-orm';
+import { count, countDistinct, eq } from 'drizzle-orm';
 import { Card, CardContent } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { EyeOff, Activity, Users, ShieldAlert } from 'lucide-react';
@@ -69,26 +69,26 @@ export default function DrivingSaferSection() {
 async function StatsGrid() {
   const [platesRated] = await database
     .select({
-      count: sql<number>`cast(count(distinct ${plate_reviews.plateId}) as int)`,
+      count: countDistinct(plate_reviews.plateId),
     })
     .from(plate_reviews);
 
   const [activeMembers] = await database
     .select({
-      count: sql<number>`cast(count(distinct ${plate_reviews.userId}) as int)`,
+      count: countDistinct(plate_reviews.userId),
     })
     .from(plate_reviews);
 
   const [statesCovered] = await database
     .select({
-      count: sql<number>`cast(count(distinct ${plates.state}) as int)`,
+      count: countDistinct(plates.state),
     })
     .from(plates)
     .innerJoin(plate_reviews, eq(plates.id, plate_reviews.plateId));
 
   const [totalReviews] = await database
     .select({
-      count: sql<number>`cast(count(*) as int)`,
+      count: count(),
     })
     .from(plate_reviews);
 

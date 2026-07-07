@@ -3,6 +3,11 @@
 import { useState } from 'react';
 import { DataTable } from '@/components/data-table';
 import { usersColumn, type User } from '@/components/dashboard/users-column';
+import {
+  dashboardOutlineButtonClassName,
+  dashboardToggleClassName,
+  dashboardToolbarClassName,
+} from '@/components/dashboard/control-styles';
 import { Toggle } from '@/components/ui/toggle';
 import { MessageSquare, Star } from 'lucide-react';
 
@@ -43,12 +48,13 @@ export default function UsersTable({ data, providers }: UsersTableProps) {
 
   return (
     <div>
-      <div className="flex flex-wrap items-center gap-2 pb-4">
+      <div className={`${dashboardToolbarClassName} mb-4`}>
         <Toggle
           variant="outline"
           size="sm"
           pressed={hasComments}
           onPressedChange={setHasComments}
+          className={dashboardToggleClassName}
         >
           <MessageSquare className="h-3.5 w-3.5" />
           Has Comments
@@ -58,6 +64,7 @@ export default function UsersTable({ data, providers }: UsersTableProps) {
           size="sm"
           pressed={hasFavorites}
           onPressedChange={setHasFavorites}
+          className={dashboardToggleClassName}
         >
           <Star className="h-3.5 w-3.5" />
           Has Favorites
@@ -72,6 +79,7 @@ export default function UsersTable({ data, providers }: UsersTableProps) {
                 size="sm"
                 pressed={selectedProviders.has(provider)}
                 onPressedChange={() => toggleProvider(provider)}
+                className={dashboardToggleClassName}
               >
                 {provider.charAt(0).toUpperCase() + provider.slice(1)}
               </Toggle>
@@ -79,7 +87,12 @@ export default function UsersTable({ data, providers }: UsersTableProps) {
           </>
         )}
       </div>
-      <DataTable columns={usersColumn} data={filteredData} className="w-full" />
+      <DataTable
+        columns={usersColumn}
+        data={filteredData}
+        className="w-full"
+        paginationButtonClassName={dashboardOutlineButtonClassName}
+      />
     </div>
   );
 }

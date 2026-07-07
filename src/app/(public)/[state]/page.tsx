@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation';
 import { stateNameValidator, usStateName } from '@/lib/us-states';
 import { database } from '@/db/database';
 import { plates, plate_reviews } from '@/db/schema';
-import { eq, sql, desc } from 'drizzle-orm';
+import { count, desc, eq } from 'drizzle-orm';
 import LicensePlateTiny from '@/components/public/license-plate-tiny';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
@@ -52,7 +52,7 @@ export default async function StatePage({ params }: Props) {
       id: plates.id,
       plateNumber: plates.plateNumber,
       state: plates.state,
-      commentCount: sql<number>`count(${plate_reviews.id})`.as('commentCount'),
+      commentCount: count(plate_reviews.id).as('commentCount'),
     })
     .from(plates)
     .leftJoin(plate_reviews, eq(plates.id, plate_reviews.plateId))

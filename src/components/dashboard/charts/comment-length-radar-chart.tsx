@@ -2,7 +2,7 @@ import React from 'react';
 import CommentLengthRadarChartRender from './comment-length-radar-chart-render';
 import { database } from '@/db/database';
 import { plate_reviews } from '@/db/schema';
-import { sql } from 'drizzle-orm';
+import { count, sql } from 'drizzle-orm';
 
 export default async function CommentLengthRadarChart() {
   const chartData = await database
@@ -17,7 +17,7 @@ export default async function CommentLengthRadarChart() {
           ELSE '254'
         END
       `.as('comment_length_group'),
-      count: sql<number>`cast(count(*) as int)`.as('count'),
+      count: count().as('count'),
     })
     .from(plate_reviews)
     .groupBy(sql`

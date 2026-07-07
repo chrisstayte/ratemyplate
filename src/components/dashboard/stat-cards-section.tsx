@@ -4,14 +4,14 @@ import { FaUsers } from 'react-icons/fa';
 import { TbRectangleFilled } from 'react-icons/tb';
 import { FaComment } from 'react-icons/fa6';
 import { database } from '@/db/database';
-import { sql } from 'drizzle-orm';
+import { count } from 'drizzle-orm';
 import { users, plates, plate_reviews } from '@/db/schema';
 
 export default async function StatCardsSection() {
   const [userResult, plateResult, commentResult] = await Promise.all([
-    database.select({ count: sql<number>`cast(count(*) as int)` }).from(users),
-    database.select({ count: sql<number>`cast(count(*) as int)` }).from(plates),
-    database.select({ count: sql<number>`cast(count(*) as int)` }).from(plate_reviews),
+    database.select({ count: count() }).from(users),
+    database.select({ count: count() }).from(plates),
+    database.select({ count: count() }).from(plate_reviews),
   ]);
 
   const userCount = userResult[0].count;

@@ -4,7 +4,7 @@ import { database } from '@/db/database';
 import { plates, plate_reviews, user_favorite_plates, review_likes } from '@/db/schema';
 import { revalidatePath } from 'next/cache';
 import { auth, isCurrentUserAdmin } from '@/auth';
-import { eq, and, desc, sql } from 'drizzle-orm';
+import { eq, and, desc } from 'drizzle-orm';
 import { Plate } from '@/lib/plates';
 
 export async function createPlate(plate: Plate): Promise<{ message: string; id: number }> {
@@ -88,7 +88,7 @@ export async function updateReview(
   try {
     await database
       .update(plate_reviews)
-      .set({ comment, rating, updatedAt: sql`now()` })
+      .set({ comment, rating, updatedAt: new Date() })
       .where(eq(plate_reviews.id, reviewId))
       .execute();
 
