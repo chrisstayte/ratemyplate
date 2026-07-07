@@ -4,6 +4,7 @@ import { useSearchParams, usePathname, useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { Input } from '@/components/ui/input';
 import { Search } from 'lucide-react';
+import { dashboardInputClassName } from '@/components/dashboard/control-styles';
 
 interface SearchBarProps {
   placeholder: string;
@@ -47,7 +48,7 @@ export function SearchBar({ placeholder }: SearchBarProps) {
         placeholder={placeholder}
         value={value}
         onChange={(e) => setValue(e.target.value)}
-        className="pl-9 bg-card"
+        className={`${dashboardInputClassName} pl-9`}
       />
     </div>
   );

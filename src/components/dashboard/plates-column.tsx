@@ -1,18 +1,11 @@
 'use client';
 
+import Link from 'next/link';
 import { ColumnDef } from '@tanstack/react-table';
 import '@/lib/extensions';
-import { ArrowUpDown, MoreHorizontal } from 'lucide-react';
+import { ArrowUpDown } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
 
 // This is the type used to define the shape of our data.
 // I can use a zod schema if i want
@@ -57,6 +50,16 @@ export const plateColumns: ColumnDef<Plate>[] = [
           Plate
           <ArrowUpDown className='ml-2 h-4 w-4' />
         </Button>
+      );
+    },
+    cell: ({ row }) => {
+      return (
+        <Link
+          href={`/dashboard/plates/${row.original.id}`}
+          className="font-medium underline-offset-4 hover:underline"
+        >
+          {row.getValue<string>('plateNumber')}
+        </Link>
       );
     },
   },

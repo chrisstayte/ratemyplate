@@ -1,7 +1,7 @@
 import { Card } from '@/components/ui/card';
 import * as React from 'react';
 import { database } from '@/db/database';
-import { desc, eq, sql, gt } from 'drizzle-orm';
+import { count, desc, eq, gt } from 'drizzle-orm';
 import { plate_reviews, plates } from '@/db/schema';
 import { Suspense } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -32,14 +32,12 @@ async function RecentEntries({ limit = 10 }) {
       plateNumber: plates.plateNumber,
       state: plates.state,
       timestamp: plates.timestamp,
-      commentCount: sql<number>`cast(count(${plate_reviews.plateId}) as int)`.as(
-        'commentCount'
-      ),
+      commentCount: count(plate_reviews.plateId).as('commentCount'),
     })
     .from(plates)
     .groupBy(plates.plateNumber, plates.state, plates.id)
     .leftJoin(plate_reviews, eq(plates.id, plate_reviews.plateId))
-    .having(sql`count(${plate_reviews.plateId}) > 0`)
+    .having(gt(count(plate_reviews.plateId), 0))
     .orderBy(({ timestamp }) => desc(timestamp))
     .limit(limit);
 

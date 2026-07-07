@@ -3,7 +3,7 @@ import { readFile } from 'fs/promises';
 import { join } from 'path';
 import { database } from '@/db/database';
 import { plate_reviews } from '@/db/schema';
-import { eq, sql } from 'drizzle-orm';
+import { avg, eq } from 'drizzle-orm';
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -40,13 +40,13 @@ export async function GET(request: Request) {
   if (plateRecord) {
     const [stats] = await database
       .select({
-        avgRating: sql<number>`cast(avg(${plate_reviews.rating}) as float)`,
+        avgRating: avg(plate_reviews.rating),
       })
       .from(plate_reviews)
       .where(eq(plate_reviews.plateId, plateRecord.id));
 
     if (stats) {
-      avgRating = stats.avgRating;
+      avgRating = stats.avgRating == null ? null : Number(stats.avgRating);
     }
   }
 

@@ -21,7 +21,7 @@ import BreadCrumbs from '@/components/bread-crumbs';
 import { Card, CardContent } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { plate_reviews } from '@/db/schema';
-import { eq, sql, avg, count } from 'drizzle-orm';
+import { avg, count, eq, max } from 'drizzle-orm';
 import { formatDistanceToNow } from 'date-fns';
 import InlineSearch from '@/components/public/inline-search';
 
@@ -113,17 +113,23 @@ export default async function PlatePage({ params }: Props) {
   if (plate) {
     const [stats] = await database
       .select({
-        avgRating: sql<number>`cast(avg(${plate_reviews.rating}) as float)`,
+        avgRating: avg(plate_reviews.rating),
         totalReviews: count(),
-        lastActivity: sql<Date>`greatest(max(${plate_reviews.createdAt}), max(${plate_reviews.updatedAt}))`,
+        lastCreatedAt: max(plate_reviews.createdAt),
+        lastUpdatedAt: max(plate_reviews.updatedAt),
       })
       .from(plate_reviews)
       .where(eq(plate_reviews.plateId, plate.id));
 
     if (stats) {
-      avgRating = stats.avgRating;
+      avgRating = stats.avgRating == null ? null : Number(stats.avgRating);
       totalReviews = stats.totalReviews;
-      lastActivity = stats.lastActivity;
+      lastActivity =
+        stats.lastCreatedAt && stats.lastUpdatedAt
+          ? stats.lastCreatedAt > stats.lastUpdatedAt
+            ? stats.lastCreatedAt
+            : stats.lastUpdatedAt
+          : stats.lastCreatedAt ?? stats.lastUpdatedAt;
     }
   }
 

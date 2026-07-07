@@ -23,6 +23,9 @@ const routeToLabelMap: Record<string, string> = {
 
 interface BreadCrumbsProps {
   className?: string;
+  baseHref?: string;
+  baseLabel?: string;
+  showBaseWhenRoot?: boolean;
 }
 
 const safeDecodeURIComponent = (value: string) => {
@@ -47,12 +50,29 @@ const formatBreadcrumbLabel = (label: string, isUUID: boolean) => {
     .join(' ');
 };
 
-const BreadCrumbs = ({ className }: BreadCrumbsProps) => {
-  const pathname = usePathname();
-  const pathSegments = pathname.split('/').filter(Boolean);
+const getPathSegments = (path: string) => path.split('/').filter(Boolean);
 
-  const breadcrumbs = pathSegments.map((segment, index) => {
-    const href = `/${pathSegments.slice(0, index + 1).join('/')}`;
+const BreadCrumbs = ({
+  className,
+  baseHref = AppRoutes.HOME,
+  baseLabel = 'Home',
+  showBaseWhenRoot = false,
+}: BreadCrumbsProps) => {
+  const pathname = usePathname();
+  const pathSegments = getPathSegments(pathname);
+  const basePathSegments = getPathSegments(baseHref);
+  const isInBasePath =
+    basePathSegments.length > 0 &&
+    basePathSegments.every((segment, index) => pathSegments[index] === segment);
+  const visiblePathSegments = isInBasePath
+    ? pathSegments.slice(basePathSegments.length)
+    : pathSegments;
+
+  const breadcrumbs = visiblePathSegments.map((segment, index) => {
+    const href = `/${[
+      ...(isInBasePath ? basePathSegments : []),
+      ...visiblePathSegments.slice(0, index + 1),
+    ].join('/')}`;
     const label = routeToLabelMap[href] || segment;
     const isUUID =
       /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(
@@ -67,13 +87,13 @@ const BreadCrumbs = ({ className }: BreadCrumbsProps) => {
     };
   });
 
-  if (!breadcrumbs.length) return null;
+  if (!breadcrumbs.length && !showBaseWhenRoot) return null;
 
   return (
     <Breadcrumb className={cn(className, 'select-none')}>
       <BreadcrumbList>
-        <BreadcrumbLink href={AppRoutes.HOME}>Home</BreadcrumbLink>
-        <BreadcrumbSeparator />
+        <BreadcrumbLink href={baseHref}>{baseLabel}</BreadcrumbLink>
+        {breadcrumbs.length > 0 && <BreadcrumbSeparator />}
         {breadcrumbs.map((crumb, index) => (
           <React.Fragment key={index}>
             <BreadcrumbItem>
