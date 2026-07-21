@@ -153,7 +153,7 @@ type MapProps = {
 type MapRef = MapLibreGL.Map;
 
 const DefaultLoader = () => (
-  <div className="absolute inset-0 flex items-center justify-center">
+  <div className="absolute inset-0 z-50 flex items-center justify-center bg-background">
     <div className="flex gap-1">
       <span className="size-1.5 rounded-full bg-muted-foreground/60 animate-pulse" />
       <span className="size-1.5 rounded-full bg-muted-foreground/60 animate-pulse [animation-delay:150ms]" />
@@ -217,7 +217,6 @@ const Map = forwardRef<MapRef, MapProps>(function Map(
 
     const map = new MapLibreGL.Map({
       container: containerRef.current,
-      style: initialStyle,
       renderWorldCopies: false,
       attributionControl: {
         compact: true,
@@ -233,9 +232,6 @@ const Map = forwardRef<MapRef, MapProps>(function Map(
       // else we have to force update every layer on setStyle change
       styleTimeoutRef.current = setTimeout(() => {
         setIsStyleLoaded(true);
-        if (projection) {
-          map.setProjection(projection);
-        }
       }, 100);
     };
     const loadHandler = () => setIsLoaded(true);
@@ -249,6 +245,14 @@ const Map = forwardRef<MapRef, MapProps>(function Map(
     map.on("load", loadHandler);
     map.on("styledata", styleDataHandler);
     map.on("move", handleMove);
+    map.setStyle(initialStyle, {
+      transformStyle: projection
+        ? (_previousStyle, nextStyle) => ({
+            ...nextStyle,
+            projection,
+          })
+        : undefined,
+    });
     setMapInstance(map);
 
     return () => {
@@ -305,15 +309,30 @@ const Map = forwardRef<MapRef, MapProps>(function Map(
     currentStyleRef.current = newStyle;
     setIsStyleLoaded(false);
 
-    mapInstance.setStyle(newStyle, { diff: true });
-  }, [mapInstance, resolvedTheme, mapStyles, clearStyleTimeout]);
+    mapInstance.setStyle(newStyle, {
+      diff: true,
+      transformStyle: projection
+        ? (_previousStyle, nextStyle) => ({
+            ...nextStyle,
+            projection,
+          })
+        : undefined,
+    });
+  }, [mapInstance, resolvedTheme, mapStyles, clearStyleTimeout, projection]);
+
+  const requestedStyle =
+    resolvedTheme === "dark" ? mapStyles.dark : mapStyles.light;
+  const isReady =
+    isLoaded &&
+    isStyleLoaded &&
+    currentStyleRef.current === requestedStyle;
 
   const contextValue = useMemo(
     () => ({
       map: mapInstance,
-      isLoaded: isLoaded && isStyleLoaded,
+      isLoaded: isReady,
     }),
-    [mapInstance, isLoaded, isStyleLoaded]
+    [mapInstance, isReady]
   );
 
   return (
@@ -322,9 +341,9 @@ const Map = forwardRef<MapRef, MapProps>(function Map(
         ref={containerRef}
         className={cn("relative w-full h-full", className)}
       >
-        {!isLoaded && <DefaultLoader />}
+        {!isReady && <DefaultLoader />}
         {/* SSR-safe: children render only when map is loaded on client */}
-        {mapInstance && children}
+        {mapInstance && isReady && children}
       </div>
     </MapContext.Provider>
   );
@@ -358,6 +377,8 @@ type MapMarkerProps = {
   onMouseEnter?: (e: MouseEvent) => void;
   /** Callback when mouse leaves marker */
   onMouseLeave?: (e: MouseEvent) => void;
+  /** Accessible name announced for the marker control. */
+  accessibleLabel?: string;
   /** Callback when marker drag starts (requires draggable: true) */
   onDragStart?: (lngLat: { lng: number; lat: number }) => void;
   /** Callback during marker drag (requires draggable: true) */
@@ -373,6 +394,7 @@ function MapMarker({
   onClick,
   onMouseEnter,
   onMouseLeave,
+  accessibleLabel = "Map marker",
   onDragStart,
   onDrag,
   onDragEnd,
@@ -405,11 +427,21 @@ function MapMarker({
       draggable,
     }).setLngLat([longitude, latitude]);
 
+    const markerElement = markerInstance.getElement();
+    markerElement.setAttribute("role", "button");
+    markerElement.setAttribute("tabindex", "0");
+    markerElement.setAttribute("aria-label", accessibleLabel);
+
     const handleClick = (e: MouseEvent) => callbacksRef.current.onClick?.(e);
     const handleMouseEnter = (e: MouseEvent) =>
       callbacksRef.current.onMouseEnter?.(e);
     const handleMouseLeave = (e: MouseEvent) =>
       callbacksRef.current.onMouseLeave?.(e);
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key !== "Enter" && e.key !== " ") return;
+      e.preventDefault();
+      markerElement.click();
+    };
 
     markerInstance.getElement()?.addEventListener("click", handleClick);
     markerInstance
@@ -418,6 +450,7 @@ function MapMarker({
     markerInstance
       .getElement()
       ?.addEventListener("mouseleave", handleMouseLeave);
+    markerInstance.getElement()?.addEventListener("keydown", handleKeyDown);
 
     const handleDragStart = () => {
       const lngLat = markerInstance.getLngLat();
@@ -458,6 +491,9 @@ function MapMarker({
     marker.getLngLat().lat !== latitude
   ) {
     marker.setLngLat([longitude, latitude]);
+  }
+  if (marker.getElement().getAttribute("aria-label") !== accessibleLabel) {
+    marker.getElement().setAttribute("aria-label", accessibleLabel);
   }
   if (marker.isDraggable() !== draggable) {
     marker.setDraggable(draggable);

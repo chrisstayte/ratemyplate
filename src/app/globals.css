@@ -219,3 +219,29 @@
     offset-distance: 100%;
   }
 }
+
+@keyframes globe-ping {
+  0% {
+    opacity: 0;
+    transform: scale(0.35);
+  }
+  18% {
+    opacity: 0.9;
+  }
+  72%,
+  100% {
+    opacity: 0;
+    transform: scale(1.7);
+  }
+}
+
+.globe-ping {
+  animation: globe-ping 2.8s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .globe-ping {
+    animation: none;
+    opacity: 0.65;
+  }
+}
