@@ -444,7 +444,6 @@ export default function GlobeExperience({
           maxZoom={6}
           pitch={0}
           bearing={0}
-          cooperativeGestures
           className="h-full w-full"
         >
           <GlobeScene
