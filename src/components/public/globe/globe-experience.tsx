@@ -268,6 +268,7 @@ function GlobeScene({
       {activity.map((state, index) => (
         <MapMarker
           key={state.abbreviation}
+          subpixelPositioning
           longitude={state.longitude}
           latitude={state.latitude}
           accessibleLabel={`${state.name}: ${state.reportCount} ${
