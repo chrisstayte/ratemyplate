@@ -40,6 +40,14 @@ const Footer = async () => {
               </li>
               <li>
                 <Link
+                  href="/globe"
+                  className="hover:text-foreground transition-colors"
+                >
+                  Live Globe
+                </Link>
+              </li>
+              <li>
+                <Link
                   href="/favorites"
                   className="hover:text-foreground transition-colors"
                 >
