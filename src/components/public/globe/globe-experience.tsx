@@ -51,8 +51,7 @@ type GlobeExperienceProps = {
   initialView?: GlobeView;
 };
 
-const DEFAULT_GLOBE_ZOOM = 1.9;
-const COMPACT_GLOBE_ZOOM = 1.35;
+const DEFAULT_GLOBE_ZOOM = 3.43;
 const DEFAULT_GLOBE_VIEW: GlobeView = {
   latitude: 38,
   longitude: -98,
@@ -117,16 +116,47 @@ function GlobeScene({
             'rgba(124, 58, 237, 0.025)',
           ] as unknown as ExpressionSpecification)
         : 'rgba(124, 58, 237, 0.025)';
+    const atmosphereBlend = [
+      'interpolate',
+      ['linear'],
+      ['zoom'],
+      0.7,
+      0.22,
+      2,
+      0.15,
+      4,
+      0.06,
+      6,
+      0,
+    ] as ExpressionSpecification;
+    const mapContainer = map.getContainer();
+    const previousBackground = {
+      color: mapContainer.style.backgroundColor,
+      image: mapContainer.style.backgroundImage,
+      position: mapContainer.style.backgroundPosition,
+      repeat: mapContainer.style.backgroundRepeat,
+      size: mapContainer.style.backgroundSize,
+    };
+
+    mapContainer.style.backgroundColor = isDark ? '#060912' : '#081a2c';
+    mapContainer.style.backgroundImage = isDark
+      ? "url('/images/globe/night-sky.jpg')"
+      : "url('/images/globe/night-sky-light.jpg')";
+    mapContainer.style.backgroundPosition = 'center';
+    mapContainer.style.backgroundRepeat = 'no-repeat';
+    mapContainer.style.backgroundSize = 'cover';
 
     map.setProjection({ type: 'globe' });
     map.setSky({
-      'sky-color': isDark ? '#09090b' : '#eef2ff',
-      'horizon-color': isDark ? '#2e2452' : '#ddd6fe',
-      'fog-color': isDark ? '#111018' : '#f8fafc',
+      'sky-color': isDark ? 'rgba(6, 9, 18, 0)' : 'rgba(8, 26, 44, 0)',
+      'horizon-color': isDark
+        ? 'rgba(25, 43, 70, 0.52)'
+        : 'rgba(137, 184, 222, 0.56)',
+      'fog-color': isDark ? '#101827' : '#dcecf7',
       'fog-ground-blend': 0.65,
-      'horizon-fog-blend': 0.35,
-      'sky-horizon-blend': 0.65,
-      'atmosphere-blend': 0.95,
+      'horizon-fog-blend': isDark ? 0.22 : 0.25,
+      'sky-horizon-blend': isDark ? 0.42 : 0.46,
+      'atmosphere-blend': atmosphereBlend,
     });
 
     map.addSource('globe-states', {
@@ -194,11 +224,7 @@ function GlobeScene({
       initializedGlobeMaps.add(map);
       map.jumpTo({
         center: [initialView.longitude, initialView.latitude],
-        zoom:
-          initialView === DEFAULT_GLOBE_VIEW &&
-          map.getContainer().clientWidth < 640
-            ? COMPACT_GLOBE_ZOOM
-            : initialView.zoom,
+        zoom: initialView.zoom,
       });
     }
     map.on('dragend', handleUserViewportChange);
@@ -208,6 +234,11 @@ function GlobeScene({
 
     return () => {
       resizeObserver.disconnect();
+      mapContainer.style.backgroundColor = previousBackground.color;
+      mapContainer.style.backgroundImage = previousBackground.image;
+      mapContainer.style.backgroundPosition = previousBackground.position;
+      mapContainer.style.backgroundRepeat = previousBackground.repeat;
+      mapContainer.style.backgroundSize = previousBackground.size;
       map.off('click', 'globe-states-fill', handleStateClick);
       map.off('mouseenter', 'globe-states-fill', handleMouseEnter);
       map.off('mouseleave', 'globe-states-fill', handleMouseLeave);
@@ -238,6 +269,8 @@ function GlobeScene({
       userPauseUntil.current = performance.now() + 6500;
     };
 
+    map.on('mousedown', pauseForInteraction);
+    map.on('touchstart', pauseForInteraction);
     map.on('dragstart', pauseForInteraction);
     map.on('zoomstart', pauseForInteraction);
     map.on('rotatestart', pauseForInteraction);
@@ -256,6 +289,8 @@ function GlobeScene({
     frameRef.current = requestAnimationFrame(rotate);
 
     return () => {
+      map.off('mousedown', pauseForInteraction);
+      map.off('touchstart', pauseForInteraction);
       map.off('dragstart', pauseForInteraction);
       map.off('zoomstart', pauseForInteraction);
       map.off('rotatestart', pauseForInteraction);

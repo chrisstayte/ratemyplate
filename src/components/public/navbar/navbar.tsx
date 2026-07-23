@@ -17,12 +17,6 @@ const Navbar = () => {
         </Link>
 
         <div className="hidden md:flex md:flex-1 md:grow items-center gap-5 justify-center">
-          <Link
-            href="/map"
-            className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-          >
-            Map
-          </Link>
           <Link href="/globe" className="group">
             <Badge className="bg-purple-600 text-white hover:bg-purple-500">
               <Globe2 className="transition-transform duration-500 group-hover:rotate-45" />
