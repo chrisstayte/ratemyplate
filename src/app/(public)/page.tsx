@@ -7,16 +7,17 @@ import DrivingSaferSection from '@/components/public/plate-sections/driving-safe
 import TypingPlate from '@/components/public/typing-plate';
 import { database } from '@/db/database';
 import { plates } from '@/db/schema';
-import { sql } from 'drizzle-orm';
+import { desc } from 'drizzle-orm';
+import { selectTypingPlateNumbers } from '@/lib/home-plates';
 
 export default async function Home() {
-  const randomPlates = await database
+  const recentPlates = await database
     .select({ plateNumber: plates.plateNumber })
     .from(plates)
-    .orderBy(sql`RANDOM()`)
-    .limit(20);
+    .orderBy(desc(plates.timestamp))
+    .limit(100);
 
-  const plateNumbers = randomPlates.map((p) => p.plateNumber);
+  const plateNumbers = selectTypingPlateNumbers(recentPlates, 20);
   return (
     <>
       {/* Hero + Inline Search */}
@@ -25,14 +26,14 @@ export default async function Home() {
           <TypingPlate plates={plateNumbers} />
         </h1>
         <p className="text-lg text-muted-foreground">
-          See what others are saying. Share your own experiences. Stay
-          anonymous.
+          See what others are saying. Share your own experiences. Your name
+          stays off the public page.
         </p>
         <InlineSearch />
         <div className="flex flex-wrap gap-2 justify-center">
           <Badge className="bg-purple-400 dark:bg-purple-200">
             <EyeOff className="size-3" />
-            100% Anonymous
+            Publicly anonymous
           </Badge>
           <Badge className="bg-purple-400 dark:bg-purple-200">
             <MapPin className="size-3" />

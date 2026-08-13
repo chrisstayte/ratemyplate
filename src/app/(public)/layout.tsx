@@ -4,7 +4,7 @@ import Footer from '@/components/public/footer/footer';
 
 export const metadata: Metadata = {
   title: 'Rate My Plate',
-  description: 'Anonymous rating for drivers',
+  description: 'Publicly anonymous rating for drivers',
 };
 
 export default function RootLayout({

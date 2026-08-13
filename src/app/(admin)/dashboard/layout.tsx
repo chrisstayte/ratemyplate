@@ -14,7 +14,7 @@ import { TooltipProvider } from '@/components/ui/tooltip';
 
 export const metadata: Metadata = {
   title: 'Rate My Plate',
-  description: 'Anonymous rating for drivers',
+  description: 'Publicly anonymous rating for drivers',
 };
 
 export default async function RootLayout({

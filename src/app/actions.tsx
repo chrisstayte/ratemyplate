@@ -6,6 +6,32 @@ import { revalidatePath } from 'next/cache';
 import { auth, isCurrentUserAdmin } from '@/auth';
 import { eq, and, desc } from 'drizzle-orm';
 import { Plate } from '@/lib/plates';
+import {
+  parsePlateInput,
+  parsePositiveId,
+  parseReviewContent,
+  plateRelatedPaths,
+} from '@/lib/validations';
+
+function revalidatePlateRelatedPaths(state: string, plateNumber: string) {
+  for (const path of plateRelatedPaths(state, plateNumber)) {
+    revalidatePath(path);
+  }
+}
+
+async function getPlateById(plateId: number) {
+  return database.query.plates.findFirst({
+    where: (platesTable, { eq: equals }) => equals(platesTable.id, plateId),
+  });
+}
+
+async function getPlateForReview(reviewId: number) {
+  const review = await database.query.plate_reviews.findFirst({
+    where: (reviews, { eq: equals }) => equals(reviews.id, reviewId),
+    with: { plate: true },
+  });
+  return review?.plate ?? null;
+}
 
 export async function createPlate(plate: Plate): Promise<{ message: string; id: number }> {
   const session = await auth();
@@ -14,12 +40,16 @@ export async function createPlate(plate: Plate): Promise<{ message: string; id: 
     throw new Error('Unauthorized');
   }
 
-  const existingPlate = await database?.query.plates.findFirst({
-    where: (plates, { eq }) =>
-      and(
-        eq(plates.plateNumber, plate.plateNumber.toUpperCase()),
-        eq(plates.state, plate.state)
-      ),
+  const parsed = parsePlateInput(plate);
+  if (!parsed.success) {
+    throw new Error(parsed.message);
+  }
+
+  const { state, plateNumber } = parsed.data;
+
+  const existingPlate = await database.query.plates.findFirst({
+    where: (platesTable, { eq: equals }) =>
+      and(equals(platesTable.plateNumber, plateNumber), equals(platesTable.state, state)),
   });
 
   if (existingPlate) {
@@ -27,11 +57,11 @@ export async function createPlate(plate: Plate): Promise<{ message: string; id: 
   }
 
   const newPlateList = await database
-    ?.insert(plates)
+    .insert(plates)
     .values({
-      plateNumber: plate.plateNumber.toUpperCase(),
-      state: plate.state,
-      userId: session!.user!.id,
+      plateNumber,
+      state,
+      userId: session.user!.id,
     })
     .returning();
 
@@ -48,18 +78,33 @@ export async function postReview(
     throw new Error('Unauthorized');
   }
 
+  const parsedContent = parseReviewContent({ comment, rating });
+  if (!parsedContent.success) {
+    return { message: parsedContent.message, status: 400 };
+  }
+
+  const parsedPlateId = parsePositiveId(plateId, 'plate');
+  if (!parsedPlateId.success) {
+    return { message: parsedPlateId.message, status: 400 };
+  }
+
+  const plate = await getPlateById(parsedPlateId.data);
+  if (!plate) {
+    return { message: 'Plate not found', status: 404 };
+  }
+
   try {
     await database
       .insert(plate_reviews)
       .values({
-        comment: comment,
-        rating: rating,
-        plateId: plateId,
-        userId: session!.user!.id,
+        comment: parsedContent.data.comment,
+        rating: parsedContent.data.rating,
+        plateId: parsedPlateId.data,
+        userId: session.user!.id,
       })
       .execute();
 
-    revalidatePath('/', 'layout');
+    revalidatePlateRelatedPaths(plate.state, plate.plateNumber);
   } catch (error) {
     console.error(error);
     return { message: 'Failed to add review', status: 500 };
@@ -77,8 +122,19 @@ export async function updateReview(
     throw new Error('Unauthorized');
   }
 
+  const parsedReviewId = parsePositiveId(reviewId, 'review');
+  if (!parsedReviewId.success) {
+    return { message: parsedReviewId.message, status: 400 };
+  }
+
+  const parsedContent = parseReviewContent({ comment, rating });
+  if (!parsedContent.success) {
+    return { message: parsedContent.message, status: 400 };
+  }
+
   const existing = await database.query.plate_reviews.findFirst({
-    where: (plate_reviews, { eq }) => eq(plate_reviews.id, reviewId),
+    where: (reviews, { eq: equals }) => equals(reviews.id, parsedReviewId.data),
+    with: { plate: true },
   });
 
   if (!existing || existing.userId !== session.user!.id) {
@@ -88,11 +144,17 @@ export async function updateReview(
   try {
     await database
       .update(plate_reviews)
-      .set({ comment, rating, updatedAt: new Date() })
-      .where(eq(plate_reviews.id, reviewId))
+      .set({
+        comment: parsedContent.data.comment,
+        rating: parsedContent.data.rating,
+        updatedAt: new Date(),
+      })
+      .where(eq(plate_reviews.id, parsedReviewId.data))
       .execute();
 
-    revalidatePath('/', 'layout');
+    if (existing.plate) {
+      revalidatePlateRelatedPaths(existing.plate.state, existing.plate.plateNumber);
+    }
   } catch (error) {
     console.error(error);
     return { message: 'Failed to update review', status: 500 };
@@ -113,10 +175,10 @@ export async function addPlateToFavorites(plate: Plate) {
     throw new Error('Failed to add plate to favorites');
   }
 
-  database
+  await database
     .insert(user_favorite_plates)
     .values({
-      userId: session!.user!.id,
+      userId: session.user!.id,
       plateId: plateId,
     })
     .execute();
@@ -131,11 +193,16 @@ export async function removePlateFromFavorites(plate: Plate) {
     throw new Error('Unauthorized');
   }
 
+  const parsed = parsePlateInput(plate);
+  if (!parsed.success) {
+    throw new Error(parsed.message);
+  }
+
   const databasePlate = await database.query.plates.findFirst({
-    where: (plates, { eq }) =>
+    where: (platesTable, { eq: equals }) =>
       and(
-        eq(plates.plateNumber, plate.plateNumber),
-        eq(plates.state, plate.state)
+        equals(platesTable.plateNumber, parsed.data.plateNumber),
+        equals(platesTable.state, parsed.data.state)
       ),
   });
 
@@ -143,12 +210,12 @@ export async function removePlateFromFavorites(plate: Plate) {
     throw new Error('Plate not found');
   }
 
-  database
+  await database
     .delete(user_favorite_plates)
     .where(
       and(
         eq(user_favorite_plates.plateId, databasePlate.id),
-        eq(user_favorite_plates.userId, session!.user!.id!)
+        eq(user_favorite_plates.userId, session.user!.id!)
       )
     )
     .execute();
@@ -179,7 +246,13 @@ export async function toggleReviewLike(reviewId: number) {
     throw new Error('Unauthorized');
   }
 
+  const parsedReviewId = parsePositiveId(reviewId, 'review');
+  if (!parsedReviewId.success) {
+    throw new Error(parsedReviewId.message);
+  }
+
   const userId = session.user!.id!;
+  const plate = await getPlateForReview(parsedReviewId.data);
 
   const existing = await database
     .select()
@@ -187,7 +260,7 @@ export async function toggleReviewLike(reviewId: number) {
     .where(
       and(
         eq(review_likes.userId, userId),
-        eq(review_likes.reviewId, reviewId)
+        eq(review_likes.reviewId, parsedReviewId.data)
       )
     )
     .execute();
@@ -198,20 +271,24 @@ export async function toggleReviewLike(reviewId: number) {
       .where(
         and(
           eq(review_likes.userId, userId),
-          eq(review_likes.reviewId, reviewId)
+          eq(review_likes.reviewId, parsedReviewId.data)
         )
       )
       .execute();
-    revalidatePath('/', 'layout');
+    if (plate) {
+      revalidatePlateRelatedPaths(plate.state, plate.plateNumber);
+    }
     return { liked: false };
-  } else {
-    await database
-      .insert(review_likes)
-      .values({ userId, reviewId })
-      .execute();
-    revalidatePath('/', 'layout');
-    return { liked: true };
   }
+
+  await database
+    .insert(review_likes)
+    .values({ userId, reviewId: parsedReviewId.data })
+    .execute();
+  if (plate) {
+    revalidatePlateRelatedPaths(plate.state, plate.plateNumber);
+  }
+  return { liked: true };
 }
 
 export async function deleteComment(id: number): Promise<boolean> {
@@ -225,7 +302,22 @@ export async function deleteComment(id: number): Promise<boolean> {
     throw new Error('Unauthorized');
   }
 
-  const response = await database.delete(plate_reviews).where(eq(plate_reviews.id, id));
-  revalidatePath('/', 'layout');
+  const parsedId = parsePositiveId(id, 'review');
+  if (!parsedId.success) {
+    throw new Error(parsedId.message);
+  }
+
+  const plate = await getPlateForReview(parsedId.data);
+
+  const response = await database
+    .delete(plate_reviews)
+    .where(eq(plate_reviews.id, parsedId.data));
+
+  if (plate) {
+    revalidatePlateRelatedPaths(plate.state, plate.plateNumber);
+  } else {
+    revalidatePath('/');
+  }
+
   return response.length > 0;
 }
