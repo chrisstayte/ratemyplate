@@ -5,11 +5,12 @@ import { Plate } from '@/lib/plates';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 import { Field, FieldError, FieldLabel } from '@/components/ui/field';
 import { createPlate, postReview, updateReview } from '@/app/actions';
+import { newCommentFormSchema } from '@/lib/validations';
 import confetti from 'canvas-confetti';
 import { Star } from 'lucide-react';
 
@@ -26,10 +27,8 @@ interface NewCommentFormProps {
   existingReview?: ExistingReview;
 }
 
-export const newCommentFormSchema = z.object({
-  message: z.string().min(5, 'Please write a bit more about your experience').max(254, 'Review is too long'),
-  rating: z.number().min(1, 'Please select a rating').max(5),
-});
+export { newCommentFormSchema };
+
 
 const NewCommentForm: React.FC<NewCommentFormProps> = ({
   className,
@@ -58,7 +57,7 @@ const NewCommentForm: React.FC<NewCommentFormProps> = ({
         values.message,
         values.rating
       );
-      if (response.status === 500) {
+      if (response.status !== 200) {
         setSetError(response.message);
       } else {
         form.reset();
@@ -66,25 +65,32 @@ const NewCommentForm: React.FC<NewCommentFormProps> = ({
         onClose();
       }
     } else {
-      const response = await createPlate(plate);
+      try {
+        const response = await createPlate(plate);
 
-      if (response.id) {
-        const response2 = await postReview(
-          values.message,
-          values.rating,
-          response.id
-        );
-        onClose();
-        shootFireworks();
+        if (response.id) {
+          const response2 = await postReview(
+            values.message,
+            values.rating,
+            response.id
+          );
 
-        if (response2.status === 500) {
-          setSetError(response2.message);
-        } else {
+          if (response2.status !== 200) {
+            setSetError(response2.message);
+            return;
+          }
+
           form.reset();
           setSetError(null);
+          onClose();
+          shootFireworks();
+        } else {
+          setSetError(response.message);
         }
-      } else {
-        setSetError(response.message);
+      } catch (error) {
+        setSetError(
+          error instanceof Error ? error.message : 'Failed to submit review'
+        );
       }
     }
   }
