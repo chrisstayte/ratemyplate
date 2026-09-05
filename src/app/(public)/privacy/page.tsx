@@ -36,9 +36,9 @@ export default function PrivacyPage() {
             <a
               className="text-primary underline decoration-primary/30 underline-offset-4 hover:decoration-primary"
               target="_blank"
-              href="mailto:ratemyplate@chrisstayte.com"
+              href="mailto:ratemyplate@stayte.email"
             >
-              ratemyplate@chrisstayte.com
+              ratemyplate@stayte.email
             </a>
           </p>
           <p>

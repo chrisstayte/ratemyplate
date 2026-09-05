@@ -5,8 +5,10 @@ import { describe, expect, it } from 'vitest';
 import { getPlateArtwork } from '@/lib/plate-artwork';
 import {
   createPlateExportSvg,
+  createZipArchive,
   normalizeMediaText,
   plateExportFilename,
+  plateExportZipFilename,
 } from '@/lib/plate-export';
 import statePlates from '@/lib/state-plates.json';
 
@@ -98,6 +100,24 @@ describe('plate media exports', () => {
     expect(plateExportFilename('CA', '', 'svg')).toBe('ratemyplate-ca-blank.svg');
     expect(plateExportFilename('NY', 'ABC 123', 'png')).toBe('ratemyplate-ny-abc-123.png');
     expect(plateExportFilename('OH', 'r8-mypl8', 'jpg')).toBe('ratemyplate-oh-r8-mypl8.jpg');
+    expect(plateExportZipFilename('ABC 123', 'png')).toBe('ratemyplate-all-states-abc-123-png.zip');
+  });
+
+  it('creates a portable ZIP archive with the expected files', async () => {
+    const archive = await createZipArchive([
+      { filename: 'ratemyplate-al-blank.svg', data: new TextEncoder().encode('Alabama') },
+      { filename: 'ratemyplate-ny-blank.svg', data: new TextEncoder().encode('New York') },
+    ], new Date('2026-01-02T03:04:06'));
+    const bytes = new Uint8Array(await archive.arrayBuffer());
+    const text = new TextDecoder().decode(bytes);
+    const view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+
+    expect(archive.type).toBe('application/zip');
+    expect(view.getUint32(0, true)).toBe(0x04034b50);
+    expect(view.getUint32(bytes.byteLength - 22, true)).toBe(0x06054b50);
+    expect(view.getUint16(bytes.byteLength - 14, true)).toBe(2);
+    expect(text).toContain('ratemyplate-al-blank.svg');
+    expect(text).toContain('ratemyplate-ny-blank.svg');
   });
 
   it('fails clearly for unavailable artwork or a missing custom font', () => {

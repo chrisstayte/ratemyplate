@@ -10,6 +10,7 @@ import { NativeSelect } from '@/components/ui/native-select';
 import statePlates from '@/lib/state-plates.json';
 import {
   downloadPlate,
+  downloadPlatesZip,
   MEDIA_TEXT_MAX_LENGTH,
   normalizeMediaText,
   type PlateExportFormat,
@@ -23,7 +24,8 @@ export default function PlateGallery() {
   const [text, setText] = useState('');
   const [state, setState] = useState('all');
   const [format, setFormat] = useState<PlateExportFormat>('svg');
-  const [downloading, setDownloading] = useState<string | null>(null);
+  const [downloading, setDownloading] = useState<string | 'all' | null>(null);
+  const [zipProgress, setZipProgress] = useState<{ completed: number; total: number } | null>(null);
   const [status, setStatus] = useState('');
   const [error, setError] = useState('');
   const visiblePlates = state === 'all' ? plates : plates.filter((plate) => plate.code === state);
@@ -47,6 +49,29 @@ export default function PlateGallery() {
     }
   }
 
+  async function handleDownloadAll() {
+    if (downloading) return;
+    setDownloading('all');
+    setZipProgress({ completed: 0, total: plates.length });
+    setError('');
+    setStatus(`Preparing 0 of ${plates.length} ${format.toUpperCase()} plates for your ZIP…`);
+    try {
+      await downloadPlatesZip(plates.map((plate) => plate.code), previewText, format, (progress) => {
+        setZipProgress(progress);
+        setStatus(`Preparing ${progress.completed} of ${progress.total} ${format.toUpperCase()} plates for your ZIP…`);
+      });
+      setStatus(`All ${plates.length} ${format.toUpperCase()} plates are bundled and your ZIP download started.`);
+    } catch (error) {
+      setStatus('');
+      setError(error instanceof TypeError
+        ? 'Your ZIP could not be created. Check your connection and try again.'
+        : error instanceof Error ? error.message : 'Your ZIP could not be created. Please try again.');
+    } finally {
+      setDownloading(null);
+      setZipProgress(null);
+    }
+  }
+
   return (
     <div>
       <section aria-label="Customize and filter plates" className="rounded-xl border bg-card p-5 sm:p-6">
@@ -65,9 +90,10 @@ export default function PlateGallery() {
                 spellCheck={false}
                 aria-describedby="plate-text-help"
                 className="h-11 rounded-lg pr-12 text-base font-semibold tracking-widest md:text-base"
+                disabled={downloading !== null}
               />
               {text && (
-                <Button variant="ghost" size="icon-sm" onClick={() => setText('')} aria-label="Clear custom text" className="absolute right-1.5 top-1.5 rounded-md">
+                <Button variant="ghost" size="icon-sm" onClick={() => setText('')} disabled={downloading !== null} aria-label="Clear custom text" className="absolute right-1.5 top-1.5 rounded-md">
                   <X aria-hidden="true" />
                 </Button>
               )}
@@ -79,7 +105,7 @@ export default function PlateGallery() {
 
           <div className="space-y-3">
             <Label htmlFor="plate-state-filter">Filter by state</Label>
-            <NativeSelect id="plate-state-filter" value={state} onChange={(event) => setState(event.target.value)} className="w-full [&_select]:h-11 [&_select]:rounded-lg [&_select]:pl-2 [&_select]:pr-7 md:[&_select]:text-base">
+            <NativeSelect id="plate-state-filter" value={state} onChange={(event) => setState(event.target.value)} disabled={downloading !== null} className="w-full [&_select]:h-11 [&_select]:rounded-lg [&_select]:pl-2 [&_select]:pr-7 md:[&_select]:text-base">
               <option value="all">All states</option>
               {plates.map((plate) => <option key={plate.code} value={plate.code}>{plate.state}</option>)}
             </NativeSelect>
@@ -90,7 +116,7 @@ export default function PlateGallery() {
             <div className="flex h-11 rounded-lg border bg-muted/50 p-1">
               {formats.map((option) => (
                 <label key={option} className="relative flex flex-1 cursor-pointer">
-                  <input type="radio" name="plate-format" value={option} checked={format === option} onChange={() => setFormat(option)} className="peer sr-only" />
+                  <input type="radio" name="plate-format" value={option} checked={format === option} onChange={() => setFormat(option)} disabled={downloading !== null} className="peer sr-only" />
                   <span className={cn('flex w-full items-center justify-center rounded-md text-sm font-semibold peer-focus-visible:ring-2 peer-focus-visible:ring-ring peer-focus-visible:ring-offset-2', format === option ? 'bg-primary text-primary-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground')}>
                     {option.toUpperCase()}
                   </span>
@@ -112,9 +138,17 @@ export default function PlateGallery() {
           {state === 'all' ? 'The full collection' : visiblePlates[0]?.state}
           {' '}<span className="ml-2 text-sm font-normal text-muted-foreground">{visiblePlates.length} {visiblePlates.length === 1 ? 'design' : 'designs'}</span>
         </h2>
-        {state !== 'all' ? (
-          <Button variant="ghost" size="sm" onClick={() => setState('all')}>Show all states <X aria-hidden="true" /></Button>
-        ) : <p className="text-sm text-muted-foreground">{previewText ? 'Your text, on every plate' : 'Blank plates, ready to download'}</p>}
+        <div className="flex flex-wrap items-center gap-2">
+          {state !== 'all' && (
+            <Button variant="ghost" size="sm" onClick={() => setState('all')} disabled={downloading !== null}>Show all states <X aria-hidden="true" /></Button>
+          )}
+          <Button onClick={handleDownloadAll} disabled={downloading !== null} className="rounded-lg" aria-label={`Download all ${plates.length} ${previewText ? 'custom' : 'blank'} plates as ${format.toUpperCase()} in a ZIP`}>
+            {downloading === 'all' ? <LoaderCircle className="animate-spin" aria-hidden="true" /> : <Download aria-hidden="true" />}
+            {downloading === 'all'
+              ? `Preparing ${zipProgress?.completed ?? 0}/${zipProgress?.total ?? plates.length}…`
+              : `Download all ${plates.length} as ZIP`}
+          </Button>
+        </div>
       </div>
 
       <p role="status" className={cn('text-sm text-muted-foreground', status ? 'mb-5' : 'sr-only')}>{status}</p>

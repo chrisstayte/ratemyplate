@@ -80,9 +80,9 @@ export default function TermsPage() {
             abuse the service. Report doxing or other harmful content to{' '}
             <a
               className="text-primary underline decoration-primary/30 underline-offset-4 hover:decoration-primary"
-              href="mailto:ratemyplate@chrisstayte.com"
+              href="mailto:ratemyplate@stayte.email"
             >
-              ratemyplate@chrisstayte.com
+              ratemyplate@stayte.email
             </a>
             .
           </p>
@@ -123,9 +123,9 @@ export default function TermsPage() {
             Questions about these terms:{' '}
             <a
               className="text-primary underline decoration-primary/30 underline-offset-4 hover:decoration-primary"
-              href="mailto:ratemyplate@chrisstayte.com"
+              href="mailto:ratemyplate@stayte.email"
             >
-              ratemyplate@chrisstayte.com
+              ratemyplate@stayte.email
             </a>
             .
           </p>
