@@ -8,6 +8,14 @@ The original manifest is stored at `src/lib/state-plates.json`. `src/lib/plate-a
 
 Full-size plates, linked thumbnails, loading placeholders, and social preview images preserve the 2:1 ratio. DC, Puerto Rico, the Virgin Islands, and unknown state codes use a neutral labeled fallback because they are not included in this collection.
 
+## Media library
+
+The public `/media` page, linked from the footer, showcases all 50 designs in state-name order. Visitors can filter by state and use one optional text field to update every preview. Clearing the field restores blank plates. Custom text supports up to 12 letters, numbers, spaces, or hyphens.
+
+Each plate can be downloaded as SVG, PNG, or JPG. Blank SVG downloads preserve the original artwork. Custom SVGs inline the serial as vector paths using `opentype.js` and the local plate font, so the files have no external image or font dependencies. The parser and font load only when a custom download needs them. PNG and JPG downloads render at 2400 × 1200 pixels in the browser; SVG and PNG preserve transparent edges, and JPG uses white behind the artwork. Downloads do not require an account or send custom text to a server.
+
+`src/lib/plate-export.test.ts` verifies all original blank SVGs, standalone custom exports, the actual glyph bounds across all 50 serial regions, supported characters, filenames, and unavailable-artwork errors.
+
 ## Integration verification
 
 - Parsed all 50 SVGs: complete state coverage, `600 × 300` dimensions, 2:1 view boxes, and serial bounds inside each image.
