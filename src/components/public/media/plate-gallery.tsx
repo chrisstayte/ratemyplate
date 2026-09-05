@@ -112,7 +112,7 @@ export default function PlateGallery() {
           </div>
 
           <fieldset className="min-w-0 space-y-3">
-            <legend className="text-sm font-medium">Download format</legend>
+            <legend className="flex h-3.5 items-center p-0 text-sm leading-none font-medium">Download format</legend>
             <div className="flex h-11 rounded-lg border bg-muted/50 p-1">
               {formats.map((option) => (
                 <label key={option} className="relative flex flex-1 cursor-pointer">
