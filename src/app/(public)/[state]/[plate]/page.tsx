@@ -130,15 +130,10 @@ export default async function PlatePage({ params }: Props) {
       <div className="flex flex-col gap-5 md:gap-8 md:flex-row">
         {/* Left: plate visual + stats */}
         <div className="flex shrink-0 md:w-80 flex-col gap-5">
-          <Card>
-            <CardContent>
-              <div className="rounded-lg bg-accent p-2 flex items-center justify-center">
-                <LicensePlate
-                  plate={{ state: upperState, plateNumber: upperPlate }}
-                />
-              </div>
-            </CardContent>
-          </Card>
+          <LicensePlate
+            plate={{ state: upperState, plateNumber: upperPlate }}
+            className="self-center"
+          />
 
           <Card>
             <CardContent className="flex flex-col gap-4 p-5">
