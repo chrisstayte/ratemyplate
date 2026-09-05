@@ -9,7 +9,7 @@ const inconsolata = Inconsolata({ subsets: ['latin'], display: 'swap' });
 export const metadata: Metadata = {
   metadataBase: new URL('https://ratemyplate.wtf'),
   title: 'Rate My Plate',
-  description: 'Anonymous rating for drivers',
+  description: 'Publicly anonymous rating for drivers',
   openGraph: {
     images: [
       {

@@ -9,9 +9,9 @@ import { EyeOff, Activity, Users, ShieldAlert } from 'lucide-react';
 const features = [
   {
     icon: EyeOff,
-    title: 'Anonymous Reviews',
+    title: 'Publicly Anonymous',
     description:
-      'Share your experiences without revealing your identity. Your privacy is our priority.',
+      'Reviews show on the plate page without your name. Sign-in stays behind the scenes for abuse prevention.',
   },
   {
     icon: Activity,
