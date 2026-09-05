@@ -7,12 +7,12 @@ export const metadata: Metadata = {
 
 export default function PrivacyPage() {
   return (
-    <div className="container flex-col py-10">
+    <div className="container flex-col py-12 sm:py-16">
       <div className="flex flex-col gap-2 justify-center items-center">
-        <p className="text-center text-3xl">RateMyPlate Privacy</p>
-        <p className="text-center text-lg">Last Updated: July 5, 2024</p>
+        <h1 className="font-display text-center text-4xl sm:text-5xl">RateMyPlate Privacy</h1>
+        <p className="text-center text-sm text-muted-foreground mt-2 mb-8">Last Updated: July 5, 2024</p>
         <hr />
-        <div className="flex flex-col w-full max-w-lg gap-2">
+        <div className="flex flex-col w-full max-w-2xl leading-7 gap-2">
           <p>
             In order to post to the site you must login with one of the oauth
             partners.{' '}
@@ -30,11 +30,11 @@ export default function PrivacyPage() {
             can limit abuse and tie a comment to the account that posted it.
             That said, I understand this can still raise privacy concerns.
           </p>
-          <p className="text-xl mt-7">Contact</p>
+          <p className="font-display text-2xl mt-7">Contact</p>
           <p>
             If you have any questions please reach out to me at{' '}
             <a
-              className="text-purple-500"
+              className="text-primary underline decoration-primary/30 underline-offset-4 hover:decoration-primary"
               target="_blank"
               href="mailto:ratemyplate@chrisstayte.com"
             >
@@ -50,26 +50,26 @@ export default function PrivacyPage() {
             If there is content that is doxing in nature please reach out to me
             and I can manually remove it from the site.
           </p>
-          <p className="text-xl mt-7">Source Code</p>
+          <p className="font-display text-2xl mt-7">Source Code</p>
           <p>
             I have posted the source code for the project on github. You can
             view all of the code there.{' '}
             <a
-              className="text-purple-500"
+              className="text-primary underline decoration-primary/30 underline-offset-4 hover:decoration-primary"
               target="_blank"
               href="https://github.com/chrisstayte/ratemyplate"
             >
               Source Code
             </a>
           </p>
-          <p className="text-xl mt-7">Dashboard</p>
+          <p className="font-display text-2xl mt-7">Dashboard</p>
           <p>
             I built a dashboard that for now only I have access to. It allows me
             to see the data without having to open a postgres viewer like
             PGAdmin. I am working on a way to allow users to see all of their
             data and comments.
           </p>
-          <p className="text-xl mt-7">Analytics</p>
+          <p className="font-display text-2xl mt-7">Analytics</p>
           <p>
             Plausible analytics was added at the beginning but self hosting
             plausible was really resource intensive. So I have stripped it from

@@ -3,9 +3,10 @@
 import Link from 'next/link';
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { ArrowLeft, ArrowRight, ArrowUpRight, Crosshair, Globe2, Map as MapIcon, Minus, Pause, Play, Plus, Radio, X } from 'lucide-react';
+import { ArrowLeft, ArrowRight, ArrowUpRight, Crosshair, Globe2, Minus, Pause, Play, Plus, Radio, X } from 'lucide-react';
 import type { Map as MapLibreMap } from 'maplibre-gl';
 import { Map } from '@/components/ui/map';
+import { BrandMark } from '@/components/brand-mark';
 import GlobeScene, { getOverviewZoom } from './globe-scene';
 import './globe.css';
 
@@ -169,15 +170,15 @@ export default function GlobeExperience({ activity, totalReports, totalPlates, i
       <div className="globe-vignette" aria-hidden="true" />
 
       <header className="globe-header">
-        <Link href="/" className="globe-brand" aria-label="Back to RateMyPlate home"><span className="globe-brand-mark"><Globe2 size={21} strokeWidth={1.4} /></span><span>RateMyPlate<span className="globe-brand-slash">/</span><span className="globe-brand-section">globe</span></span></Link>
-        <div className="globe-header-right"><span className="globe-status"><i /> Nationwide activity</span><Link href="/map" className="globe-map-link"><MapIcon size={14} /><span>Map view</span><ArrowUpRight size={13} /></Link></div>
+        <Link href="/" className="globe-brand" aria-label="Back to RateMyPlate home"><BrandMark className="globe-brand-mark" /><span>RateMyPlate<span className="globe-brand-slash">/</span><span className="globe-brand-section">globe</span></span></Link>
+        <span className="globe-status"><i /> Nationwide activity</span>
       </header>
 
       <div className="globe-editorial">
         <div className="globe-intro">
           <p className="globe-eyebrow"><span className="globe-eyebrow-line" /> A new perspective</p>
           <h1>Every plate.<br /><span>A bigger<br className="globe-desktop-break" /> picture.</span></h1>
-          <p className="globe-description">Every road has a story.<br />See where they’re unfolding.</p>
+          <p className="globe-description">Every road has a story. <br />See where they’re unfolding.</p>
           <div className="globe-totals" aria-label="Nationwide totals">
             <div><strong>{formatCount(totalReports)}</strong><span>reports</span></div>
             <div><strong>{formatCount(totalPlates)}</strong><span>plates</span></div>

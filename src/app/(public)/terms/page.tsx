@@ -7,16 +7,16 @@ export const metadata: Metadata = {
 
 export default function TermsPage() {
   return (
-    <div className="container flex-col py-10">
+    <div className="container flex-col py-12 sm:py-16">
       <div className="flex flex-col gap-2 justify-center items-center">
-        <p className="text-center text-3xl">RateMyPlate Terms</p>
-        <p className="text-center text-lg">Last Updated: August 13, 2026</p>
+        <h1 className="font-display text-center text-4xl sm:text-5xl">RateMyPlate Terms</h1>
+        <p className="text-center text-sm text-muted-foreground mt-2 mb-8">Last Updated: August 13, 2026</p>
         <hr />
-        <div className="flex flex-col w-full max-w-lg gap-4">
+        <div className="flex flex-col w-full max-w-2xl leading-7 gap-4">
           <p>
             These terms govern use of RateMyPlate at{' '}
             <a
-              className="text-purple-500"
+              className="text-primary underline decoration-primary/30 underline-offset-4 hover:decoration-primary"
               target="_blank"
               href="https://ratemyplate.wtf"
             >
@@ -25,7 +25,7 @@ export default function TermsPage() {
             . By using the site, you agree to them.
           </p>
 
-          <p className="text-xl">
+          <p className="font-display text-2xl">
             <strong>The service</strong>
           </p>
           <p>
@@ -34,7 +34,7 @@ export default function TermsPage() {
             is user-generated and may be incomplete, inaccurate, or unfair.
           </p>
 
-          <p className="text-xl">
+          <p className="font-display text-2xl">
             <strong>Accounts and public anonymity</strong>
           </p>
           <p>
@@ -45,7 +45,7 @@ export default function TermsPage() {
             anonymous,&quot; not invisible to RateMyPlate operators.
           </p>
 
-          <p className="text-xl">
+          <p className="font-display text-2xl">
             <strong>Acceptable use</strong>
           </p>
           <p>You agree that you will not:</p>
@@ -61,7 +61,7 @@ export default function TermsPage() {
             </li>
           </ul>
 
-          <p className="text-xl">
+          <p className="font-display text-2xl">
             <strong>Your content</strong>
           </p>
           <p>
@@ -71,7 +71,7 @@ export default function TermsPage() {
             pre-screen every comment and does not endorse user opinions.
           </p>
 
-          <p className="text-xl">
+          <p className="font-display text-2xl">
             <strong>Moderation</strong>
           </p>
           <p>
@@ -79,7 +79,7 @@ export default function TermsPage() {
             law, or community safety. We may suspend or restrict accounts that
             abuse the service. Report doxing or other harmful content to{' '}
             <a
-              className="text-purple-500"
+              className="text-primary underline decoration-primary/30 underline-offset-4 hover:decoration-primary"
               href="mailto:ratemyplate@chrisstayte.com"
             >
               ratemyplate@chrisstayte.com
@@ -87,7 +87,7 @@ export default function TermsPage() {
             .
           </p>
 
-          <p className="text-xl">
+          <p className="font-display text-2xl">
             <strong>Intellectual property</strong>
           </p>
           <p>
@@ -96,7 +96,7 @@ export default function TermsPage() {
             site materials for commercial use without permission.
           </p>
 
-          <p className="text-xl">
+          <p className="font-display text-2xl">
             <strong>Disclaimer</strong>
           </p>
           <p>
@@ -107,7 +107,7 @@ export default function TermsPage() {
             that cannot be limited under applicable law.
           </p>
 
-          <p className="text-xl">
+          <p className="font-display text-2xl">
             <strong>Changes</strong>
           </p>
           <p>
@@ -116,13 +116,13 @@ export default function TermsPage() {
             the top of this page shows the latest revision.
           </p>
 
-          <p className="text-xl">
+          <p className="font-display text-2xl">
             <strong>Contact</strong>
           </p>
           <p>
             Questions about these terms:{' '}
             <a
-              className="text-purple-500"
+              className="text-primary underline decoration-primary/30 underline-offset-4 hover:decoration-primary"
               href="mailto:ratemyplate@chrisstayte.com"
             >
               ratemyplate@chrisstayte.com

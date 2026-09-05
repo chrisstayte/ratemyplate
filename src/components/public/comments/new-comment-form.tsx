@@ -97,7 +97,7 @@ const NewCommentForm: React.FC<NewCommentFormProps> = ({
 
   const shootFireworks = () => {
     const end = Date.now() + 0.2 * 1000;
-    const colors = ['#a786ff', '#fd8bbc', '#eca184', '#f8deb1'];
+    const colors = ['#8c9d82', '#b9c4ac', '#be9979', '#ded8c4'];
 
     const frame = () => {
       if (Date.now() > end) return;
@@ -152,7 +152,7 @@ const NewCommentForm: React.FC<NewCommentFormProps> = ({
                 <Star
                   className={`size-6 transition-colors ${
                     isActive
-                      ? 'fill-yellow-400 text-yellow-400'
+                      ? 'fill-rating text-rating'
                       : 'text-muted-foreground/40'
                   }`}
                 />

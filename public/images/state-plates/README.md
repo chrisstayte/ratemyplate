@@ -14,7 +14,7 @@ The public `/media` page, linked from the footer, showcases all 50 designs in st
 
 Each plate can be downloaded as SVG, PNG, or JPG. Blank SVG downloads preserve the original artwork. Custom SVGs inline the serial as vector paths using `opentype.js` and the local plate font, so the files have no external image or font dependencies. The parser and font load only when a custom download needs them. PNG and JPG downloads render at 2400 × 1200 pixels in the browser; SVG and PNG preserve transparent edges, and JPG uses white behind the artwork. Downloads do not require an account or send custom text to a server.
 
-`src/lib/plate-export.test.ts` verifies all original blank SVGs, standalone custom exports, the actual glyph bounds across all 50 serial regions, supported characters, filenames, and unavailable-artwork errors.
+`src/lib/plate-export.test.ts` verifies all original blank SVGs, standalone custom exports, serialized path syntax for every supported character across all 50 states, actual glyph bounds, filenames, and unavailable-artwork errors. A `DCEE` regression covers near-integer coordinates that `opentype.js` 2.0's path formatter incorrectly rounds to `NaN`; exports use native numeric formatting for the original font contours instead.
 
 ## Integration verification
 

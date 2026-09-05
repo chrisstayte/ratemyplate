@@ -39,7 +39,8 @@ const StatePicker: React.FC<StatePickerProps> = ({
     <Select onValueChange={onValueChange} value={value}>
       <SelectTrigger
         id={id}
-        className="w-ful bg-card self-end rounded-lg"
+        className="h-11! w-full sm:w-auto min-w-0 bg-background/60 rounded-md"
+        aria-label="State"
         aria-invalid={ariaInvalid}
       >
         <SelectValue className="text-[16px]" placeholder="Select a state" />

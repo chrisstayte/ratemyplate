@@ -16,7 +16,7 @@ export default function MostFavoritedPlatesSection() {
 
   return (
     <div className="flex flex-col gap-5 justify-center w-full h-full">
-      <p className="text-2xl">Favorited Drivers</p>
+      <h2 className="font-display text-3xl">Favorited Drivers</h2>
       <Suspense
         fallback={<FavoritedPlatesSkeleton limit={numberOfEntriesToDisplay} />}
       >

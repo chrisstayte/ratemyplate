@@ -3,7 +3,8 @@ import NavLink from './navlink';
 import '@/lib/extensions';
 import AuthMenu from '@/components/navbar/auth-menu';
 import { Button } from '@/components/ui/button';
-import { Menu, LayoutDashboard } from 'lucide-react';
+import { Menu } from 'lucide-react';
+import { BrandMark } from '@/components/brand-mark';
 import Link from 'next/link';
 import { Sheet, SheetTrigger, SheetContent } from '@/components/ui/sheet';
 
@@ -30,7 +31,7 @@ const Navbar = async () => {
                       <Link
                         href='/'
                         className='flex items-center gap-2 text-lg font-semibold'>
-                        <LayoutDashboard className='h-6 w-6' />
+                        <BrandMark className='size-7 shrink-0' />
                         <span className='sr-only'>Rate My Plate</span>
                       </Link>
                     </SheetTrigger>
@@ -54,7 +55,7 @@ const Navbar = async () => {
               <Link
                 href='/'
                 className='flex items-center gap-2 text-lg font-semibold'>
-                <LayoutDashboard className='h-6 w-6' />
+                <BrandMark className='size-7 shrink-0' />
                 <span className='sr-only'>Rate My Plate</span>
               </Link>
               <NavLink href='/dashboard'>Dashboard</NavLink>

@@ -28,7 +28,7 @@ const BuyMeACoffeeButton: FC<BuyMeACoffeeButtonProps> = ({ className }) => {
         className='flex items-center '
         href='https://www.buymeacoffee.com/chrisstayte'
         target='_blank'>
-        <Image src={imageUrl} alt='' width={20} height={20} className='mr-2' />
+        <Image src={imageUrl} alt='' width={20} height={20} className='mr-2 h-auto w-5' />
         <p> Buy me a coffee</p>
       </a>
     </Button>

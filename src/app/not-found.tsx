@@ -8,7 +8,7 @@ function NotFound() {
     <div className="flex flex-col min-h-screen">
       <div className="w-full grow flex flex-col items-center justify-center p-5 gap-10">
         <div className="flex flex-col items-center gap-5">
-          <p className="text-3xl">Whoops!</p>
+          <h1 className="font-display text-5xl">Whoops!</h1>
           <p className="text-lgs">You might have gotten lost</p>
         </div>
         <div className="flex flex-col gap-2 items-end">

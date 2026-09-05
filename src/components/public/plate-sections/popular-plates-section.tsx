@@ -16,7 +16,7 @@ export default function PopularEntriesSection() {
 
   return (
     <div className="flex flex-col gap-5 justify-center w-full h-full">
-      <p className="text-2xl">Popular Drivers</p>
+      <h2 className="font-display text-3xl">Popular Drivers</h2>
       <Suspense
         fallback={<PopularEntriesSkeleton limit={numberOfEntriesToDisplay} />}
       >

@@ -57,32 +57,32 @@ export default function GlobeScene({
     const maxReports = Math.max(...activity.map((state) => state.reportCount), 1);
     const fillStops = activity.flatMap((state) => [
       state.abbreviation,
-      `rgba(157, 121, 255, ${0.28 + (state.reportCount / maxReports) * 0.4})`,
+      `rgba(151, 168, 133, ${0.28 + (state.reportCount / maxReports) * 0.4})`,
     ]);
     const fillColor = fillStops.length
-      ? ['match', ['get', 'STUSPS'], ...fillStops, 'rgba(87, 86, 137, 0.06)'] as unknown as ExpressionSpecification
-      : 'rgba(87, 86, 137, 0.06)';
+      ? ['match', ['get', 'STUSPS'], ...fillStops, 'rgba(132, 144, 121, 0.06)'] as unknown as ExpressionSpecification
+      : 'rgba(132, 144, 121, 0.06)';
 
     // Recolor only this map instance; the standard map keeps its own theme.
     for (const layer of map.getStyle().layers) {
-      if (layer.type === 'background') map.setPaintProperty(layer.id, 'background-color', '#303750');
+      if (layer.type === 'background') map.setPaintProperty(layer.id, 'background-color', '#353b34');
       if (layer.type === 'fill' && /^(landcover|landuse|park)/.test(layer.id)) {
-        map.setPaintProperty(layer.id, 'fill-color', '#303750');
+        map.setPaintProperty(layer.id, 'fill-color', '#353b34');
       }
-      if (layer.id === 'water') map.setPaintProperty(layer.id, 'fill-color', '#111b32');
+      if (layer.id === 'water') map.setPaintProperty(layer.id, 'fill-color', '#1a201e');
       if (layer.id === 'boundary_country_outline') map.setPaintProperty(layer.id, 'line-opacity', 0);
-      if (layer.id === 'boundary_country_inner') map.setPaintProperty(layer.id, 'line-color', '#4b506e');
+      if (layer.id === 'boundary_country_inner') map.setPaintProperty(layer.id, 'line-color', '#555f50');
       if (layer.type === 'symbol') {
-        map.setPaintProperty(layer.id, 'text-color', '#7f89a8');
-        map.setPaintProperty(layer.id, 'text-halo-color', '#172037');
+        map.setPaintProperty(layer.id, 'text-color', '#99a18e');
+        map.setPaintProperty(layer.id, 'text-halo-color', '#222922');
         map.setPaintProperty(layer.id, 'text-opacity', ['interpolate', ['linear'], ['zoom'], 2, 0, 3, 0.6, 5, 0.85]);
       }
     }
     map.setProjection({ type: 'globe' });
     map.setSky({
-      'sky-color': 'rgba(5, 7, 17, 0)',
-      'horizon-color': 'rgba(137, 119, 230, 0.65)',
-      'fog-color': '#121a32',
+      'sky-color': 'rgba(18, 21, 18, 0)',
+      'horizon-color': 'rgba(164, 177, 150, 0.32)',
+      'fog-color': '#20251f',
       'fog-ground-blend': 0.5,
       'horizon-fog-blend': 0.25,
       'sky-horizon-blend': 0.6,
@@ -92,7 +92,7 @@ export default function GlobeScene({
     map.addSource('globe-grid', { type: 'geojson', data: graticule });
     map.addLayer({
       id: 'globe-grid', type: 'line', source: 'globe-grid',
-      paint: { 'line-color': '#91a4e4', 'line-width': 0.5, 'line-opacity': 0.13 },
+      paint: { 'line-color': '#a5b199', 'line-width': 0.5, 'line-opacity': 0.13 },
     });
     map.addSource('globe-states', { type: 'geojson', data: '/data/us-states.geojson' });
     map.addLayer({
@@ -101,17 +101,17 @@ export default function GlobeScene({
     });
     map.addLayer({
       id: 'globe-states-outline', type: 'line', source: 'globe-states',
-      paint: { 'line-color': '#9694cf', 'line-width': 0.7, 'line-opacity': 0.48 },
+      paint: { 'line-color': '#929d85', 'line-width': 0.7, 'line-opacity': 0.48 },
     });
     map.addLayer({
       id: 'globe-state-glow', type: 'line', source: 'globe-states',
       filter: ['==', ['get', 'STUSPS'], ''],
-      paint: { 'line-color': '#a8f2e5', 'line-width': 7, 'line-blur': 6, 'line-opacity': 0.75 },
+      paint: { 'line-color': '#c5cdb6', 'line-width': 7, 'line-blur': 6, 'line-opacity': 0.4 },
     });
     map.addLayer({
       id: 'globe-state-selected', type: 'line', source: 'globe-states',
       filter: ['==', ['get', 'STUSPS'], ''],
-      paint: { 'line-color': '#b9fff1', 'line-width': 1.3 },
+      paint: { 'line-color': '#e0dcc5', 'line-width': 1.3 },
     });
 
     const handleStateClick = (event: MapLayerMouseEvent) => {

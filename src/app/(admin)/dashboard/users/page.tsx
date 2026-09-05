@@ -12,7 +12,7 @@ export default async function UsersPage({
 
   return (
     <div className="mx-auto flex w-full max-w-7xl flex-col gap-5 py-5">
-      <p className="text-2xl">Users</p>
+      <h1 className="font-display text-3xl">Users</h1>
       <SearchBar placeholder="Search by name or email..." />
       <UsersTable data={siteUsers} providers={uniqueProviders} />
     </div>

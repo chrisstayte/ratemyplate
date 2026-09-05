@@ -169,7 +169,6 @@ describe('plateRelatedPaths', () => {
       '/NY',
       '/NY/HELLO',
       '/globe',
-      '/map',
     ]);
   });
 });

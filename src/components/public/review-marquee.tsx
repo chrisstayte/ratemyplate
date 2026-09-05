@@ -122,7 +122,7 @@ export default function ReviewMarquee({
               <Card className="h-full transition-transform hover:scale-[1.02]">
                 <CardContent className="flex flex-col gap-3 p-5">
                   <div className="flex items-center justify-between">
-                    <Badge className={licensePlateFont.className}>
+                    <Badge variant="secondary" className={`${licensePlateFont.className} rounded border border-border bg-secondary/60 text-foreground`}>
                       {review.plateNumber}
                     </Badge>
                     <span className="text-xs text-muted-foreground">
@@ -135,14 +135,14 @@ export default function ReviewMarquee({
                         key={i}
                         className={`size-4 ${
                           i < (review.rating ?? 0)
-                            ? 'fill-yellow-400 text-yellow-400'
+                            ? 'fill-rating text-rating'
                             : 'text-muted-foreground/40'
                         }`}
                       />
                     ))}
                   </div>
                   {review.comment && (
-                    <p className="text-sm text-muted-foreground line-clamp-3">
+                    <p className="text-sm leading-6 text-foreground/80 line-clamp-3">
                       {review.comment}
                     </p>
                   )}

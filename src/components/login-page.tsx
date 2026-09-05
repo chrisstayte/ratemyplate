@@ -7,7 +7,7 @@ import { Label } from '@/components/ui/label';
 import { enabledSocialProviders, signIn } from '@/auth';
 import { headers } from 'next/headers';
 
-import { LayoutDashboard } from 'lucide-react';
+import { BrandMark } from '@/components/brand-mark';
 
 import { FaGithub, FaGoogle, FaDiscord } from 'react-icons/fa';
 
@@ -21,11 +21,11 @@ export default async function LoginPage() {
 
   return (
     <div className='w-full lg:grid  lg:grid-cols-2 '>
-      <div className='hidden bg-gray-950 lg:block'>
+      <div className='hidden bg-secondary lg:block'>
         <div className='flex flex-col justify-between h-full p-10'>
           <Link href='/'>
-            <div className='flex items-center gap-2 text-lg font-semibold text-white'>
-              <LayoutDashboard className='h-6 w-6' />
+            <div className='flex items-center gap-2 text-lg font-semibold text-primary'>
+              <BrandMark className='size-7 shrink-0' />
               <p>Rate My Plate</p>
             </div>
           </Link>
@@ -45,7 +45,7 @@ export default async function LoginPage() {
       <div className='flex items-center justify-center py-12 h-full'>
         <div className='mx-auto grid w-[350px] gap-6'>
           <div className='grid gap-2 text-center'>
-            <h1 className='text-3xl font-bold'>Login</h1>
+            <h1 className='font-display text-4xl'>Login</h1>
           </div>
           <div className='grid gap-4'>
             {showGithub && (

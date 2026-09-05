@@ -2,13 +2,13 @@ import BuyMeACoffeeButton from '@/components/public/buy-me-a-coffee-button';
 import { Separator } from '@/components/ui/separator';
 import Link from 'next/link';
 import { isCurrentUserAdmin } from '@/auth';
-import { LayoutDashboard } from 'lucide-react';
+import { BrandMark } from '@/components/brand-mark';
 
 const Footer = async () => {
   const isAdmin = await isCurrentUserAdmin();
 
   return (
-    <footer className="w-full border-t border-border bg-card/50">
+    <footer className="w-full border-t border-border bg-secondary/30">
       <div className="max-w-6xl w-full mx-auto px-5 py-12">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
           {/* Brand */}
@@ -17,7 +17,7 @@ const Footer = async () => {
               href="/"
               className="flex items-center gap-2 font-bold text-lg"
             >
-              <LayoutDashboard className="h-5 w-5" />
+              <BrandMark className="size-7 shrink-0 text-primary" />
               <span>RateMyPlate</span>
             </Link>
             <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
@@ -28,16 +28,8 @@ const Footer = async () => {
 
           {/* Explore */}
           <div>
-            <h3 className="font-semibold text-sm mb-3">Explore</h3>
+            <h3 className="eyebrow mb-4">Explore</h3>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              <li>
-                <Link
-                  href="/map"
-                  className="hover:text-foreground transition-colors"
-                >
-                  Map
-                </Link>
-              </li>
               <li>
                 <Link
                   href="/globe"
@@ -67,7 +59,7 @@ const Footer = async () => {
 
           {/* Legal */}
           <div>
-            <h3 className="font-semibold text-sm mb-3">Legal</h3>
+            <h3 className="eyebrow mb-4">Legal</h3>
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li>
                 <Link
@@ -90,7 +82,7 @@ const Footer = async () => {
 
           {/* Connect */}
           <div>
-            <h3 className="font-semibold text-sm mb-3">Connect</h3>
+            <h3 className="eyebrow mb-4">Connect</h3>
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li>
                 <a

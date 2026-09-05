@@ -39,7 +39,7 @@ function ReviewCard({
                 key={i}
                 className={`size-4 ${
                   i < (review.rating ?? 0)
-                    ? 'fill-yellow-400 text-yellow-400'
+                    ? 'fill-rating text-rating'
                     : 'text-muted-foreground/40'
                 }`}
               />

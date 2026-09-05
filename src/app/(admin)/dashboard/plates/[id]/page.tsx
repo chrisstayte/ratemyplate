@@ -43,7 +43,7 @@ function ratingStars(rating: number | null) {
       key={index}
       className={
         rating != null && index < Math.round(rating)
-          ? 'size-4 fill-yellow-400 text-yellow-400'
+          ? 'size-4 fill-rating text-rating'
           : 'size-4 text-muted-foreground/35'
       }
     />
@@ -99,7 +99,7 @@ export default async function PlateDetailPage({
           </Button>
           <div className="min-w-0">
             <div className="flex flex-wrap items-center gap-2">
-              <h1 className="truncate text-3xl font-semibold tracking-tight">
+              <h1 className="font-display truncate text-3xl">
                 {plate.plateNumber} - {plate.state}
               </h1>
               <Badge variant="outline">ID {plate.id}</Badge>

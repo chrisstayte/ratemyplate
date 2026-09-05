@@ -41,15 +41,15 @@ export default async function AccountPage() {
   return (
     <div className="container w-full flex flex-col gap-5 pt-5">
       <BreadCrumbs />
-      <div className="w-full rounded-md bg-gray-950 dark:bg-transparent  py-10">
-        <div className="text-white flex flex-col justify-center items-center gap-3">
+      <div className="w-full rounded-xl border bg-card py-10">
+        <div className="text-foreground flex flex-col justify-center items-center gap-3">
           <Avatar className="size-28 pointer-events-none">
             <AvatarImage src={userImageUrl} alt="user image" />
             <AvatarFallback>{initials}</AvatarFallback>
           </Avatar>
           <div className="flex flex-col justify-center items-center">
-            <p className="text-2xl font-bold">{user?.name}</p>
-            <p className="text-xl text-muted-foreground">{user?.email ?? ''}</p>
+            <h1 className="font-display text-4xl">{user?.name}</h1>
+            <p className="text-base text-muted-foreground">{user?.email ?? ''}</p>
             <Badge variant="secondary" className="mt-2 text-sm">
               Joined {userData?.createdAt.toLocaleDateString()}
             </Badge>
@@ -57,7 +57,7 @@ export default async function AccountPage() {
         </div>
       </div>
       <div className=" w-full flex flex-col gap-5">
-        <p className="text-2xl">Comments</p>
+        <h2 className="font-display text-3xl">Comments</h2>
         <DataTable
           columns={commentsColumn}
           data={userComments}

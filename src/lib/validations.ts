@@ -108,6 +108,5 @@ export function plateRelatedPaths(state: string, plateNumber: string) {
     `/${upperState}`,
     platePath(upperState, upperPlate),
     '/globe',
-    '/map',
   ] as const;
 }
