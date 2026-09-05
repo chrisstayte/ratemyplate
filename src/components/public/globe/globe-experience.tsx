@@ -1,32 +1,13 @@
 'use client';
 
 import Link from 'next/link';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import {
-  ArrowRight,
-  LayoutDashboard,
-  Pause,
-  Play,
-  Radio,
-  X,
-} from 'lucide-react';
-import type {
-  ExpressionSpecification,
-  Map as MapLibreMap,
-  MapLayerMouseEvent,
-} from 'maplibre-gl';
-import {
-  Map,
-  MapControls,
-  MapMarker,
-  MarkerContent,
-  MarkerTooltip,
-  useMap,
-} from '@/components/ui/map';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { ModeToggle } from '@/components/ui/mode-toggle';
+import { ArrowLeft, ArrowRight, ArrowUpRight, Crosshair, Globe2, Map as MapIcon, Minus, Pause, Play, Plus, Radio, X } from 'lucide-react';
+import type { Map as MapLibreMap } from 'maplibre-gl';
+import { Map } from '@/components/ui/map';
+import GlobeScene, { getOverviewZoom } from './globe-scene';
+import './globe.css';
 
 export type GlobeStateActivity = {
   abbreviation: string;
@@ -38,11 +19,7 @@ export type GlobeStateActivity = {
   latestReportAt: string;
 };
 
-export type GlobeView = {
-  latitude: number;
-  longitude: number;
-  zoom: number;
-};
+export type GlobeView = { latitude: number; longitude: number; zoom: number };
 
 type GlobeExperienceProps = {
   activity: GlobeStateActivity[];
@@ -51,13 +28,19 @@ type GlobeExperienceProps = {
   initialView?: GlobeView;
 };
 
-const DEFAULT_GLOBE_ZOOM = 3.43;
-const DEFAULT_GLOBE_VIEW: GlobeView = {
-  latitude: 38,
-  longitude: -98,
-  zoom: DEFAULT_GLOBE_ZOOM,
-};
-const initializedGlobeMaps = new WeakSet<MapLibreMap>();
+function subscribeToMotionPreference(onChange: () => void) {
+  const query = window.matchMedia('(prefers-reduced-motion: reduce)');
+  query.addEventListener('change', onChange);
+  return () => query.removeEventListener('change', onChange);
+}
+
+function useReducedMotion() {
+  return useSyncExternalStore(
+    subscribeToMotionPreference,
+    () => window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+    () => true,
+  );
+}
 
 function normalizeLongitude(longitude: number) {
   return ((((longitude + 180) % 360) + 360) % 360) - 180;
@@ -68,479 +51,173 @@ function formatCount(count: number) {
 }
 
 function formatActivityDate(value: string) {
-  return new Intl.DateTimeFormat('en-US', {
-    month: 'short',
-    day: 'numeric',
-    timeZone: 'UTC',
-  }).format(new Date(value));
+  return new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' }).format(new Date(value));
 }
 
-function GlobeScene({
-  activity,
-  initialView,
-  spinning,
-  onSelectState,
-  onUserViewportChange,
-}: {
-  activity: GlobeStateActivity[];
-  initialView: GlobeView;
-  spinning: boolean;
-  onSelectState: (abbreviation: string) => void;
-  onUserViewportChange: (view: GlobeView) => void;
-}) {
-  const { map, isLoaded } = useMap();
-  const userPauseUntil = useRef(0);
-  const frameRef = useRef<number | null>(null);
-
-  useEffect(() => {
-    if (!map || !isLoaded) return;
-
-    const isDark = document.documentElement.classList.contains('dark');
-    const maxReports = Math.max(...activity.map((state) => state.reportCount), 1);
-    const fillStops = activity.flatMap((state) => {
-      const intensity = state.reportCount / maxReports;
-      const alpha = 0.16 + intensity * 0.32;
-      return [
-        state.abbreviation,
-        isDark
-          ? `rgba(167, 139, 250, ${alpha})`
-          : `rgba(124, 58, 237, ${alpha})`,
-      ];
-    });
-    const stateFillColor =
-      fillStops.length > 0
-        ? ([
-            'match',
-            ['get', 'STUSPS'],
-            ...fillStops,
-            'rgba(124, 58, 237, 0.025)',
-          ] as unknown as ExpressionSpecification)
-        : 'rgba(124, 58, 237, 0.025)';
-    const atmosphereBlend = [
-      'interpolate',
-      ['linear'],
-      ['zoom'],
-      0.7,
-      0.22,
-      2,
-      0.15,
-      4,
-      0.06,
-      6,
-      0,
-    ] as ExpressionSpecification;
-    const mapContainer = map.getContainer();
-    const previousBackground = {
-      color: mapContainer.style.backgroundColor,
-      image: mapContainer.style.backgroundImage,
-      position: mapContainer.style.backgroundPosition,
-      repeat: mapContainer.style.backgroundRepeat,
-      size: mapContainer.style.backgroundSize,
-    };
-
-    mapContainer.style.backgroundColor = isDark ? '#060912' : '#081a2c';
-    mapContainer.style.backgroundImage = isDark
-      ? "url('/images/globe/night-sky.jpg')"
-      : "url('/images/globe/night-sky-light.jpg')";
-    mapContainer.style.backgroundPosition = 'center';
-    mapContainer.style.backgroundRepeat = 'no-repeat';
-    mapContainer.style.backgroundSize = 'cover';
-
-    map.setProjection({ type: 'globe' });
-    map.setSky({
-      'sky-color': isDark ? 'rgba(6, 9, 18, 0)' : 'rgba(8, 26, 44, 0)',
-      'horizon-color': isDark
-        ? 'rgba(25, 43, 70, 0.52)'
-        : 'rgba(137, 184, 222, 0.56)',
-      'fog-color': isDark ? '#101827' : '#dcecf7',
-      'fog-ground-blend': 0.65,
-      'horizon-fog-blend': isDark ? 0.22 : 0.25,
-      'sky-horizon-blend': isDark ? 0.42 : 0.46,
-      'atmosphere-blend': atmosphereBlend,
-    });
-
-    map.addSource('globe-states', {
-      type: 'geojson',
-      data: '/data/us-states.geojson',
-    });
-    map.addLayer({
-      id: 'globe-states-fill',
-      type: 'fill',
-      source: 'globe-states',
-      paint: {
-        'fill-color': stateFillColor,
-        'fill-opacity': 0.88,
-      },
-    });
-    map.addLayer({
-      id: 'globe-states-outline',
-      type: 'line',
-      source: 'globe-states',
-      paint: {
-        'line-color': isDark
-          ? 'rgba(221, 214, 254, 0.42)'
-          : 'rgba(91, 33, 182, 0.28)',
-        'line-width': 0.75,
-      },
-    });
-
-    const handleStateClick = (event: MapLayerMouseEvent) => {
-      const feature = event.features?.[0];
-      const abbreviation = feature?.properties?.STUSPS as string | undefined;
-      if (abbreviation && activity.some((state) => state.abbreviation === abbreviation)) {
-        onSelectState(abbreviation);
-      }
-    };
-    const handleMouseEnter = () => {
-      map.getCanvas().style.cursor = 'pointer';
-    };
-    const handleMouseLeave = () => {
-      map.getCanvas().style.cursor = 'grab';
-    };
-    const handleUserViewportChange = () => {
-      const center = map.getCenter();
-      onUserViewportChange({
-        latitude: center.lat,
-        longitude: normalizeLongitude(center.lng),
-        zoom: map.getZoom(),
-      });
-    };
-
-    map.on('click', 'globe-states-fill', handleStateClick);
-    map.on('mouseenter', 'globe-states-fill', handleMouseEnter);
-    map.on('mouseleave', 'globe-states-fill', handleMouseLeave);
-    map.getCanvas().style.cursor = 'grab';
-
-    const setResponsivePadding = () => {
-      const width = map.getContainer().clientWidth;
-      map.setPadding(
-        width >= 1024
-          ? { top: 24, right: 24, bottom: 24, left: 24 }
-          : { top: 64, right: 0, bottom: 24, left: 0 }
-      );
-    };
-    setResponsivePadding();
-    if (!initializedGlobeMaps.has(map)) {
-      initializedGlobeMaps.add(map);
-      map.jumpTo({
-        center: [initialView.longitude, initialView.latitude],
-        zoom: initialView.zoom,
-      });
-    }
-    map.on('dragend', handleUserViewportChange);
-    map.on('zoomend', handleUserViewportChange);
-    const resizeObserver = new ResizeObserver(setResponsivePadding);
-    resizeObserver.observe(map.getContainer());
-
-    return () => {
-      resizeObserver.disconnect();
-      mapContainer.style.backgroundColor = previousBackground.color;
-      mapContainer.style.backgroundImage = previousBackground.image;
-      mapContainer.style.backgroundPosition = previousBackground.position;
-      mapContainer.style.backgroundRepeat = previousBackground.repeat;
-      mapContainer.style.backgroundSize = previousBackground.size;
-      map.off('click', 'globe-states-fill', handleStateClick);
-      map.off('mouseenter', 'globe-states-fill', handleMouseEnter);
-      map.off('mouseleave', 'globe-states-fill', handleMouseLeave);
-      map.off('dragend', handleUserViewportChange);
-      map.off('zoomend', handleUserViewportChange);
-      try {
-        if (map.getLayer('globe-states-outline')) {
-          map.removeLayer('globe-states-outline');
-        }
-        if (map.getLayer('globe-states-fill')) {
-          map.removeLayer('globe-states-fill');
-        }
-        if (map.getSource('globe-states')) {
-          map.removeSource('globe-states');
-        }
-      } catch {
-        // The base style may already be changing during theme transitions.
-      }
-    };
-  }, [activity, initialView, isLoaded, map, onSelectState, onUserViewportChange]);
-
-  useEffect(() => {
-    if (!map || !isLoaded || !spinning) return;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-    let previousFrame = performance.now();
-    const pauseForInteraction = () => {
-      userPauseUntil.current = performance.now() + 6500;
-    };
-
-    map.on('mousedown', pauseForInteraction);
-    map.on('touchstart', pauseForInteraction);
-    map.on('dragstart', pauseForInteraction);
-    map.on('zoomstart', pauseForInteraction);
-    map.on('rotatestart', pauseForInteraction);
-
-    const rotate = (now: number) => {
-      const elapsed = Math.min(now - previousFrame, 50);
-      previousFrame = now;
-
-      if (now > userPauseUntil.current && !map.isMoving()) {
-        const center = map.getCenter();
-        map.jumpTo({ center: [center.lng + elapsed * 0.0018, center.lat] });
-      }
-      frameRef.current = requestAnimationFrame(rotate);
-    };
-
-    frameRef.current = requestAnimationFrame(rotate);
-
-    return () => {
-      map.off('mousedown', pauseForInteraction);
-      map.off('touchstart', pauseForInteraction);
-      map.off('dragstart', pauseForInteraction);
-      map.off('zoomstart', pauseForInteraction);
-      map.off('rotatestart', pauseForInteraction);
-      if (frameRef.current !== null) cancelAnimationFrame(frameRef.current);
-    };
-  }, [isLoaded, map, spinning]);
-
-  return (
-    <>
-      {activity.map((state, index) => (
-        <MapMarker
-          key={state.abbreviation}
-          subpixelPositioning
-          longitude={state.longitude}
-          latitude={state.latitude}
-          accessibleLabel={`${state.name}: ${state.reportCount} ${
-            state.reportCount === 1 ? 'report' : 'reports'
-          }`}
-          onClick={() => onSelectState(state.abbreviation)}
-        >
-          <MarkerContent>
-            <span className="group relative grid size-8 place-items-center rounded-full">
-              <span
-                className="globe-ping absolute size-7 rounded-full border border-purple-400/70 bg-purple-400/15"
-                style={{ animationDelay: `${(index % 8) * 320}ms` }}
-              />
-              <span className="relative size-2.5 rounded-full border-2 border-white bg-purple-500 shadow-[0_0_18px_rgba(168,85,247,0.95)] transition-transform group-hover:scale-125 dark:border-zinc-950" />
-            </span>
-          </MarkerContent>
-          <MarkerTooltip className="border border-border bg-popover px-3 py-2 text-popover-foreground">
-            <span className="font-semibold">{state.name}</span>
-            <span className="ml-2 text-muted-foreground">
-              {state.reportCount} {state.reportCount === 1 ? 'report' : 'reports'}
-            </span>
-          </MarkerTooltip>
-        </MapMarker>
-      ))}
-      <MapControls
-        position="bottom-right"
-        showZoom
-        showCompass
-        className="bottom-5 right-5"
-      />
-    </>
-  );
-}
-
-function StateActivityCard({
-  state,
-  onClose,
-}: {
+function StateActivityCard({ state, totalReports, onClose }: {
   state: GlobeStateActivity;
+  totalReports: number;
   onClose: () => void;
 }) {
+  const reducedMotion = useReducedMotion();
   return (
     <motion.aside
-      initial={{ opacity: 0, y: 12, scale: 0.98 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
-      exit={{ opacity: 0, y: 12, scale: 0.98 }}
-      transition={{ duration: 0.2 }}
-      className="pointer-events-auto absolute bottom-5 left-5 right-5 z-30 rounded-xl border bg-card/90 p-4 shadow-xl backdrop-blur-xl sm:bottom-auto sm:left-auto sm:right-5 sm:top-5 sm:w-80"
+      key={state.abbreviation}
+      initial={{ opacity: 0, y: reducedMotion ? 0 : 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: reducedMotion ? 0 : 8 }}
+      transition={{ duration: 0.25 }}
+      className="globe-state-card"
+      aria-label={`${state.name} activity`}
     >
-      <div className="flex items-start justify-between gap-4">
-        <div>
-          <div className="mb-2 flex items-center gap-2">
-            <Badge className="bg-purple-500 text-white hover:bg-purple-500">
-              <Radio /> Live signal
-            </Badge>
-            <span className="text-xs text-muted-foreground">
-              Latest {formatActivityDate(state.latestReportAt)}
-            </span>
-          </div>
-          <h2 className="text-2xl font-bold tracking-tight">{state.name}</h2>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Activity centered on {state.abbreviation} plates.
-          </p>
-        </div>
-        <Button
-          variant="ghost"
-          size="icon-sm"
-          onClick={onClose}
-          aria-label="Close state details"
-        >
-          <X />
-        </Button>
+      <div className="globe-card-topline">
+        <span className="globe-eyebrow"><Radio size={12} /> State spotlight</span>
+        <button className="globe-icon-button" onClick={onClose} aria-label="Close state details"><X size={16} /></button>
       </div>
-
-      <div className="my-4 grid grid-cols-2 gap-2">
-        <div className="rounded-lg border bg-background/65 p-3">
-          <p className="text-2xl font-bold">{formatCount(state.reportCount)}</p>
-          <p className="text-xs text-muted-foreground">driver reports</p>
-        </div>
-        <div className="rounded-lg border bg-background/65 p-3">
-          <p className="text-2xl font-bold">{formatCount(state.plateCount)}</p>
-          <p className="text-xs text-muted-foreground">plates spotted</p>
-        </div>
+      <div className="globe-state-heading">
+        <span className="globe-state-monogram">{state.abbreviation}</span>
+        <div><h2>{state.name}</h2><p>Latest report · {formatActivityDate(state.latestReportAt)}</p></div>
       </div>
-
-      <Button asChild className="w-full bg-purple-600 text-white hover:bg-purple-500">
-        <Link href={`/${state.abbreviation}`}>
-          Explore {state.name}
-          <ArrowRight />
-        </Link>
-      </Button>
+      <div className="globe-state-stats">
+        <div><strong>{formatCount(state.reportCount)}</strong><span>driver reports</span></div>
+        <div><strong>{formatCount(state.plateCount)}</strong><span>plates spotted</span></div>
+      </div>
+      <div className="globe-share-label"><span>Share of all reports</span><span>{Math.round(state.reportCount / Math.max(totalReports, 1) * 100)}%</span></div>
+      <div className="globe-share-track"><span style={{ width: `${state.reportCount / Math.max(totalReports, 1) * 100}%` }} /></div>
+      <Link className="globe-explore-link" href={`/${state.abbreviation}`}>Explore {state.name}<ArrowUpRight size={17} /></Link>
     </motion.aside>
   );
 }
 
-export default function GlobeExperience({
-  activity,
-  totalReports,
-  totalPlates,
-  initialView,
-}: GlobeExperienceProps) {
-  const resolvedInitialView = initialView ?? DEFAULT_GLOBE_VIEW;
+export default function GlobeExperience({ activity, totalReports, totalPlates, initialView }: GlobeExperienceProps) {
+  const reducedMotion = useReducedMotion();
   const [spinning, setSpinning] = useState(() => initialView === undefined);
+  const [ready, setReady] = useState(false);
   const [selectedAbbreviation, setSelectedAbbreviation] = useState<string | null>(null);
   const mapRef = useRef<MapLibreMap | null>(null);
+  const selectedState = activity.find((state) => state.abbreviation === selectedAbbreviation);
+  const mostActive = activity.slice(0, 3);
+  const orbiting = spinning && !reducedMotion;
+  const onReady = useCallback(() => setReady(true), []);
 
-  const selectedState = activity.find(
-    (state) => state.abbreviation === selectedAbbreviation
-  );
-  const selectState = useCallback((abbreviation: string) => {
-    setSelectedAbbreviation(abbreviation);
-  }, []);
   const updateShareableView = useCallback((view: GlobeView) => {
     setSpinning(false);
-
     const params = new URLSearchParams(window.location.search);
     params.set('lat', view.latitude.toFixed(4));
     params.set('lng', normalizeLongitude(view.longitude).toFixed(4));
     params.set('z', view.zoom.toFixed(2));
-
-    const query = params.toString();
-    window.history.replaceState(
-      window.history.state,
-      '',
-      `${window.location.pathname}${query ? `?${query}` : ''}${window.location.hash}`
-    );
+    window.history.replaceState(window.history.state, '', `${window.location.pathname}?${params}${window.location.hash}`);
   }, []);
-  const resumeOrbit = useCallback(() => {
-    const params = new URLSearchParams(window.location.search);
-    params.delete('lat');
-    params.delete('lng');
-    params.delete('z');
 
-    const query = params.toString();
-    window.history.replaceState(
-      window.history.state,
-      '',
-      `${window.location.pathname}${query ? `?${query}` : ''}${window.location.hash}`
-    );
-    setSpinning(true);
-  }, []);
+  const selectState = useCallback((abbreviation: string) => {
+    const state = activity.find((item) => item.abbreviation === abbreviation);
+    if (!state) return;
+    setSelectedAbbreviation(abbreviation);
+    setSpinning(false);
+    const map = mapRef.current;
+    if (map) {
+      map.flyTo({
+        center: [state.longitude, state.latitude],
+        zoom: Math.max(getOverviewZoom(map) + 0.65, map.getZoom()),
+        offset: map.getContainer().clientWidth < 768 ? [0, -100] : [0, 0],
+        duration: 1600,
+      });
+    }
+  }, [activity]);
+
   const toggleOrbit = useCallback(() => {
-    if (!spinning) {
-      resumeOrbit();
-      return;
+    const map = mapRef.current;
+    if (orbiting && map) {
+      const center = map.getCenter();
+      updateShareableView({ latitude: center.lat, longitude: center.lng, zoom: map.getZoom() });
+    } else {
+      map?.stop();
+      setSelectedAbbreviation(null);
+      const params = new URLSearchParams(window.location.search);
+      ['lat', 'lng', 'z'].forEach((key) => params.delete(key));
+      const query = params.toString();
+      window.history.replaceState(window.history.state, '', `${window.location.pathname}${query ? `?${query}` : ''}${window.location.hash}`);
+      setSpinning(true);
     }
+  }, [orbiting, updateShareableView]);
 
-    const currentMap = mapRef.current;
-    if (!currentMap) {
-      setSpinning(false);
-      return;
-    }
+  const resetView = useCallback(() => {
+    const map = mapRef.current;
+    if (!map) return;
+    setSelectedAbbreviation(null);
+    setSpinning(false);
+    map.flyTo({ center: [-98, 38], zoom: getOverviewZoom(map), bearing: 0, pitch: 0, duration: 1800 });
+  }, []);
 
-    const center = currentMap.getCenter();
-    updateShareableView({
-      latitude: center.lat,
-      longitude: center.lng,
-      zoom: currentMap.getZoom(),
-    });
-  }, [resumeOrbit, spinning, updateShareableView]);
+  useEffect(() => {
+    if (!selectedAbbreviation) return;
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setSelectedAbbreviation(null);
+    };
+    window.addEventListener('keydown', closeOnEscape);
+    return () => window.removeEventListener('keydown', closeOnEscape);
+  }, [selectedAbbreviation]);
 
   return (
-    <section className="relative isolate h-full min-h-0 overflow-hidden overscroll-none bg-background">
-      <div className="absolute inset-0">
-        <Map
-          ref={mapRef}
-          projection={{ type: 'globe' }}
-          center={[
-            resolvedInitialView.longitude,
-            resolvedInitialView.latitude,
-          ]}
-          zoom={resolvedInitialView.zoom}
-          minZoom={0.7}
-          maxZoom={6}
-          pitch={0}
-          bearing={0}
-          className="h-full w-full"
-        >
-          <GlobeScene
-            activity={activity}
-            initialView={resolvedInitialView}
-            spinning={spinning}
-            onSelectState={selectState}
-            onUserViewportChange={updateShareableView}
-          />
+    <section className="globe-experience" aria-label="Explore nationwide plate activity">
+      <div className="globe-space" aria-hidden="true" />
+      <div className={`globe-map ${ready ? 'is-ready' : ''}`}>
+        <Map ref={mapRef} theme="dark" projection={{ type: 'globe' }} center={[initialView?.longitude ?? -98, initialView?.latitude ?? 38]} zoom={initialView?.zoom ?? 2.05} minZoom={0.7} maxZoom={6} pitch={0} bearing={0} canvasContextAttributes={{ antialias: true }}>
+          <GlobeScene activity={activity} initialView={initialView} spinning={orbiting} selectedAbbreviation={selectedAbbreviation} onSelectState={selectState} onUserViewportChange={updateShareableView} onReady={onReady} />
         </Map>
       </div>
+      <div className="globe-vignette" aria-hidden="true" />
 
-      <div className="pointer-events-none absolute inset-0 z-20">
-        <div className="pointer-events-auto absolute left-5 top-5 z-40 flex items-center gap-2 md:left-8 md:top-8">
-          <Button
-            asChild
-            variant="outline"
-            size="icon"
-            className="bg-card/90 shadow-lg backdrop-blur-xl"
-          >
-            <Link href="/" aria-label="Back to RateMyPlate home">
-              <LayoutDashboard />
-            </Link>
-          </Button>
-          <div className="rounded-4xl border bg-card/90 shadow-lg backdrop-blur-xl">
-            <ModeToggle />
+      <header className="globe-header">
+        <Link href="/" className="globe-brand" aria-label="Back to RateMyPlate home"><span className="globe-brand-mark"><Globe2 size={21} strokeWidth={1.4} /></span><span>RateMyPlate<span className="globe-brand-slash">/</span><span className="globe-brand-section">globe</span></span></Link>
+        <div className="globe-header-right"><span className="globe-status"><i /> Nationwide activity</span><Link href="/map" className="globe-map-link"><MapIcon size={14} /><span>Map view</span><ArrowUpRight size={13} /></Link></div>
+      </header>
+
+      <div className="globe-editorial">
+        <div className="globe-intro">
+          <p className="globe-eyebrow"><span className="globe-eyebrow-line" /> A new perspective</p>
+          <h1>Every plate.<br /><span>A bigger<br className="globe-desktop-break" /> picture.</span></h1>
+          <p className="globe-description">Every road has a story.<br />See where they’re unfolding.</p>
+          <div className="globe-totals" aria-label="Nationwide totals">
+            <div><strong>{formatCount(totalReports)}</strong><span>reports</span></div>
+            <div><strong>{formatCount(totalPlates)}</strong><span>plates</span></div>
+            <div><strong>{activity.length.toString().padStart(2, '0')}</strong><span>states</span></div>
           </div>
-          <Button
-            variant="outline"
-            size="icon"
-            className="bg-card/90 shadow-lg backdrop-blur-xl"
-            onClick={toggleOrbit}
-            aria-label={spinning ? 'Pause globe rotation' : 'Resume globe rotation'}
-          >
-            {spinning ? <Pause /> : <Play />}
-          </Button>
         </div>
 
-        <div className="pointer-events-auto absolute left-5 top-20 z-30 flex items-center gap-2 rounded-lg border bg-card/90 px-3 py-2 text-xs shadow-lg backdrop-blur-xl md:left-8 md:top-24">
-          <span className="size-1.5 rounded-full bg-emerald-500 motion-safe:animate-pulse" />
-          <span className="font-semibold">Live plate activity</span>
-          <span className="h-3.5 w-px bg-border" aria-hidden="true" />
-          <span className="text-muted-foreground">
-            {formatCount(totalReports)} {totalReports === 1 ? 'report' : 'reports'}
-          </span>
-          <span className="hidden text-muted-foreground sm:inline">
-            · {activity.length} {activity.length === 1 ? 'area' : 'areas'}
-          </span>
-          <span className="sr-only">across {formatCount(totalPlates)} plates</span>
+        <div className={`globe-discovery ${selectedState ? 'has-selection' : ''}`}>
+          <AnimatePresence mode="wait">
+            {selectedState ? <StateActivityCard key={selectedState.abbreviation} state={selectedState} totalReports={totalReports} onClose={() => setSelectedAbbreviation(null)} /> : (
+              <motion.div key="activity" className="globe-radar" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: reducedMotion ? 0 : 0.2 }}>
+                <div className="globe-radar-heading"><span className="globe-eyebrow">On the radar</span><span>Most reported</span></div>
+                {mostActive.length ? mostActive.map((state, index) => (
+                  <button key={state.abbreviation} className="globe-radar-row" onClick={() => selectState(state.abbreviation)} aria-label={`Explore ${state.name}, ${state.reportCount} ${state.reportCount === 1 ? 'report' : 'reports'}`}>
+                    <span className="globe-radar-rank">0{index + 1}</span><span className="globe-radar-state">{state.name}<span className="globe-radar-track"><span style={{ width: `${state.reportCount / Math.max(mostActive[0].reportCount, 1) * 100}%` }} /></span></span><span className="globe-radar-count">{formatCount(state.reportCount)}</span><ArrowUpRight size={14} />
+                  </button>
+                )) : <p className="globe-empty">The next story starts with you.<Link href="/">Find a plate <ArrowRight size={14} /></Link></p>}
+                <p className="globe-radar-note">Select a signal. Discover the story.</p>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
-
-        <AnimatePresence>
-          {selectedState && (
-            <StateActivityCard
-              key={selectedState.abbreviation}
-              state={selectedState}
-              onClose={() => setSelectedAbbreviation(null)}
-            />
-          )}
-        </AnimatePresence>
       </div>
+
+      <div className="globe-map-caption" aria-hidden="true"><span>01 / THE BIG PICTURE</span><span className="globe-caption-line" /></div>
+      <div className="globe-navigation">
+        <div className="globe-legend"><span /><span /> <span /> Report activity</div>
+        <div className="globe-control-dock" role="group" aria-label="Globe controls">
+          <button className="globe-orbit-button" onClick={toggleOrbit} disabled={!ready || !!reducedMotion} aria-label={orbiting ? 'Pause globe rotation' : 'Resume globe rotation'} title={reducedMotion ? 'Rotation is off to respect reduced motion' : undefined}>{orbiting ? <Pause size={14} /> : <Play size={14} />}<span>{orbiting ? 'Orbiting' : 'Paused'}</span></button>
+          <span className="globe-control-divider" />
+          <button className="globe-icon-button" onClick={resetView} disabled={!ready} aria-label="Reset view to America" title="Reset view to America"><Crosshair size={18} /></button>
+          <span className="globe-control-divider" />
+          <button className="globe-icon-button" onClick={() => mapRef.current?.zoomOut({ duration: 350 })} disabled={!ready} aria-label="Zoom out"><Minus size={17} /></button>
+          <button className="globe-icon-button" onClick={() => mapRef.current?.zoomIn({ duration: 350 })} disabled={!ready} aria-label="Zoom in"><Plus size={17} /></button>
+        </div>
+        <p className="globe-interaction-hint">Drag to explore<span>·</span>Scroll to zoom</p>
+      </div>
+
+      {!ready && <div className="globe-loading" role="status"><Globe2 size={25} /><span>Bringing the world into view</span></div>}
+      <footer className="globe-footer"><Link href="/"><ArrowLeft size={12} /> Back to the streets</Link><span>Community powered. Always anonymous.</span></footer>
     </section>
   );
 }
