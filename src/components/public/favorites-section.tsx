@@ -1,12 +1,12 @@
-import { Card } from '@/components/ui/card';
 import * as React from 'react';
 import { database } from '@/db/database';
 import { desc, eq, and } from 'drizzle-orm';
 import { plates, user_favorite_plates } from '@/db/schema';
 import { Suspense } from 'react';
-import { Skeleton } from '@/components/ui/skeleton';
 import { Plate } from '@/lib/plates';
-import LicensePlateTiny from '@/components/public/license-plate-tiny';
+import LicensePlateTiny, {
+  LicensePlateTinySkeleton,
+} from '@/components/public/license-plate-tiny';
 import { auth } from '@/auth';
 
 export default function FavoritesSection() {
@@ -73,21 +73,8 @@ function FavoritePlatesSkeleton({ limit = 10 }) {
   return (
     <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5'>
       {skeletons.map((_, index) => (
-        <PlateSkeleton key={index} />
+        <LicensePlateTinySkeleton key={index} />
       ))}
     </div>
-  );
-}
-
-function PlateSkeleton() {
-  return (
-    <Card className='aspect-video flex flex-col justify-center items-center'>
-      <div className='flex flex-col h-full relative p-1 w-full items-center'>
-        <Skeleton className='w-full max-w-[50px] h-[20px] ' />
-        <div className='absolute inset-0 flex items-center justify-center uppercase'>
-          <Skeleton className='w-full max-w-[100px] h-[20px] ' />
-        </div>
-      </div>
-    </Card>
   );
 }
