@@ -15,3 +15,5 @@ Full-size plates, linked thumbnails, loading placeholders, and social preview im
 - Checked full-size plates, thumbnails, and skeletons at viewport widths of 320, 375, 768, and 1440 pixels: no horizontal overflow or aspect-ratio distortion.
 - Visually reviewed a rendered contact sheet of all 50 states, mobile thumbnails, and full-size examples, including the narrower South Dakota and Wyoming text regions.
 - Checked the Ohio state and plate-detail pages, plus generated social previews for Ohio, South Dakota, Wyoming, California, and DC.
+
+Share metadata uses the current deployment's origin, so dev links load dev images. General pages default to an Ohio `R8MYPL8` image; state pages use that state's artwork, and plate pages preserve their state and serial. Open Graph and Twitter use the same versioned image URL. `public/og.png` also contains the Ohio default for clients that retain the old image path.

@@ -5,18 +5,14 @@ import { database } from '@/db/database';
 import { plate_reviews } from '@/db/schema';
 import { avg, eq } from 'drizzle-orm';
 import { getPlateArtwork, PLATE_WIDTH } from '@/lib/plate-artwork';
+import { DEFAULT_SHARE_PLATE, DEFAULT_SHARE_STATE } from '@/lib/share-metadata';
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
-  const stateParam = searchParams.get('state');
-  const plateParam = searchParams.get('plate');
-
-  if (!stateParam || !plateParam) {
-    return new Response('Missing state or plate query params', { status: 400 });
-  }
-
-  const plateNumber = plateParam.toUpperCase();
-  const stateUpper = stateParam.toUpperCase();
+  const stateParam = searchParams.get('state')?.trim();
+  const plateParam = searchParams.get('plate')?.trim();
+  const plateNumber = (plateParam || DEFAULT_SHARE_PLATE).toUpperCase();
+  const stateUpper = (stateParam || DEFAULT_SHARE_STATE).toUpperCase();
   const artwork = getPlateArtwork(stateUpper);
   const serial = artwork.serial;
   const plateScale = 700 / PLATE_WIDTH;
@@ -35,21 +31,24 @@ export async function GET(request: Request) {
   // Look up plate and average rating
   let avgRating: number | null = null;
 
-  const plateRecord = await database.query.plates.findFirst({
-    where: (plates, { and, eq }) =>
-      and(eq(plates.state, stateUpper), eq(plates.plateNumber, plateNumber)),
-  });
+  // General site and state shares use a sample serial, without a rating lookup.
+  if (plateParam) {
+    const plateRecord = await database.query.plates.findFirst({
+      where: (plates, { and, eq }) =>
+        and(eq(plates.state, stateUpper), eq(plates.plateNumber, plateNumber)),
+    });
 
-  if (plateRecord) {
-    const [stats] = await database
-      .select({
-        avgRating: avg(plate_reviews.rating),
-      })
-      .from(plate_reviews)
-      .where(eq(plate_reviews.plateId, plateRecord.id));
+    if (plateRecord) {
+      const [stats] = await database
+        .select({
+          avgRating: avg(plate_reviews.rating),
+        })
+        .from(plate_reviews)
+        .where(eq(plate_reviews.plateId, plateRecord.id));
 
-    if (stats) {
-      avgRating = stats.avgRating == null ? null : Number(stats.avgRating);
+      if (stats) {
+        avgRating = stats.avgRating == null ? null : Number(stats.avgRating);
+      }
     }
   }
 

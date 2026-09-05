@@ -11,6 +11,7 @@ import SearchCard from '@/components/public/search-card/search-card';
 
 import type { Metadata, ResolvingMetadata } from 'next';
 import BreadCrumbs from '@/components/bread-crumbs';
+import { getShareImages } from '@/lib/share-metadata';
 
 export const dynamic = 'force-dynamic';
 
@@ -34,6 +35,7 @@ export async function generateMetadata(
   return {
     title: `Plates in ${stateName}`,
     description: `Browse license plates rated in ${stateName}`,
+    ...getShareImages(upperState),
   };
 }
 

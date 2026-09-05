@@ -1,5 +1,5 @@
 import type { plates } from '@/db/schema';
-import { validateLicensePlate } from '@/lib/plates';
+import { decodePlateNumber, validateLicensePlate } from '@/lib/plates';
 import { stateNameValidator, usStateName } from '@/lib/us-states';
 import { database } from '@/db/database';
 type Plate = typeof plates.$inferSelect;
@@ -24,6 +24,7 @@ import { plate_reviews } from '@/db/schema';
 import { avg, count, eq, max } from 'drizzle-orm';
 import { formatDistanceToNow } from 'date-fns';
 import InlineSearch from '@/components/public/inline-search';
+import { getShareImages } from '@/lib/share-metadata';
 
 export const dynamic = 'force-dynamic';
 
@@ -37,7 +38,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const { state, plate } = await params;
   const upperState = state.toUpperCase();
-  const upperPlate = plate.toUpperCase();
+  const upperPlate = decodePlateNumber(plate);
 
   if (
     !validateLicensePlate(upperPlate, 'US') ||
@@ -52,26 +53,14 @@ export async function generateMetadata(
   return {
     title: `${upperPlate} in ${upperState}`,
     description: `View comments for license plate ${upperPlate} in ${upperState}`,
-    openGraph: {
-      images: [
-        {
-          url: `/api/og?state=${upperState}&plate=${upperPlate}`,
-          width: 1200,
-          height: 630,
-        },
-      ],
-    },
-    twitter: {
-      card: 'summary_large_image',
-      images: [`/api/og?state=${upperState}&plate=${upperPlate}`],
-    },
+    ...getShareImages(upperState, upperPlate),
   };
 }
 
 export default async function PlatePage({ params }: Props) {
   const { state, plate: plateNumber } = await params;
   const upperState = state.toUpperCase();
-  const upperPlate = plateNumber.toUpperCase();
+  const upperPlate = decodePlateNumber(plateNumber);
 
   if (
     !validateLicensePlate(upperPlate, 'US') ||
