@@ -2,18 +2,13 @@
 
 Review and rate people based upon their driving. It's all tied to the license plate and state for each vehicle.
 
+## Version 2.0
+
 <p align="center">
-      <img src="./images/version1.1/homepage.png" align="left">
-      <img src="./images/version1.1/plate.png" align="right">
+      <img src="./images/version2/globe.png" alt="Rate My Plate version 2 live plate activity globe">
 </p>
-<p align="center">
-      <img src="./images/version1.1/login-dialog.png" align="left">
-      <img src="./images/version1.1/dashboard.png" align="right">
-</p>
-<p align="center">
-      <img src="./images/version1.1/plates-table.png" align="left">
-      <img src="./images/version1.1/login-screen.png" align="right">
-</p>
+
+Earlier snapshots: [version 1.1](./images/version1.1) · [version 1.0](./images/version1)
 
 # Tech Stack
 

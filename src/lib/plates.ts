@@ -3,6 +3,16 @@ export interface Plate {
   plateNumber: string;
 }
 
+/** Route params may still contain escapes for spaces in legacy plate numbers. */
+export function decodePlateNumber(value: string): string {
+  try {
+    return decodeURIComponent(value).toUpperCase();
+  } catch {
+    // Leave malformed escapes for the existing plate validator to reject.
+    return value.toUpperCase();
+  }
+}
+
 export function validateLicensePlate(
   plate: string | null,
   country: string

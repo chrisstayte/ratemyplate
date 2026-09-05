@@ -4,49 +4,51 @@ import { join } from 'path';
 import { database } from '@/db/database';
 import { plate_reviews } from '@/db/schema';
 import { avg, eq } from 'drizzle-orm';
+import { getPlateArtwork, PLATE_WIDTH } from '@/lib/plate-artwork';
+import { DEFAULT_SHARE_PLATE, DEFAULT_SHARE_STATE } from '@/lib/share-metadata';
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
-  const stateParam = searchParams.get('state');
-  const plateParam = searchParams.get('plate');
+  const stateParam = searchParams.get('state')?.trim();
+  const plateParam = searchParams.get('plate')?.trim();
+  const plateNumber = (plateParam || DEFAULT_SHARE_PLATE).toUpperCase();
+  const stateUpper = (stateParam || DEFAULT_SHARE_STATE).toUpperCase();
+  const artwork = getPlateArtwork(stateUpper);
+  const serial = artwork.serial;
+  const plateScale = 700 / PLATE_WIDTH;
+  const serialFontSize =
+    serial.fontSize *
+    Math.min(1, serial.width / Math.max(1, Array.from(plateNumber).length * 62));
 
-  if (!stateParam || !plateParam) {
-    return new Response('Missing state or plate query params', { status: 400 });
-  }
-
-  const plateNumber = plateParam.toUpperCase();
-  const stateUpper = stateParam.toUpperCase();
-
-  const [fontData, interFontData, statesJson] = await Promise.all([
+  const [fontData, interFontData, plateImage] = await Promise.all([
     readFile(join(process.cwd(), 'public/fonts/LICENSE-PLATE-USA.ttf')),
     readFile(join(process.cwd(), 'public/fonts/Inter-Bold.ttf')),
-    readFile(join(process.cwd(), 'public/data/states.json'), 'utf-8'),
+    artwork.imagePath
+      ? readFile(join(process.cwd(), 'public', artwork.imagePath))
+      : null,
   ]);
-
-  const states: { abbreviation: string; name: string }[] =
-    JSON.parse(statesJson);
-  const stateData = states.find((s) => s.abbreviation === stateUpper);
-  // Use the full state name if found, otherwise preserve original casing
-  const stateName = stateData?.name ?? stateParam;
 
   // Look up plate and average rating
   let avgRating: number | null = null;
 
-  const plateRecord = await database.query.plates.findFirst({
-    where: (plates, { and, eq }) =>
-      and(eq(plates.state, stateUpper), eq(plates.plateNumber, plateNumber)),
-  });
+  // General site and state shares use a sample serial, without a rating lookup.
+  if (plateParam) {
+    const plateRecord = await database.query.plates.findFirst({
+      where: (plates, { and, eq }) =>
+        and(eq(plates.state, stateUpper), eq(plates.plateNumber, plateNumber)),
+    });
 
-  if (plateRecord) {
-    const [stats] = await database
-      .select({
-        avgRating: avg(plate_reviews.rating),
-      })
-      .from(plate_reviews)
-      .where(eq(plate_reviews.plateId, plateRecord.id));
+    if (plateRecord) {
+      const [stats] = await database
+        .select({
+          avgRating: avg(plate_reviews.rating),
+        })
+        .from(plate_reviews)
+        .where(eq(plate_reviews.plateId, plateRecord.id));
 
-    if (stats) {
-      avgRating = stats.avgRating == null ? null : Number(stats.avgRating);
+      if (stats) {
+        avgRating = stats.avgRating == null ? null : Number(stats.avgRating);
+      }
     }
   }
 
@@ -89,39 +91,56 @@ export async function GET(request: Request) {
             justifyContent: 'center',
             width: '700px',
             height: '350px',
-            background: 'white',
-            borderRadius: '24px',
-            border: '4px solid #e0e0e0',
+            background: plateImage ? 'transparent' : '#fafafa',
+            borderRadius: '22px',
             boxShadow: '0 20px 60px rgba(0,0,0,0.3)',
             position: 'relative',
           }}
         >
-          {/* State name badge */}
-          <div
-            style={{
-              display: 'flex',
-              position: 'absolute',
-              top: '24px',
-              background: '#18181b',
-              color: 'white',
-              padding: '6px 20px',
-              borderRadius: '9999px',
-              fontSize: '22px',
-              fontWeight: 600,
-              letterSpacing: '0.05em',
-            }}
-          >
-            {stateName}
-          </div>
+          {plateImage ? (
+            // ImageResponse renders an embedded SVG without a remote asset fetch.
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={`data:image/svg+xml;base64,${plateImage.toString('base64')}`}
+              alt=""
+              width={700}
+              height={350}
+              style={{ position: 'absolute', top: 0, left: 0 }}
+            />
+          ) : (
+            <div
+              style={{
+                display: 'flex',
+                position: 'absolute',
+                top: '24px',
+                background: '#18181b',
+                color: 'white',
+                padding: '6px 20px',
+                borderRadius: '9999px',
+                fontSize: '22px',
+                fontWeight: 600,
+                letterSpacing: '0.05em',
+              }}
+            >
+              {artwork.name}
+            </div>
+          )}
 
           {/* Plate number */}
           <div
             style={{
               display: 'flex',
+              position: 'absolute',
+              left: serial.x * plateScale,
+              top: serial.y * plateScale,
+              width: serial.width * plateScale,
+              height: serial.height * plateScale,
+              alignItems: 'center',
+              justifyContent: 'center',
               fontFamily: 'LicensePlate',
-              fontSize: '100px',
-              color: '#18181b',
-              letterSpacing: '0.05em',
+              fontSize: serialFontSize * plateScale,
+              color: serial.color,
+              whiteSpace: 'nowrap',
               textTransform: 'uppercase',
             }}
           >

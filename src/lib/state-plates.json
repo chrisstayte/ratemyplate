@@ -1,0 +1,1152 @@
+[
+  {
+    "code": "AL",
+    "state": "Alabama",
+    "variant": "Gulf Coast beach (2022)",
+    "file": "svg/AL.svg",
+    "viewBox": [
+      0,
+      0,
+      600,
+      300
+    ],
+    "serial": {
+      "x": 80,
+      "y": 105,
+      "width": 440,
+      "height": 120,
+      "color": "#182d47",
+      "baseline": 205,
+      "fontSize": 108
+    },
+    "referenceUrl": "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Alabama",
+    "notes": "Simplified vector redraw; variable numbers, county labels, and registration stickers omitted."
+  },
+  {
+    "code": "AK",
+    "state": "Alaska",
+    "variant": "Alaska Artistic License / northern lights (2018)",
+    "file": "svg/AK.svg",
+    "viewBox": [
+      0,
+      0,
+      600,
+      300
+    ],
+    "serial": {
+      "x": 80,
+      "y": 105,
+      "width": 440,
+      "height": 120,
+      "color": "#143d42",
+      "baseline": 205,
+      "fontSize": 108
+    },
+    "referenceUrl": "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Alaska",
+    "notes": "Simplified vector redraw; variable numbers, county labels, and registration stickers omitted."
+  },
+  {
+    "code": "AZ",
+    "state": "Arizona",
+    "variant": "Desert sunset / Grand Canyon State",
+    "file": "svg/AZ.svg",
+    "viewBox": [
+      0,
+      0,
+      600,
+      300
+    ],
+    "serial": {
+      "x": 80,
+      "y": 105,
+      "width": 440,
+      "height": 120,
+      "color": "#182d47",
+      "baseline": 205,
+      "fontSize": 108
+    },
+    "referenceUrl": "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Arizona",
+    "notes": "Simplified vector redraw; variable numbers, county labels, and registration stickers omitted."
+  },
+  {
+    "code": "AR",
+    "state": "Arkansas",
+    "variant": "The Natural State / diamond",
+    "file": "svg/AR.svg",
+    "viewBox": [
+      0,
+      0,
+      600,
+      300
+    ],
+    "serial": {
+      "x": 80,
+      "y": 105,
+      "width": 440,
+      "height": 120,
+      "color": "#222c3c",
+      "baseline": 205,
+      "fontSize": 108
+    },
+    "referenceUrl": "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Arkansas",
+    "notes": "Simplified vector redraw; variable numbers, county labels, and registration stickers omitted."
+  },
+  {
+    "code": "CA",
+    "state": "California",
+    "variant": "1960s Legacy / black and gold",
+    "file": "svg/CA.svg",
+    "viewBox": [
+      0,
+      0,
+      600,
+      300
+    ],
+    "serial": {
+      "x": 80,
+      "y": 105,
+      "width": 440,
+      "height": 120,
+      "color": "#f3c34e",
+      "baseline": 205,
+      "fontSize": 108
+    },
+    "referenceUrl": "https://www.dmv.ca.gov/portal/vehicle-registration/license-plates-decals-and-placards/license-plates/special-interest-special-license-plates/",
+    "notes": "Simplified vector redraw; variable numbers, county labels, and registration stickers omitted."
+  },
+  {
+    "code": "CO",
+    "state": "Colorado",
+    "variant": "Rocky Mountains / green and white",
+    "file": "svg/CO.svg",
+    "viewBox": [
+      0,
+      0,
+      600,
+      300
+    ],
+    "serial": {
+      "x": 70,
+      "y": 112,
+      "width": 460,
+      "height": 125,
+      "color": "#14533e",
+      "baseline": 205,
+      "fontSize": 108
+    },
+    "referenceUrl": "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Colorado",
+    "notes": "Simplified vector redraw; variable numbers, county labels, and registration stickers omitted."
+  },
+  {
+    "code": "CT",
+    "state": "Connecticut",
+    "variant": "Constitution State / blue fade",
+    "file": "svg/CT.svg",
+    "viewBox": [
+      0,
+      0,
+      600,
+      300
+    ],
+    "serial": {
+      "x": 80,
+      "y": 105,
+      "width": 440,
+      "height": 120,
+      "color": "#193e65",
+      "baseline": 205,
+      "fontSize": 108
+    },
+    "referenceUrl": "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Connecticut",
+    "notes": "Simplified vector redraw; variable numbers, county labels, and registration stickers omitted."
+  },
+  {
+    "code": "DE",
+    "state": "Delaware",
+    "variant": "The First State / navy and gold",
+    "file": "svg/DE.svg",
+    "viewBox": [
+      0,
+      0,
+      600,
+      300
+    ],
+    "serial": {
+      "x": 80,
+      "y": 105,
+      "width": 440,
+      "height": 120,
+      "color": "#e8bd65",
+      "baseline": 205,
+      "fontSize": 108
+    },
+    "referenceUrl": "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Delaware",
+    "notes": "Simplified vector redraw; variable numbers, county labels, and registration stickers omitted."
+  },
+  {
+    "code": "FL",
+    "state": "Florida",
+    "variant": "Sunshine State / oranges",
+    "file": "svg/FL.svg",
+    "viewBox": [
+      0,
+      0,
+      600,
+      300
+    ],
+    "serial": {
+      "x": 80,
+      "y": 105,
+      "width": 440,
+      "height": 120,
+      "color": "#146b42",
+      "baseline": 205,
+      "fontSize": 108
+    },
+    "referenceUrl": "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Florida",
+    "notes": "Simplified vector redraw; variable numbers, county labels, and registration stickers omitted."
+  },
+  {
+    "code": "GA",
+    "state": "Georgia",
+    "variant": "Peach orchard scenic",
+    "file": "svg/GA.svg",
+    "viewBox": [
+      0,
+      0,
+      600,
+      300
+    ],
+    "serial": {
+      "x": 80,
+      "y": 105,
+      "width": 440,
+      "height": 120,
+      "color": "#29362c",
+      "baseline": 205,
+      "fontSize": 108
+    },
+    "referenceUrl": "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Georgia",
+    "notes": "Simplified vector redraw; variable numbers, county labels, and registration stickers omitted."
+  },
+  {
+    "code": "HI",
+    "state": "Hawaii",
+    "variant": "Aloha State / rainbow",
+    "file": "svg/HI.svg",
+    "viewBox": [
+      0,
+      0,
+      600,
+      300
+    ],
+    "serial": {
+      "x": 80,
+      "y": 105,
+      "width": 440,
+      "height": 120,
+      "color": "#293c50",
+      "baseline": 205,
+      "fontSize": 108
+    },
+    "referenceUrl": "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Hawaii",
+    "notes": "Simplified vector redraw; variable numbers, county labels, and registration stickers omitted."
+  },
+  {
+    "code": "ID",
+    "state": "Idaho",
+    "variant": "Scenic Idaho / Famous Potatoes",
+    "file": "svg/ID.svg",
+    "viewBox": [
+      0,
+      0,
+      600,
+      300
+    ],
+    "serial": {
+      "x": 80,
+      "y": 105,
+      "width": 440,
+      "height": 120,
+      "color": "#153b63",
+      "baseline": 205,
+      "fontSize": 108
+    },
+    "referenceUrl": "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Idaho",
+    "notes": "Simplified vector redraw; variable numbers, county labels, and registration stickers omitted."
+  },
+  {
+    "code": "IL",
+    "state": "Illinois",
+    "variant": "Land of Lincoln / skyline",
+    "file": "svg/IL.svg",
+    "viewBox": [
+      0,
+      0,
+      600,
+      300
+    ],
+    "serial": {
+      "x": 105,
+      "y": 111,
+      "width": 425,
+      "height": 120,
+      "color": "#982b39",
+      "baseline": 205,
+      "fontSize": 108
+    },
+    "referenceUrl": "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Illinois",
+    "notes": "Simplified vector redraw; variable numbers, county labels, and registration stickers omitted."
+  },
+  {
+    "code": "IN",
+    "state": "Indiana",
+    "variant": "Covered bridge / country scene",
+    "file": "svg/IN.svg",
+    "viewBox": [
+      0,
+      0,
+      600,
+      300
+    ],
+    "serial": {
+      "x": 80,
+      "y": 105,
+      "width": 440,
+      "height": 120,
+      "color": "#1b557d",
+      "baseline": 205,
+      "fontSize": 108
+    },
+    "referenceUrl": "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Indiana",
+    "notes": "Simplified vector redraw; variable numbers, county labels, and registration stickers omitted."
+  },
+  {
+    "code": "IA",
+    "state": "Iowa",
+    "variant": "City, farm and wind turbines",
+    "file": "svg/IA.svg",
+    "viewBox": [
+      0,
+      0,
+      600,
+      300
+    ],
+    "serial": {
+      "x": 80,
+      "y": 105,
+      "width": 440,
+      "height": 120,
+      "color": "#253b40",
+      "baseline": 205,
+      "fontSize": 108
+    },
+    "referenceUrl": "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Iowa",
+    "notes": "Simplified vector redraw; variable numbers, county labels, and registration stickers omitted."
+  },
+  {
+    "code": "KS",
+    "state": "Kansas",
+    "variant": "To the Stars (2024)",
+    "file": "svg/KS.svg",
+    "viewBox": [
+      0,
+      0,
+      600,
+      300
+    ],
+    "serial": {
+      "x": 110,
+      "y": 105,
+      "width": 420,
+      "height": 120,
+      "color": "#29363c",
+      "baseline": 205,
+      "fontSize": 108
+    },
+    "referenceUrl": "https://www.ksrevenue.gov/dovnewplate.html",
+    "notes": "Simplified vector redraw; variable numbers, county labels, and registration stickers omitted."
+  },
+  {
+    "code": "KY",
+    "state": "Kentucky",
+    "variant": "Blue sky / Unbridled Spirit",
+    "file": "svg/KY.svg",
+    "viewBox": [
+      0,
+      0,
+      600,
+      300
+    ],
+    "serial": {
+      "x": 80,
+      "y": 105,
+      "width": 440,
+      "height": 120,
+      "color": "#243f69",
+      "baseline": 205,
+      "fontSize": 108
+    },
+    "referenceUrl": "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Kentucky",
+    "notes": "Simplified vector redraw; variable numbers, county labels, and registration stickers omitted."
+  },
+  {
+    "code": "LA",
+    "state": "Louisiana",
+    "variant": "Sportsman’s Paradise / pelican",
+    "file": "svg/LA.svg",
+    "viewBox": [
+      0,
+      0,
+      600,
+      300
+    ],
+    "serial": {
+      "x": 115,
+      "y": 105,
+      "width": 415,
+      "height": 120,
+      "color": "#285f6e",
+      "baseline": 205,
+      "fontSize": 108
+    },
+    "referenceUrl": "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Louisiana",
+    "notes": "Simplified vector redraw; variable numbers, county labels, and registration stickers omitted."
+  },
+  {
+    "code": "ME",
+    "state": "Maine",
+    "variant": "Chickadee / Vacationland",
+    "file": "svg/ME.svg",
+    "viewBox": [
+      0,
+      0,
+      600,
+      300
+    ],
+    "serial": {
+      "x": 115,
+      "y": 105,
+      "width": 415,
+      "height": 120,
+      "color": "#244636",
+      "baseline": 205,
+      "fontSize": 108
+    },
+    "referenceUrl": "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Maine",
+    "notes": "Simplified vector redraw; variable numbers, county labels, and registration stickers omitted."
+  },
+  {
+    "code": "MD",
+    "state": "Maryland",
+    "variant": "Maryland flag ribbon",
+    "file": "svg/MD.svg",
+    "viewBox": [
+      0,
+      0,
+      600,
+      300
+    ],
+    "serial": {
+      "x": 80,
+      "y": 105,
+      "width": 440,
+      "height": 120,
+      "color": "#34312f",
+      "baseline": 205,
+      "fontSize": 108
+    },
+    "referenceUrl": "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Maryland",
+    "notes": "Simplified vector redraw; variable numbers, county labels, and registration stickers omitted."
+  },
+  {
+    "code": "MA",
+    "state": "Massachusetts",
+    "variant": "The Spirit of America",
+    "file": "svg/MA.svg",
+    "viewBox": [
+      0,
+      0,
+      600,
+      300
+    ],
+    "serial": {
+      "x": 80,
+      "y": 105,
+      "width": 440,
+      "height": 120,
+      "color": "#af293b",
+      "baseline": 205,
+      "fontSize": 108
+    },
+    "referenceUrl": "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Massachusetts",
+    "notes": "Simplified vector redraw; variable numbers, county labels, and registration stickers omitted."
+  },
+  {
+    "code": "MI",
+    "state": "Michigan",
+    "variant": "Water-Winter Wonderland / blue and gold",
+    "file": "svg/MI.svg",
+    "viewBox": [
+      0,
+      0,
+      600,
+      300
+    ],
+    "serial": {
+      "x": 80,
+      "y": 105,
+      "width": 440,
+      "height": 120,
+      "color": "#f0c75d",
+      "baseline": 205,
+      "fontSize": 108
+    },
+    "referenceUrl": "https://www.michigan.gov/sos/vehicle/license-plates/standard-plate-options",
+    "notes": "Simplified vector redraw; variable numbers, county labels, and registration stickers omitted."
+  },
+  {
+    "code": "MN",
+    "state": "Minnesota",
+    "variant": "10,000 Lakes",
+    "file": "svg/MN.svg",
+    "viewBox": [
+      0,
+      0,
+      600,
+      300
+    ],
+    "serial": {
+      "x": 80,
+      "y": 105,
+      "width": 440,
+      "height": 120,
+      "color": "#233d6b",
+      "baseline": 205,
+      "fontSize": 108
+    },
+    "referenceUrl": "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Minnesota",
+    "notes": "Simplified vector redraw; variable numbers, county labels, and registration stickers omitted."
+  },
+  {
+    "code": "MS",
+    "state": "Mississippi",
+    "variant": "Magnolia (2024)",
+    "file": "svg/MS.svg",
+    "viewBox": [
+      0,
+      0,
+      600,
+      300
+    ],
+    "serial": {
+      "x": 80,
+      "y": 105,
+      "width": 440,
+      "height": 120,
+      "color": "#263f6c",
+      "baseline": 205,
+      "fontSize": 108
+    },
+    "referenceUrl": "https://www.dor.ms.gov/news/design-chosen-2024-mississippi-license-plate",
+    "notes": "Simplified vector redraw; variable numbers, county labels, and registration stickers omitted."
+  },
+  {
+    "code": "MO",
+    "state": "Missouri",
+    "variant": "Bicentennial / rivers",
+    "file": "svg/MO.svg",
+    "viewBox": [
+      0,
+      0,
+      600,
+      300
+    ],
+    "serial": {
+      "x": 80,
+      "y": 105,
+      "width": 440,
+      "height": 120,
+      "color": "#183e67",
+      "baseline": 205,
+      "fontSize": 108
+    },
+    "referenceUrl": "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Missouri",
+    "notes": "Simplified vector redraw; variable numbers, county labels, and registration stickers omitted."
+  },
+  {
+    "code": "MT",
+    "state": "Montana",
+    "variant": "Big Sky Country / blue (2010)",
+    "file": "svg/MT.svg",
+    "viewBox": [
+      0,
+      0,
+      600,
+      300
+    ],
+    "serial": {
+      "x": 80,
+      "y": 105,
+      "width": 440,
+      "height": 120,
+      "color": "#faf6dd",
+      "baseline": 205,
+      "fontSize": 108
+    },
+    "referenceUrl": "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Montana",
+    "notes": "Simplified vector redraw; variable numbers, county labels, and registration stickers omitted."
+  },
+  {
+    "code": "NE",
+    "state": "Nebraska",
+    "variant": "Meadowlark and goldenrod (2011)",
+    "file": "svg/NE.svg",
+    "viewBox": [
+      0,
+      0,
+      600,
+      300
+    ],
+    "serial": {
+      "x": 80,
+      "y": 105,
+      "width": 440,
+      "height": 120,
+      "color": "#345f42",
+      "baseline": 205,
+      "fontSize": 108
+    },
+    "referenceUrl": "https://dmv.nebraska.gov/dvr/history-license-plates",
+    "notes": "Simplified vector redraw; variable numbers, county labels, and registration stickers omitted."
+  },
+  {
+    "code": "NV",
+    "state": "Nevada",
+    "variant": "Home Means Nevada / sunset",
+    "file": "svg/NV.svg",
+    "viewBox": [
+      0,
+      0,
+      600,
+      300
+    ],
+    "serial": {
+      "x": 80,
+      "y": 105,
+      "width": 440,
+      "height": 120,
+      "color": "#243b54",
+      "baseline": 205,
+      "fontSize": 108
+    },
+    "referenceUrl": "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Nevada",
+    "notes": "Simplified vector redraw; variable numbers, county labels, and registration stickers omitted."
+  },
+  {
+    "code": "NH",
+    "state": "New Hampshire",
+    "variant": "Old Man of the Mountain",
+    "file": "svg/NH.svg",
+    "viewBox": [
+      0,
+      0,
+      600,
+      300
+    ],
+    "serial": {
+      "x": 80,
+      "y": 105,
+      "width": 440,
+      "height": 120,
+      "color": "#236144",
+      "baseline": 205,
+      "fontSize": 108
+    },
+    "referenceUrl": "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_New_Hampshire",
+    "notes": "Simplified vector redraw; variable numbers, county labels, and registration stickers omitted."
+  },
+  {
+    "code": "NJ",
+    "state": "New Jersey",
+    "variant": "Garden State / gold fade",
+    "file": "svg/NJ.svg",
+    "viewBox": [
+      0,
+      0,
+      600,
+      300
+    ],
+    "serial": {
+      "x": 80,
+      "y": 105,
+      "width": 440,
+      "height": 120,
+      "color": "#33362c",
+      "baseline": 205,
+      "fontSize": 108
+    },
+    "referenceUrl": "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_New_Jersey",
+    "notes": "Simplified vector redraw; variable numbers, county labels, and registration stickers omitted."
+  },
+  {
+    "code": "NM",
+    "state": "New Mexico",
+    "variant": "Turquoise centennial",
+    "file": "svg/NM.svg",
+    "viewBox": [
+      0,
+      0,
+      600,
+      300
+    ],
+    "serial": {
+      "x": 80,
+      "y": 105,
+      "width": 440,
+      "height": 120,
+      "color": "#f7ca4f",
+      "baseline": 205,
+      "fontSize": 108
+    },
+    "referenceUrl": "https://www.mvd.newmexico.gov/vehicles/license-plates/",
+    "notes": "Simplified vector redraw; variable numbers, county labels, and registration stickers omitted."
+  },
+  {
+    "code": "NY",
+    "state": "New York",
+    "variant": "Empire Gold (2010)",
+    "file": "svg/NY.svg",
+    "viewBox": [
+      0,
+      0,
+      600,
+      300
+    ],
+    "serial": {
+      "x": 80,
+      "y": 105,
+      "width": 440,
+      "height": 120,
+      "color": "#1b3559",
+      "baseline": 205,
+      "fontSize": 108
+    },
+    "referenceUrl": "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_New_York",
+    "notes": "Simplified vector redraw; variable numbers, county labels, and registration stickers omitted."
+  },
+  {
+    "code": "NC",
+    "state": "North Carolina",
+    "variant": "First in Flight",
+    "file": "svg/NC.svg",
+    "viewBox": [
+      0,
+      0,
+      600,
+      300
+    ],
+    "serial": {
+      "x": 80,
+      "y": 105,
+      "width": 440,
+      "height": 120,
+      "color": "#275c92",
+      "baseline": 205,
+      "fontSize": 108
+    },
+    "referenceUrl": "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_North_Carolina",
+    "notes": "Simplified vector redraw; variable numbers, county labels, and registration stickers omitted."
+  },
+  {
+    "code": "ND",
+    "state": "North Dakota",
+    "variant": "Sunrise / badlands",
+    "file": "svg/ND.svg",
+    "viewBox": [
+      0,
+      0,
+      600,
+      300
+    ],
+    "serial": {
+      "x": 80,
+      "y": 105,
+      "width": 440,
+      "height": 120,
+      "color": "#273832",
+      "baseline": 205,
+      "fontSize": 108
+    },
+    "referenceUrl": "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_North_Dakota",
+    "notes": "Simplified vector redraw; variable numbers, county labels, and registration stickers omitted."
+  },
+  {
+    "code": "OH",
+    "state": "Ohio",
+    "variant": "Sunrise in Ohio (2021)",
+    "file": "svg/OH.svg",
+    "viewBox": [
+      0,
+      0,
+      600,
+      300
+    ],
+    "serial": {
+      "x": 80,
+      "y": 105,
+      "width": 440,
+      "height": 120,
+      "color": "#263d70",
+      "baseline": 205,
+      "fontSize": 108
+    },
+    "referenceUrl": "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Ohio",
+    "notes": "Simplified vector redraw; variable numbers, county labels, and registration stickers omitted."
+  },
+  {
+    "code": "OK",
+    "state": "Oklahoma",
+    "variant": "Scissor-tailed flycatcher (2017)",
+    "file": "svg/OK.svg",
+    "viewBox": [
+      0,
+      0,
+      600,
+      300
+    ],
+    "serial": {
+      "x": 80,
+      "y": 105,
+      "width": 440,
+      "height": 120,
+      "color": "#293b45",
+      "baseline": 205,
+      "fontSize": 108
+    },
+    "referenceUrl": "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Oklahoma",
+    "notes": "Simplified vector redraw; variable numbers, county labels, and registration stickers omitted."
+  },
+  {
+    "code": "OR",
+    "state": "Oregon",
+    "variant": "Douglas fir / mountains",
+    "file": "svg/OR.svg",
+    "viewBox": [
+      0,
+      0,
+      600,
+      300
+    ],
+    "serial": {
+      "x": 65,
+      "y": 105,
+      "width": 470,
+      "height": 120,
+      "color": "#344776",
+      "baseline": 205,
+      "fontSize": 108
+    },
+    "referenceUrl": "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Oregon",
+    "notes": "Simplified vector redraw; variable numbers, county labels, and registration stickers omitted. Center tree intentionally remains visible behind the text."
+  },
+  {
+    "code": "PA",
+    "state": "Pennsylvania",
+    "variant": "Blue and gold bands",
+    "file": "svg/PA.svg",
+    "viewBox": [
+      0,
+      0,
+      600,
+      300
+    ],
+    "serial": {
+      "x": 80,
+      "y": 105,
+      "width": 440,
+      "height": 120,
+      "color": "#203c69",
+      "baseline": 205,
+      "fontSize": 108
+    },
+    "referenceUrl": "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Pennsylvania",
+    "notes": "Simplified vector redraw; variable numbers, county labels, and registration stickers omitted."
+  },
+  {
+    "code": "RI",
+    "state": "Rhode Island",
+    "variant": "Ocean State / wave",
+    "file": "svg/RI.svg",
+    "viewBox": [
+      0,
+      0,
+      600,
+      300
+    ],
+    "serial": {
+      "x": 80,
+      "y": 105,
+      "width": 440,
+      "height": 120,
+      "color": "#344f72",
+      "baseline": 205,
+      "fontSize": 108
+    },
+    "referenceUrl": "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Rhode_Island",
+    "notes": "Simplified vector redraw; variable numbers, county labels, and registration stickers omitted."
+  },
+  {
+    "code": "SC",
+    "state": "South Carolina",
+    "variant": "Sunrise palmetto (2008)",
+    "file": "svg/SC.svg",
+    "viewBox": [
+      0,
+      0,
+      600,
+      300
+    ],
+    "serial": {
+      "x": 80,
+      "y": 105,
+      "width": 440,
+      "height": 120,
+      "color": "#243d65",
+      "baseline": 205,
+      "fontSize": 108
+    },
+    "referenceUrl": "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_South_Carolina",
+    "notes": "Simplified vector redraw; variable numbers, county labels, and registration stickers omitted."
+  },
+  {
+    "code": "SD",
+    "state": "South Dakota",
+    "variant": "Mount Rushmore / Great Faces, Great Places",
+    "file": "svg/SD.svg",
+    "viewBox": [
+      0,
+      0,
+      600,
+      300
+    ],
+    "serial": {
+      "x": 185,
+      "y": 106,
+      "width": 355,
+      "height": 120,
+      "color": "#2b516e",
+      "baseline": 205,
+      "fontSize": 108
+    },
+    "referenceUrl": "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_South_Dakota",
+    "notes": "Simplified vector redraw; variable numbers, county labels, and registration stickers omitted."
+  },
+  {
+    "code": "TN",
+    "state": "Tennessee",
+    "variant": "Blue tri-star (2022)",
+    "file": "svg/TN.svg",
+    "viewBox": [
+      0,
+      0,
+      600,
+      300
+    ],
+    "serial": {
+      "x": 80,
+      "y": 105,
+      "width": 440,
+      "height": 120,
+      "color": "#fffdf0",
+      "baseline": 205,
+      "fontSize": 108
+    },
+    "referenceUrl": "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Tennessee",
+    "notes": "Simplified vector redraw; variable numbers, county labels, and registration stickers omitted."
+  },
+  {
+    "code": "TX",
+    "state": "Texas",
+    "variant": "Lone Star / flag and sky (2009)",
+    "file": "svg/TX.svg",
+    "viewBox": [
+      0,
+      0,
+      600,
+      300
+    ],
+    "serial": {
+      "x": 80,
+      "y": 105,
+      "width": 440,
+      "height": 120,
+      "color": "#263d50",
+      "baseline": 205,
+      "fontSize": 108
+    },
+    "referenceUrl": "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Texas",
+    "notes": "Simplified vector redraw; variable numbers, county labels, and registration stickers omitted."
+  },
+  {
+    "code": "UT",
+    "state": "Utah",
+    "variant": "Life Elevated / Delicate Arch",
+    "file": "svg/UT.svg",
+    "viewBox": [
+      0,
+      0,
+      600,
+      300
+    ],
+    "serial": {
+      "x": 55,
+      "y": 106,
+      "width": 440,
+      "height": 120,
+      "color": "#314b64",
+      "baseline": 205,
+      "fontSize": 108
+    },
+    "referenceUrl": "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Utah",
+    "notes": "Simplified vector redraw; variable numbers, county labels, and registration stickers omitted."
+  },
+  {
+    "code": "VT",
+    "state": "Vermont",
+    "variant": "Green Mountain State",
+    "file": "svg/VT.svg",
+    "viewBox": [
+      0,
+      0,
+      600,
+      300
+    ],
+    "serial": {
+      "x": 80,
+      "y": 105,
+      "width": 440,
+      "height": 120,
+      "color": "#f9f8e8",
+      "baseline": 205,
+      "fontSize": 108
+    },
+    "referenceUrl": "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Vermont",
+    "notes": "Simplified vector redraw; variable numbers, county labels, and registration stickers omitted."
+  },
+  {
+    "code": "VA",
+    "state": "Virginia",
+    "variant": "Virginia is for Lovers",
+    "file": "svg/VA.svg",
+    "viewBox": [
+      0,
+      0,
+      600,
+      300
+    ],
+    "serial": {
+      "x": 80,
+      "y": 105,
+      "width": 440,
+      "height": 120,
+      "color": "#274271",
+      "baseline": 205,
+      "fontSize": 108
+    },
+    "referenceUrl": "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Virginia",
+    "notes": "Simplified vector redraw; variable numbers, county labels, and registration stickers omitted."
+  },
+  {
+    "code": "WA",
+    "state": "Washington",
+    "variant": "Mount Rainier / Evergreen State",
+    "file": "svg/WA.svg",
+    "viewBox": [
+      0,
+      0,
+      600,
+      300
+    ],
+    "serial": {
+      "x": 80,
+      "y": 105,
+      "width": 440,
+      "height": 120,
+      "color": "#263e6b",
+      "baseline": 205,
+      "fontSize": 108
+    },
+    "referenceUrl": "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Washington",
+    "notes": "Simplified vector redraw; variable numbers, county labels, and registration stickers omitted."
+  },
+  {
+    "code": "WV",
+    "state": "West Virginia",
+    "variant": "Wild, Wonderful / navy and gold",
+    "file": "svg/WV.svg",
+    "viewBox": [
+      0,
+      0,
+      600,
+      300
+    ],
+    "serial": {
+      "x": 80,
+      "y": 105,
+      "width": 440,
+      "height": 120,
+      "color": "#263f71",
+      "baseline": 205,
+      "fontSize": 108
+    },
+    "referenceUrl": "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_West_Virginia",
+    "notes": "Simplified vector redraw; variable numbers, county labels, and registration stickers omitted."
+  },
+  {
+    "code": "WI",
+    "state": "Wisconsin",
+    "variant": "America’s Dairyland",
+    "file": "svg/WI.svg",
+    "viewBox": [
+      0,
+      0,
+      600,
+      300
+    ],
+    "serial": {
+      "x": 80,
+      "y": 105,
+      "width": 440,
+      "height": 120,
+      "color": "#a8303d",
+      "baseline": 205,
+      "fontSize": 108
+    },
+    "referenceUrl": "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Wisconsin",
+    "notes": "Simplified vector redraw; variable numbers, county labels, and registration stickers omitted."
+  },
+  {
+    "code": "WY",
+    "state": "Wyoming",
+    "variant": "Teton Range / bucking horse (2008)",
+    "file": "svg/WY.svg",
+    "viewBox": [
+      0,
+      0,
+      600,
+      300
+    ],
+    "serial": {
+      "x": 165,
+      "y": 107,
+      "width": 375,
+      "height": 120,
+      "color": "#322c23",
+      "baseline": 205,
+      "fontSize": 108
+    },
+    "referenceUrl": "https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Wyoming",
+    "notes": "Simplified vector redraw; variable numbers, county labels, and registration stickers omitted."
+  }
+]

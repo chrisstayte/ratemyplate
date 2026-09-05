@@ -3,27 +3,19 @@ import { Inconsolata } from 'next/font/google';
 import './globals.css';
 import { ThemeProvider } from '@/components/theme-prodiver';
 import PlausibleProvider from 'next-plausible';
+import { headers } from 'next/headers';
+import { getShareImages, getShareMetadataBase } from '@/lib/share-metadata';
 
 const inconsolata = Inconsolata({ subsets: ['latin'], display: 'swap' });
 
-export const metadata: Metadata = {
-  metadataBase: new URL('https://ratemyplate.wtf'),
-  title: 'Rate My Plate',
-  description: 'Anonymous rating for drivers',
-  openGraph: {
-    images: [
-      {
-        url: '/og.png',
-        width: 1200,
-        height: 630,
-      },
-    ],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    images: ['/og.png'],
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    metadataBase: getShareMetadataBase(await headers()),
+    title: 'Rate My Plate',
+    description: 'Publicly anonymous rating for drivers',
+    ...getShareImages(),
+  };
+}
 
 export default function RootLayout({
   children,
