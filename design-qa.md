@@ -1,3 +1,81 @@
+# Selected typography: Instrument — September 5, 2026
+
+The user selected option 1 from the in-conversation typography comparison:
+Instrument Serif headings with Instrument Sans body text and controls.
+
+- Applied through root font variables and the shared sans, serif, and display
+  tokens, covering public pages, administrative pages, dialogs, and the globe.
+- Included real regular and italic faces, with Sans weights 400–700. Four local
+  WOFF2 assets total 92,416 bytes; font licenses are bundled alongside them.
+- Display tracking is now -0.02em, matching the chosen specimen. Removed the
+  atlas and globe's tighter heading overrides. License plate artwork keeps its
+  specialized typeface.
+- `pnpm build`: passed, including TypeScript and all routes.
+- Focused ESLint check of the changed TypeScript components: passed.
+- Production HTTP checks: `/`, `/OH`, `/OH/RAPTER`, `/media`, `/privacy`, and
+  `/globe` return 200 with both root font variables and all four font preload
+  headers. Every font asset returns 200 with a valid WOFF2 signature.
+- Local production preview refreshed at `http://127.0.0.1:3001/`.
+- Visual verification for this font change remains pending: the computer-use
+  tool reported that the Mac was locked. The screenshots and visual findings
+  below document the previous Georgia/Arial typography, not the new fonts.
+
+---
+
+# Previous site-wide editorial reskin — September 5, 2026
+
+final result: passed
+
+## Target and evidence
+
+- Source visual truth: `/Users/chris/.codex/attachments/8e839de2-04c5-41fb-b185-83a7b34a7d73/codex-clipboard-235a2354-94b6-4566-8fc7-ef685d54f713.png` (2638 × 2956 pixels).
+- Brief: extend the existing atlas section's editorial design language across the entire site, with very subtle green. This is a palette and typography adaptation, not a pixel-identical recreation of the old surrounding interface.
+- Final production preview: `http://127.0.0.1:3001/`.
+- Full-page evidence: `images/reskin/home-light.png` and `images/reskin/home-dark.png` (1280 × 2873 pixels).
+- Focused comparison: `images/reskin/atlas-comparison.png` (2248 × 546 pixels), reference left and final implementation right.
+- Comparison normalization: cropped the source atlas at x=207, y=881, width=2225, height=1091 and resized it to 1112 × 546; cropped the final browser capture at x=84, y=100, width=1112, height=546. Browser chrome was excluded. The source is approximately twice the implementation's image density. The browser reports DPR 2, while its screenshot API returns CSS-sized captures.
+- Desktop viewport: 1280 × 720 CSS px. Tablet: 768 × 1024. Mobile: 390 × 844.
+- Additional evidence: `images/reskin/atlas-light.png`, `atlas-dark.png`, `home-mobile.png`, `plate-mobile.png`, `sign-in-mobile.png`, `state-mobile.png`, `media-tablet.png`, `terms-desktop.png`, `globe-desktop.png`, and `globe-mobile.png`.
+- States: signed out; light and dark themes; search validation and successful navigation; selected Ohio on the globe; filtered and customized Ohio media preview; sign-in dialog open.
+
+## Visual comparison
+
+The normalized source and implementation were opened together in one comparison image. The split atlas composition, serif headline, italic emphasis, geographic shapes, plate illustration, spacing, and CTA placement remain recognizable. The new surface is more neutral, the heading is charcoal, and the green CTA is less saturated, as requested. The same treatment now extends to the homepage, state and plate pages, account and favorites headings, legal content, media gallery, shared dialogs and menus, dashboard headings and chart tokens, and the immersive globe.
+
+- Fonts and typography: Georgia matches the reference's editorial heading family; Arial provides quiet, readable body and control text. Plate artwork retains its specialized font. Eyebrows use consistent small uppercase lettering. Legal text has a wider readable measure and 28 px line height.
+- Spacing and layout rhythm: page grids and the atlas split are preserved. Shared cards use 12 px corners, actions use 6 px corners, and overlays use restrained borders. Mobile controls stack without horizontal overflow. The final mobile plate input is measured at 44 px high; document width equals viewport width at 390 px.
+- Colors and tokens: warm paper surfaces and nearly neutral charcoal dominate. Muted forest green identifies actions; sage is limited to the atlas and small details. Gold rating stars and terracotta featured-state emphasis retain semantic distinction. Calculated text contrast is 11.43:1 for light body text, 4.58:1 for light muted text, 8.08:1 for light buttons, 14.06:1 for dark body text, 7.23:1 for dark muted text, and 7.82:1 for dark buttons.
+- Image quality: existing state plate SVGs, the atlas geometry, and the globe basemap are reused. No artwork was replaced with a placeholder. The final comparison shows preserved proportions and sharp plate imagery. Globe stars and lighting are subdued while state markers remain visible.
+- Copy and content: the homepage's editorial headline and section labels fit the product; existing search, reviews, legal copy, and data remain intact. The animated plate display remains as a secondary detail.
+
+## Findings and comparison history
+
+1. Desktop source comparison: the quieter palette and typography match the requested direction. The absent State map link belongs to concurrent workspace removal of the standalone map route; this work preserved that removal.
+2. P2 found during mobile review: the plate input compressed to approximately 28 px when its flex direction changed. Fixed with an explicit 44 px minimum height and desktop-only flex growth. Recaptured the final production homepage in `home-mobile.png` and verified 44 px height and no overflow. Resolved.
+3. Globe polish: removed violet gradients, softened map and marker colors, restored the transparent vignette after palette conversion, and corrected sentence spacing when the mobile line break is hidden. Desktop and mobile screenshots confirm readable controls and state details.
+4. Final comparison: no actionable P0/P1/P2 visual findings remain. The target and final atlas were compared again in `atlas-comparison.png` after the refinements.
+
+## Interaction and build checks
+
+- Empty search shows an accessible error; plate entry, state selection, and search navigated to `/OH/RAPTER`.
+- Plate reviews and tabs render within mobile width. The sign-in dialog opens and closes with provider buttons and visible focus styling. OAuth login was not submitted.
+- Globe loads, pauses rotation, selects Ohio, displays its details, and navigates to `/OH`. Mobile controls remain reachable.
+- Media text customization and native state filtering display one customized Ohio plate.
+- Light/dark switching works. Desktop, tablet, and mobile routes were visually inspected.
+- Production browser console: no warnings or errors on the final fresh homepage session. Development-only hydration messages were seen while editing/streaming, and an offscreen automated Radix selection produced a focus error; visible menu selection and the final production session were successful.
+- `pnpm build`: passed, including TypeScript and all route compilation. The initial sandboxed build could not bind its CSS worker port; the authorized build completed successfully.
+- `pnpm test`: 24 tests passed across 3 files.
+- `pnpm lint`: no errors; 2 existing React Compiler compatibility warnings in the table and review form.
+- `git diff --check`: passed.
+
+## Test limits and follow-up
+
+Authenticated account, favorites, and administrative data screens were not browser-tested because no authenticated session was available; their shared tokens and heading changes were included in the successful production build. Posting reviews, OAuth sign-in, and downloads were not submitted as part of this visual reskin. No P3 visual polish is required for handoff.
+
+---
+
+## Previous design QA history
+
 # Globe Light-Mode Space Design QA
 
 - Source visual truth: `/Users/chris/.codex/visualizations/2026/07/22/019f8a1e-11c2-7dc3-8e89-3a0a774764fd/globe-qa/globe-dark-stars.png`

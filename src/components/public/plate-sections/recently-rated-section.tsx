@@ -11,8 +11,9 @@ export default function RecentlyRatedSection() {
   return (
     <section className="flex flex-col gap-6 w-full">
       <div className="text-center">
-        <h2 className="text-3xl font-bold">Recently Rated</h2>
-        <p className="text-muted-foreground mt-1">
+        <p className="eyebrow mb-3">From the community</p>
+        <h2 className="font-display text-3xl sm:text-4xl">Recently rated.</h2>
+        <p className="text-muted-foreground mt-3">
           See what the community is saying
         </p>
       </div>

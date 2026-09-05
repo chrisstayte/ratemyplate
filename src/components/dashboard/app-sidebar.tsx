@@ -32,6 +32,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { ThemeMenuRadioOptions } from '@/components/navbar/theme-menu-radio-options';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { BrandMark } from '@/components/brand-mark';
 import '@/lib/extensions';
 
 const navItems = [
@@ -60,7 +61,7 @@ export function AppSidebar({ user, signOutAction, ...props }: AppSidebarProps) {
             <SidebarMenuButton size="lg" asChild>
               <Link href="/dashboard">
                 <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
-                  <LayoutDashboard className="size-4" />
+                  <BrandMark className="size-6" />
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-semibold">Rate My Plate</span>

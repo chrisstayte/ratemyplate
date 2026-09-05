@@ -51,12 +51,12 @@ export default function TypingPlate({ plates }: { plates: string[] }) {
   }, [displayed, isDeleting, currentPlate, nextPlate, plates.length]);
 
   return (
-    <span className="flex flex-col items-center">
-      <span className="text-2xl text-muted-foreground mb-2">R8MYPL8</span>
-      <span className={`${licensePlateFont.className} tracking-wider text-6xl`}>
-        <span className="animate-pulse">/</span>
+    <span className="flex items-center gap-3" aria-label="Plates from the community">
+      <span className="eyebrow">Spotted on the road</span>
+      <span aria-hidden="true" className={`${licensePlateFont.className} inline-block min-w-24 rounded border border-border bg-card px-2 py-1 text-lg leading-5 tracking-wider text-foreground`}>
+        <span className="motion-safe:animate-pulse text-muted-foreground">/</span>
         {displayed}
-        <span className="animate-pulse">/</span>
+        <span className="motion-safe:animate-pulse text-muted-foreground">/</span>
       </span>
     </span>
   );

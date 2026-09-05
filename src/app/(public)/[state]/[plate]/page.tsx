@@ -157,7 +157,7 @@ export default async function PlatePage({ params }: Props) {
                             key={i}
                             className={`size-4 ${
                               i < Math.round(avgRating!)
-                                ? 'fill-yellow-400 text-yellow-400'
+                                ? 'fill-rating text-rating'
                                 : 'text-muted-foreground/40'
                             }`}
                           />

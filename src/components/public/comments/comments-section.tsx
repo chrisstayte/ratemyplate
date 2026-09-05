@@ -63,8 +63,8 @@ export default async function CommentsSection({
 
   return (
     <div className="h-full w-full flex flex-col gap-5">
-      <div className="flex flex-col sm:flex-row justify-between items-start">
-        <p className="text-2xl font-bold w-full leading-none">Reviews</p>
+      <div className="flex flex-col gap-4 sm:flex-row justify-between items-start">
+        <h2 className="font-display text-3xl w-full leading-none">Reviews</h2>
         {!session && <LoginDialog buttonTitle="Sign in to comment" />}
         {session && (
           <div className="w-full flex flex-row gap-8 justify-between items-center sm:justify-end">

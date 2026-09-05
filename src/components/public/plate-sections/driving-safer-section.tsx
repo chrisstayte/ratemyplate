@@ -37,8 +37,9 @@ export default function DrivingSaferSection() {
   return (
     <section className="flex flex-col gap-12 w-full">
       <div className="text-start">
-        <h2 className="text-3xl font-bold">Driving Safer Together</h2>
-        <p className="text-muted-foreground mt-1">
+        <p className="eyebrow mb-3">Built by drivers, for drivers</p>
+        <h2 className="font-display text-3xl sm:text-4xl">Driving safer together.</h2>
+        <p className="text-muted-foreground mt-3 leading-7">
           Join a community committed to road safety
         </p>
       </div>
@@ -46,12 +47,12 @@ export default function DrivingSaferSection() {
         <div className="flex flex-col gap-6">
           {features.map((feature) => (
             <div key={feature.title} className="flex gap-4">
-              <div className="shrink-0 flex items-center justify-center size-10 rounded-lg bg-primary/10">
-                <feature.icon className="size-5 text-primary" />
+              <div className="shrink-0 flex items-center justify-center size-10 rounded-md border bg-secondary/50">
+                <feature.icon className="size-5 text-primary" strokeWidth={1.5} />
               </div>
               <div>
                 <h3 className="font-semibold">{feature.title}</h3>
-                <p className="text-sm text-muted-foreground">
+                <p className="mt-1 text-sm leading-6 text-muted-foreground">
                   {feature.description}
                 </p>
               </div>
@@ -104,7 +105,7 @@ async function StatsGrid() {
       {stats.map((stat) => (
         <Card key={stat.label}>
           <CardContent className="flex flex-col items-center justify-center p-6 text-center">
-            <span className="text-3xl font-bold">
+            <span className="font-display text-4xl tabular-nums">
               {stat.value.toLocaleString()}
             </span>
             <span className="text-sm text-muted-foreground mt-1">

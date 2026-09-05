@@ -14,7 +14,7 @@ export default function FavoritesSection() {
 
   return (
     <div className='flex flex-col gap-5 justify-center w-full'>
-      <p className='text-2xl '>Favorites</p>
+      <h1 className='font-display text-4xl sm:text-5xl'>Favorites</h1>
       <Suspense
         fallback={<FavoritePlatesSkeleton limit={numberOfEntriesToDisplay} />}>
         <FavoritePlates limit={numberOfEntriesToDisplay} />

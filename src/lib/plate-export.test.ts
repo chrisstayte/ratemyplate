@@ -36,6 +36,36 @@ describe('plate media exports', () => {
     }
   });
 
+  it('exports DCEE without invalid coordinates that truncate the C and following letters', () => {
+    const arkansas = sources.find((plate) => plate.code === 'AR')!;
+    const svg = createPlateExportSvg(arkansas.svg, 'AR', 'DCEE', font);
+    // At the real font size, C has control points such as 75.00000000000001.
+    // opentype.js 2.0's decimal formatter turns these finite values into NaN.
+    expect(svg).not.toMatch(/NaN|Infinity|undefined/);
+    expect(svg).toContain('Q75 128.529 72.857 126.086');
+    expect(svg).toContain('Q75 185.443 75.857 181.843');
+  });
+
+  it('writes valid SVG path commands for the whole alphabet at every state’s serial size', () => {
+    const values = [
+      'DCEE', 'ABCDEFGHIJKL', 'MNOPQRSTUVWX', 'YZ0123456789', '0 1-2 3-4 5',
+      ...Array.from('ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-'),
+    ];
+    const point = '-?\\d+(?:\\.\\d+)? -?\\d+(?:\\.\\d+)?';
+    const commandPattern = new RegExp(`^(?:[ML]${point}|Q${point} ${point}|C${point} ${point} ${point}|Z)+$`);
+    for (const plate of sources) {
+      for (const value of values) {
+        const svg = createPlateExportSvg(plate.svg, plate.code, value, font);
+        const path = [...svg.matchAll(/<path fill="[^"]+" d="([^"]*)"/g)].at(-1)?.[1];
+        expect(path, `${plate.code}: ${value}`).toMatch(commandPattern);
+        const { serial } = getPlateArtwork(plate.code);
+        const commands = font.getPath(value, 0, serial.baseline, serial.fontSize).commands;
+        expect(path?.match(/M/g)?.length ?? 0).toBe(commands.filter((command) => command.type === 'M').length);
+        expect(path?.match(/Z/g)?.length ?? 0).toBe(commands.filter((command) => command.type === 'Z').length);
+      }
+    }
+  });
+
   it('keeps actual outlined glyph bounds inside every serial region, including long values', () => {
     for (const plate of sources) {
       const { serial } = getPlateArtwork(plate.code);

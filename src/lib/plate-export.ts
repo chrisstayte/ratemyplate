@@ -1,4 +1,4 @@
-import type { Font } from 'opentype.js';
+import type { Font, PathCommand } from 'opentype.js';
 import {
   getPlateArtwork,
   getPlateTextWidth,
@@ -19,6 +19,32 @@ export function plateExportFilename(state: string, value: string, format: PlateE
   return `ratemyplate-${state.toLowerCase()}-${text ? text.toLowerCase().replace(/\s+/g, '-') : 'blank'}.${format}`;
 }
 
+function serializePlatePath(commands: PathCommand[]) {
+  function coordinates(...values: number[]) {
+    return values.map((value) => {
+      if (!Number.isFinite(value)) throw new Error('The plate text could not be rendered.');
+      return Number(value.toFixed(3)).toString();
+    }).join(' ');
+  }
+
+  // opentype.js 2.0's toPathData() can emit NaN when rounding coordinates
+  // just above an integer. Serialize the original contours with native rounding
+  // and preserve their SVG coordinate direction and closing commands.
+  return commands.map((command) => {
+    switch (command.type) {
+      case 'M':
+      case 'L':
+        return command.type + coordinates(command.x, command.y);
+      case 'Q':
+        return 'Q' + coordinates(command.x1, command.y1, command.x, command.y);
+      case 'C':
+        return 'C' + coordinates(command.x1, command.y1, command.x2, command.y2, command.x, command.y);
+      case 'Z':
+        return 'Z';
+    }
+  }).join('');
+}
+
 /** Inline the serial as outlines so the SVG needs no fonts or external images. */
 export function createPlateExportSvg(source: string, state: string, value: string, font?: Font) {
   const artwork = getPlateArtwork(state);
@@ -31,11 +57,10 @@ export function createPlateExportSvg(source: string, state: string, value: strin
   const { serial } = artwork;
   const width = getPlateTextWidth(text, serial.width);
   const advance = font.getAdvanceWidth(text, serial.fontSize);
-  if (advance <= 0) throw new Error('The plate text could not be rendered.');
+  if (!Number.isFinite(advance) || advance <= 0) throw new Error('The plate text could not be rendered.');
 
   const x = serial.x + (serial.width - width) / 2;
-  // The numeric precision argument preserves the SVG coordinate direction in opentype.js.
-  const path = font.getPath(text, 0, serial.baseline, serial.fontSize).toPathData(3);
+  const path = serializePlatePath(font.getPath(text, 0, serial.baseline, serial.fontSize).commands);
   const number = `<g aria-label="${text}" transform="translate(${x} 0) scale(${width / advance} 1)"><path fill="${serial.color}" d="${path}"/></g>`;
 
   return source

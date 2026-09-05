@@ -12,7 +12,7 @@ export default async function CommentsPage({
 
   return (
     <div className="mx-auto flex w-full max-w-7xl flex-col gap-5 py-5">
-      <p className="text-2xl">Comments</p>
+      <h1 className="font-display text-3xl">Comments</h1>
       <SearchBar placeholder="Search by plate, user, or comment..." />
       <CommentsTable tableData={siteComments} states={uniqueStates} />
     </div>

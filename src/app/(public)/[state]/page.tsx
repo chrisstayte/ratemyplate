@@ -65,9 +65,9 @@ export default async function StatePage({ params }: Props) {
   return (
     <div className="flex flex-col max-w-6xl mx-auto px-5 mb-10 pt-5">
       <BreadCrumbs />
-      <div className="container flex flex-col gap-10 py-10 items-center">
+      <div className="w-full flex flex-col gap-10 py-12 items-center">
         <div className="flex flex-col gap-2 items-center">
-          <h1 className="text-4xl font-bold text-center">{stateName}</h1>
+          <h1 className="font-display text-5xl sm:text-6xl text-center">{stateName}</h1>
           <p className="text-muted-foreground text-center">
             {statePlates.length} {statePlates.length === 1 ? 'plate' : 'plates'}{' '}
             rated
@@ -75,7 +75,7 @@ export default async function StatePage({ params }: Props) {
         </div>
 
         {statePlates.length === 0 ? (
-          <div className="flex flex-col items-center gap-6 min-w-md">
+          <div className="flex w-full max-w-md flex-col items-center gap-6">
             <p className="text-lg text-muted-foreground text-center">
               Add the first plate for {stateName} today
             </p>

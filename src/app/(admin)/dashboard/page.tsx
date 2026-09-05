@@ -108,7 +108,7 @@ export default async function Dashboard() {
     <div className="mx-auto flex w-full max-w-[1500px] flex-col gap-5 py-5">
       <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight">Dashboard</h1>
+          <h1 className="font-display text-3xl">Dashboard</h1>
           <p className="text-sm text-muted-foreground">
             Activity, comment quality, and fast paths into the admin data.
           </p>

@@ -9,9 +9,9 @@ export const metadata: Metadata = {
 export default function MediaPage() {
   return (
     <div className="mx-auto w-full max-w-6xl px-5 py-8 sm:py-10">
-      <header className="mb-6 max-w-3xl">
-        <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-muted-foreground">Media library</p>
-        <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">A plate for every state.</h1>
+      <header className="mb-10 max-w-3xl">
+        <p className="eyebrow mb-4">Media library</p>
+        <h1 className="font-display text-4xl sm:text-5xl">A plate for every state.</h1>
         <p className="mt-3 text-base leading-relaxed text-muted-foreground sm:text-lg">
           Browse all 50 designs. Download a blank plate or add your own text.
         </p>

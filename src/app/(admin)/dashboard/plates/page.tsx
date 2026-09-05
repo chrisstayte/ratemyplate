@@ -12,7 +12,7 @@ export default async function PlatesPage({
 
   return (
     <div className="mx-auto flex w-full max-w-7xl flex-col gap-5 py-5">
-      <p className="text-2xl">Plates</p>
+      <h1 className="font-display text-3xl">Plates</h1>
       <SearchBar placeholder="Search plate number..." />
       <PlatesTable data={licensePlates} states={uniqueStates} />
     </div>

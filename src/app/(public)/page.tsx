@@ -21,29 +21,33 @@ export default async function Home() {
   return (
     <>
       {/* Hero + Inline Search */}
-      <section className="flex flex-col items-center gap-4 text-center py-20 pb-16 border-b px-5 sm:px-0 bg-card">
-        <h1 className="text-5xl font-bold tracking-tight">
-          <TypingPlate plates={plateNumbers} />
+      <section className="flex flex-col items-center text-center border-b px-5 py-16 sm:py-20">
+        <p className="eyebrow mb-6">A local view of the road</p>
+        <h1 className="font-display max-w-3xl text-5xl leading-[1.05] sm:text-7xl">
+          Every plate has <span className="italic">a story.</span>
         </h1>
-        <p className="text-lg text-muted-foreground">
+        <p className="mt-5 max-w-xl text-base leading-7 text-muted-foreground sm:text-lg">
           See what others are saying. Share your own experiences. Your name
           stays off the public page.
         </p>
-        <InlineSearch />
-        <div className="flex flex-wrap gap-2 justify-center">
-          <Badge className="bg-purple-400 dark:bg-purple-200">
+        <div className="mt-8 mb-5 w-full max-w-2xl">
+          <InlineSearch />
+        </div>
+        <div className="flex flex-wrap gap-x-4 gap-y-2 justify-center">
+          <Badge variant="outline" className="border-transparent bg-transparent px-0 font-normal text-muted-foreground">
             <EyeOff className="size-3" />
             Publicly anonymous
           </Badge>
-          <Badge className="bg-purple-400 dark:bg-purple-200">
+          <Badge variant="outline" className="border-transparent bg-transparent px-0 font-normal text-muted-foreground">
             <MapPin className="size-3" />
             50 States
           </Badge>
-          <Badge className="bg-purple-400 dark:bg-purple-200">
+          <Badge variant="outline" className="border-transparent bg-transparent px-0 font-normal text-muted-foreground">
             <Users className="size-3" />
             Community Driven
           </Badge>
         </div>
+        <div className="mt-8"><TypingPlate plates={plateNumbers} /></div>
       </section>
 
       {/* Recently Rated - full width for marquee */}

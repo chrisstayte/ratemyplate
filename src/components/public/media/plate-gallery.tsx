@@ -49,7 +49,7 @@ export default function PlateGallery() {
 
   return (
     <div>
-      <section aria-label="Customize and filter plates" className="rounded-2xl border bg-card p-5 sm:p-6">
+      <section aria-label="Customize and filter plates" className="rounded-xl border bg-card p-5 sm:p-6">
         <div className="grid grid-cols-2 gap-x-4 gap-y-5 md:grid-cols-[minmax(0,2fr)_minmax(0,1fr)_minmax(0,1fr)] md:gap-6">
           <div className="col-span-2 space-y-3 md:col-span-1">
             <Label htmlFor="plate-custom-text">Your plate text <span className="font-normal text-muted-foreground">(optional)</span></Label>
@@ -122,7 +122,7 @@ export default function PlateGallery() {
 
       <ul aria-label="State plate designs" className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {visiblePlates.map((plate) => (
-          <li key={plate.code} className="flex min-w-0 flex-col overflow-hidden rounded-2xl border bg-card">
+          <li key={plate.code} className="flex min-w-0 flex-col overflow-hidden rounded-xl border bg-card">
             <div className="flex aspect-[3/2] items-center bg-muted/40 p-6">
               <PlateArtwork plate={{ state: plate.code, plateNumber: previewText }} className="drop-shadow-sm" />
             </div>

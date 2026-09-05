@@ -4,7 +4,7 @@ import { database } from '@/db/database';
 import { plates, plate_reviews, user_favorite_plates, review_likes } from '@/db/schema';
 import { revalidatePath } from 'next/cache';
 import { auth, isCurrentUserAdmin } from '@/auth';
-import { eq, and, desc } from 'drizzle-orm';
+import { eq, and } from 'drizzle-orm';
 import { Plate } from '@/lib/plates';
 import {
   parsePlateInput,
@@ -221,22 +221,6 @@ export async function removePlateFromFavorites(plate: Plate) {
     .execute();
 
   revalidatePath('/favorites');
-}
-
-export async function getRecentCommentsByState(stateAbbreviation: string) {
-  const results = await database
-    .select({
-      commentText: plate_reviews.comment,
-      plateNumber: plates.plateNumber,
-      timestamp: plate_reviews.createdAt,
-    })
-    .from(plate_reviews)
-    .innerJoin(plates, eq(plate_reviews.plateId, plates.id))
-    .where(eq(plates.state, stateAbbreviation))
-    .orderBy(desc(plate_reviews.createdAt))
-    .limit(20);
-
-  return results;
 }
 
 export async function toggleReviewLike(reviewId: number) {

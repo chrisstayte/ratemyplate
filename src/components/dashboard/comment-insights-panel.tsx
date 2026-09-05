@@ -89,7 +89,7 @@ function ratingStars(rating: number | null) {
         className={cn(
           'size-3.5',
           filled
-            ? 'fill-yellow-400 text-yellow-400'
+            ? 'fill-rating text-rating'
             : 'text-muted-foreground/35'
         )}
       />
