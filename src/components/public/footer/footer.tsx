@@ -54,6 +54,14 @@ const Footer = async () => {
                   Favorites
                 </Link>
               </li>
+              <li>
+                <Link
+                  href="/media"
+                  className="hover:text-foreground transition-colors"
+                >
+                  Media Library
+                </Link>
+              </li>
             </ul>
           </div>
 
